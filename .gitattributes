@@ -1,0 +1,8 @@
+*.sm2d -text
+*.smms -text
+*.smis -text
+*.val -text
+*.vit -text
+*.vst -text
+*.pdf binary
+*.xlsx binary
