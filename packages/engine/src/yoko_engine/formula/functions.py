@@ -11,27 +11,12 @@ import math
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from yoko_engine.fuzzy import fuzzy_compare, fuzzy_compare_possible_nulls, fuzzy_is_null
+
+__all__ = ["fuzzy_compare", "fuzzy_compare_possible_nulls", "fuzzy_is_null"]
+
 NAN = math.nan
 INF = math.inf
-
-# qFuzzyIsNull / qFuzzyCompare (Qt), used by `?:` and `==` / `!=`
-# (src/libs/qmuparser/qmudef.h: QmuFuzzyComparePossibleNulls).
-
-
-def fuzzy_is_null(d: float) -> bool:
-    return abs(d) <= 0.000000000001
-
-
-def fuzzy_compare(p1: float, p2: float) -> bool:
-    return abs(p1 - p2) * 1000000000000.0 <= min(abs(p1), abs(p2))
-
-
-def fuzzy_compare_possible_nulls(p1: float, p2: float) -> bool:
-    if fuzzy_is_null(p1):
-        return fuzzy_is_null(p2)
-    if fuzzy_is_null(p2):
-        return False
-    return fuzzy_compare(p1, p2)
 
 
 def c_div(a: float, b: float) -> float:

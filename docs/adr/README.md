@@ -14,3 +14,4 @@ One short record per major choice. Status: `accepted` (settled by the spec or ad
 | 0008 | Units: formulas evaluate in the pattern's unit | accepted |
 | 0009 | Held-out rules and seed ranges | proposed |
 | 0010 | Branching and deploy workflow | accepted |
+| 0011 | Evaluation kernel scale and object identity | accepted |

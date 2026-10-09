@@ -35,7 +35,9 @@ Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI do
 ## Phase 1 log
 
 - **Slice 1, formula language: done** (2026-10-09). `yoko_engine.formula`: tokenizer, parser to an immutable AST, evaluator, 35 built-in functions, dependency extraction, error codes with hints, size caps. Ported from Seamly2D's `qmuparser`; every rule cites its source file. 131 tests including: every formula in the basic set parses, the file's own variables evaluate at base size, and property tests (the parser only ever raises `FormulaError`). Quirks copied and deliberate differences: `docs/formula-differences.md`.
-- Next: object model and construction graph (points, lines first), then evaluation of geometry, then the 0.6.8 reader.
+- **Slice 2, model, reader, first point kinds: done** (2026-10-09). `yoko_engine.model` (immutable pattern, objects keep every attribute), `yoko_engine.geometry` (Qt `QLineF` port: y-down, angles counter-clockwise on screen), `yoko_engine.evaluator` (single, endLine, alongLine, normal, bisector, intersectXY, lineIntersectAxis, line; `Line_`/`AngleLine_` variables; `CurrentLength`), `yoko_io.seamly` (0.6.8 patterns and multisize tables, defusedxml). The real basic set reads in 16 ms and evaluates in 15 ms; 197 of its points compute. Not yet computed: arcs, curves, `pointOfContact`, `trueDarts`, `curveIntersectAxis`, `flippingByLine` (52 objects; they block ~230 downstream objects). ADR 0011 records the pixel-scale kernel decision.
+- **Oracle, local attempt:** Ubuntu's Qt 6.4 cannot build Seamly2D `v2026.10.5.154` unpatched (it needs Qt 6.5+ APIs: `QDomDocument::ParseResult`, `QPaintDevice::encodeMetricF`), and download.qt.io is not reachable from this session. The oracle therefore stays a GitHub Actions job (Qt 6.11.1, as Seamly2D's own CI). A small local compatibility patch is being tried; if it works, it is for development only.
+- Next: slice 3, curves and arcs (cubic Bezier, paths, circular arcs, their lengths and variables), then the remaining point kinds and the mirror operation, then validation, fork/undo/hash, and an SVG render for the checkpoint.
 
 ## Environment variables by phase
 
