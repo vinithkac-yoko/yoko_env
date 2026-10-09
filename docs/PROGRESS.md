@@ -32,6 +32,11 @@ Not done, on purpose:
 Source: `src/test/CollectionTest/share` in the Seamly2D repo (about 40 files, mostly old formats; Addendum 1 §17). No link needed: the repo is cloned read-only in the session.
 Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI does), opens and re-saves each file to upgrade it to format 0.7.5, and commits the upgraded copies with oracle outputs to `fixtures/external/seamly2d/`. Open question for Phase 2: whether the Seamly2D binary can open and save headlessly. Its command line is export-oriented (basename, destination, measurement file, format, gradation) and has a `--test` option; if it cannot save, a small harness over its converter library is the fallback.
 
+## Phase 1 log
+
+- **Slice 1, formula language: done** (2026-10-09). `yoko_engine.formula`: tokenizer, parser to an immutable AST, evaluator, 35 built-in functions, dependency extraction, error codes with hints, size caps. Ported from Seamly2D's `qmuparser`; every rule cites its source file. 131 tests including: every formula in the basic set parses, the file's own variables evaluate at base size, and property tests (the parser only ever raises `FormulaError`). Quirks copied and deliberate differences: `docs/formula-differences.md`.
+- Next: object model and construction graph (points, lines first), then evaluation of geometry, then the 0.6.8 reader.
+
 ## Environment variables by phase
 
 | Phase | Variables |
