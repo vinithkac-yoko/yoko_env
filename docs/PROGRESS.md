@@ -18,6 +18,20 @@ Not done, on purpose:
 - Playwright smoke test for the studio: added in Phase 10 with the real screens; Phase 0 has a vitest unit test and a manual Chromium check.
 - Oracle image and GitHub Actions job: Phase 2.
 
+## Decisions from Kasi, 2026-10-09
+
+- Create `main` from the session branch: approved, but the push was refused in the session. Kasi creates it (see chat); Railway can deploy the session branch meanwhile (`docs/DEPLOY.md`).
+- ADR 0009 seed ranges and levels: approved. Held-out pairings still open.
+- Size coverage for multi-size checks: header sizes 34 to 42 (UK 6 to 14): approved.
+- Landmark vocabulary goes to the pattern makers as a **sheet** (Phase 3).
+- Phase 1 plan: approved.
+- `alltools_pattern.sm2d` as the parity fixture: approved. Also run Seamly2D's other test patterns through the pinned Seamly2D, upgrade them and test them (Phase 2, in CI; see below).
+
+## Seamly2D's own test patterns (Phase 2)
+
+Source: `src/test/CollectionTest/share` in the Seamly2D repo (about 40 files, mostly old formats; Addendum 1 §17). No link needed: the repo is cloned read-only in the session.
+Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI does), opens and re-saves each file to upgrade it to format 0.7.5, and commits the upgraded copies with oracle outputs to `fixtures/external/seamly2d/`. Open question for Phase 2: whether the Seamly2D binary can open and save headlessly. Its command line is export-oriented (basename, destination, measurement file, format, gradation) and has a `--test` option; if it cannot save, a small harness over its converter library is the fallback.
+
 ## Environment variables by phase
 
 | Phase | Variables |
