@@ -15,7 +15,7 @@ import math
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 
-from yoko_engine.formula import FormulaError, parse
+from yoko_engine.formula import FormulaError, FormulaErrorCode, parse
 from yoko_engine.fuzzy import fuzzy_compare_possible_nulls
 from yoko_engine.geometry import Line, Pt, points_equal
 from yoko_engine.geometry.axis import curve_axis_point
@@ -24,7 +24,7 @@ from yoko_engine.geometry.curves import Arc, Bezier, BezierPath, Spline, normali
 from yoko_engine.geometry.cut import cut_spline, cut_spline_path, length_by_point
 from yoko_engine.geometry.qt import IntersectType
 from yoko_engine.geometry.transform import flip_point
-from yoko_engine.model import Obj, Pattern
+from yoko_engine.model import Obj, Pattern, Variable
 from yoko_engine.units import from_pixel, px_to_mm, to_pixel
 
 CURRENT_LENGTH = "CurrentLength"
@@ -39,6 +39,7 @@ class Issue:
     object_id: int | None = None
     field: str | None = None
     hint: str | None = None
+    severity: str = "error"  # "error" rejects an action that introduces it; "warning" does not
 
 
 @dataclass(frozen=True, slots=True)
@@ -65,6 +66,21 @@ class CurveGeom:
     labels: tuple[str, ...] = ()
 
 
+class ObjRecord:
+    """What one object produced and used when it was evaluated. Never mutated after evaluation
+    (a re-run makes a new record), so copies of an Evaluator can share records."""
+
+    __slots__ = ("curves", "issues", "points", "symbols", "uses_ids", "uses_names")
+
+    def __init__(self) -> None:
+        self.points: set[int] = set()
+        self.curves: set[int] = set()
+        self.symbols: set[str] = set()
+        self.uses_ids: set[int] = set()
+        self.uses_names: set[str] = set()
+        self.issues: list[Issue] = []
+
+
 class Evaluation:
     """The result of evaluating a pattern."""
 
@@ -77,6 +93,17 @@ class Evaluation:
         # object id -> ids of the objects it was built from
         self.deps: dict[int, frozenset[int]] = {}
         self.issues: list[Issue] = []
+
+    def copy(self) -> Evaluation:
+        """A copy that can be changed without affecting this one (values are immutable)."""
+        other = Evaluation()
+        other.points = dict(self.points)
+        other.curves = dict(self.curves)
+        other.symbols = dict(self.symbols)
+        other.owners = dict(self.owners)
+        other.deps = dict(self.deps)
+        other.issues = list(self.issues)
+        return other
 
     def point_mm(self, label: str) -> tuple[float, float]:
         for g in self.points.values():
@@ -97,7 +124,23 @@ class _Ctx:
     def __init__(self, unit: str, ev: Evaluation) -> None:
         self.unit = unit
         self.ev = ev
-        self.deps: set[int] = set()
+        self.rec = ObjRecord()
+        self.deps: set[int] = self.rec.uses_ids
+        # file position of every object, and of the one being evaluated: an object may only use
+        # what comes before it, even if a later object's old results are still in `ev`.
+        self.order: dict[int, int] = {}
+        self.current = -1
+
+    def is_forward(self, ref_id: int, *, own_is_forward: bool = True) -> bool:
+        pos = self.order.get(ref_id, -1)
+        if self.current < 0:
+            return False
+        return pos >= self.current if own_is_forward else pos > self.current
+
+    def begin(self) -> ObjRecord:
+        self.rec = ObjRecord()
+        self.deps = self.rec.uses_ids
+        return self.rec
 
     # -- inputs -----------------------------------------------------------------------------
     def point(self, o: Obj, attr: str) -> PointGeom:
@@ -111,7 +154,7 @@ class _Ctx:
                 Issue("bad_reference", f"'{attr}' is not an object id: {raw!r}", o.id, attr)
             ) from None
         geom = self.ev.points.get(pid)
-        if geom is None:
+        if geom is None or self.is_forward(pid):
             raise _ObjectError(
                 Issue(
                     "missing_reference",
@@ -126,7 +169,7 @@ class _Ctx:
 
     def point_by_id(self, o: Obj, pid: int, attr: str) -> PointGeom:
         geom = self.ev.points.get(pid)
-        if geom is None:
+        if geom is None or self.is_forward(pid):
             raise _ObjectError(
                 Issue(
                     "missing_reference",
@@ -146,7 +189,7 @@ class _Ctx:
         except ValueError:
             cid = -1
         geom = self.ev.curves.get(cid)
-        if geom is None:
+        if geom is None or self.is_forward(cid):
             raise _ObjectError(
                 Issue(
                     "missing_reference",
@@ -178,6 +221,18 @@ class _Ctx:
         text = o.get(attr, default) or default
         try:
             f = parse(text)
+            self.rec.uses_names.update(f.names)
+            for name in f.names:
+                owner = self.ev.owners.get(name)
+                if owner is not None and self.is_forward(owner, own_is_forward=False):
+                    raise FormulaError(
+                        FormulaErrorCode.UNDEFINED_NAME,
+                        f"{name!r} is built from this object or a later one",
+                        text,
+                        None,
+                        name,
+                        "a formula can only use objects defined before it",
+                    )
             value = f.evaluate(self.ev.symbols)
         except FormulaError as err:
             raise _ObjectError(
@@ -194,7 +249,7 @@ class _Ctx:
             if owner is not None:
                 self.deps.add(owner)
         if math.isinf(value) or math.isnan(value):
-            self.ev.issues.append(
+            self.rec.issues.append(
                 Issue(
                     "invalid_formula_value",
                     f"formula {text!r} is not a finite number; Seamly2D uses 0",
@@ -210,10 +265,16 @@ class _Ctx:
     def add_point(self, o: Obj, p: Pt, *, key: int | None = None, label: str | None = None) -> None:
         pid = o.id if key is None else key
         self.ev.points[pid] = PointGeom(pid, o.label if label is None else label, p)
+        self.rec.points.add(pid)
+
+    def add_curve(self, cid: int, curve: CurveGeom) -> None:
+        self.ev.curves[cid] = curve
+        self.rec.curves.add(cid)
 
     def set_symbol(self, name: str, value: float, owner: int) -> None:
         self.ev.symbols[name] = value
         self.ev.owners[name] = owner
+        self.rec.symbols.add(name)
 
     def add_curve_variables(
         self,
@@ -273,6 +334,7 @@ def _along_line(c: _Ctx, o: Obj) -> None:
     finally:
         c.ev.symbols.pop(CURRENT_LENGTH, None)
         c.ev.owners.pop(CURRENT_LENGTH, None)
+        c.rec.symbols.discard(CURRENT_LENGTH)
     c.add_point(o, line.set_length(length).p2)
     new = c.ev.points[o.id]
     c.add_line(o.id, first, new)
@@ -339,7 +401,7 @@ def _line_intersect_axis(c: _Ctx, o: Obj) -> None:
     found = _line_intersect_axis_point(axis, Line(first.p, second.p))
     if found is None:
         # Seamly2D warns and uses the origin as a placeholder until the pattern is corrected.
-        c.ev.issues.append(
+        c.rec.issues.append(
             Issue(
                 "no_intersection",
                 "the line and the axis do not intersect (parallel or degenerate)",
@@ -367,7 +429,7 @@ def _point_of_contact(c: _Ctx, o: Obj) -> None:
     radius = to_pixel(c.check(o, "radius", "0"), c.unit)
     found = find_circle_line_point(radius, center.p, first.p, second.p)
     if found is None:
-        c.ev.issues.append(
+        c.rec.issues.append(
             Issue(
                 "no_intersection",
                 "the circle and the line do not meet",
@@ -416,7 +478,7 @@ def _arc(c: _Ctx, o: Obj) -> None:
     f2 = normalize_angle(c.check(o, "angle2", "270"), 0.0, 360.0)
     arc = Arc(center.p, radius, f1, f2)
     name = f"Arc_{center.label}_{o.id}"
-    c.ev.curves[o.id] = CurveGeom(o.id, name, arc, (center.label,))
+    c.add_curve(o.id, CurveGeom(o.id, name, arc, (center.label,)))
     c.add_curve_variables(o.id, name, arc.length(), arc.start_angle(), arc.end_angle())
     c.set_symbol(f"Radius{name}", from_pixel(radius, c.unit), o.id)
 
@@ -425,7 +487,7 @@ def _cubic_bezier(c: _Ctx, o: Obj) -> None:
     pts = [c.point(o, f"point{i}") for i in (1, 2, 3, 4)]
     bez = Bezier(pts[0].p, pts[1].p, pts[2].p, pts[3].p)
     name = f"Spl_{pts[0].label}_{pts[3].label}"
-    c.ev.curves[o.id] = CurveGeom(o.id, name, bez, tuple(p.label for p in pts))
+    c.add_curve(o.id, CurveGeom(o.id, name, bez, tuple(p.label for p in pts)))
     c.add_curve_variables(o.id, name, bez.length(), bez.start_angle(), bez.end_angle())
     c.add_control_lengths(o.id, name, bez.c1_length(), bez.c2_length())
 
@@ -445,7 +507,7 @@ def _cubic_bezier_path(c: _Ctx, o: Obj) -> None:
             Issue("too_few_points", "a Bezier path needs at least 4 points", o.id, "pathPoint")
         )
     name = f"SplPath_{points[0].label}_{points[-1].label}"
-    c.ev.curves[o.id] = CurveGeom(o.id, name, path, tuple(p.label for p in points))
+    c.add_curve(o.id, CurveGeom(o.id, name, path, tuple(p.label for p in points)))
     c.add_curve_variables(o.id, name, path.length(), path.start_angle(), path.end_angle())
     c.add_control_lengths(o.id, name, path.c1_length(), path.c2_length())
     for i, seg in enumerate(path.segments(), start=1):
@@ -487,7 +549,7 @@ def _curve_intersect_axis(c: _Ctx, o: Obj) -> None:
     angle = c.check(o, "angle", "0.0")
     found = curve_axis_point(base.p, angle, _curve_points(curve))
     if found is None:
-        c.ev.issues.append(
+        c.rec.issues.append(
             Issue(
                 "no_intersection",
                 f"the axis from {base.label} at {angle}° does not meet curve {curve.name}",
@@ -597,44 +659,185 @@ def kind_key(o: Obj) -> str:
     return o.kind if o.tag == "point" else f"{o.tag}:{o.kind}"
 
 
-def evaluate(pattern: Pattern, measurements: Mapping[str, float]) -> Evaluation:
-    """Run the whole pattern. Never raises for a bad pattern: problems come back as issues."""
-    ev = Evaluation()
-    ev.symbols.update(measurements)
-    ctx = _Ctx(pattern.unit, ev)
+def _eval_variable(ev: Evaluation, var: Variable) -> Issue | None:
+    try:
+        ev.symbols[var.name] = parse(var.formula).evaluate(ev.symbols)
+    except FormulaError as err:
+        ev.symbols[var.name] = 0.0
+        return Issue(
+            f"formula_{err.code.value}",
+            f"variable {var.name}: {err.message}",
+            None,
+            var.name,
+            err.hint,
+        )
+    return None
 
-    for var in pattern.variables:
-        try:
-            ev.symbols[var.name] = parse(var.formula).evaluate(ev.symbols)
-        except FormulaError as err:
-            ev.symbols[var.name] = 0.0
-            ev.issues.append(
-                Issue(
-                    f"formula_{err.code.value}",
-                    f"variable {var.name}: {err.message}",
-                    None,
-                    var.name,
-                    err.hint,
+
+class Evaluator:
+    """Evaluates a pattern, and re-evaluates it incrementally after a change.
+
+    `run` evaluates everything. `update` takes the changed pattern and recomputes only the objects
+    that are edited, new, or built from something whose value actually changed (so a change that
+    does not alter a result stops propagating there).
+    """
+
+    def __init__(self) -> None:
+        self.ev = Evaluation()
+        self.records: dict[int, ObjRecord] = {}
+        self.var_issues: list[Issue] = []
+        self._measurement_names: set[str] = set()
+        self._variable_names: set[str] = set()
+        self.last_reevaluated = 0
+
+    def copy(self) -> Evaluator:
+        other = Evaluator()
+        other.ev = self.ev.copy()
+        other.records = dict(self.records)
+        other.var_issues = list(self.var_issues)
+        other._measurement_names = set(self._measurement_names)
+        other._variable_names = set(self._variable_names)
+        other.last_reevaluated = self.last_reevaluated
+        return other
+
+    def run(self, pattern: Pattern, measurements: Mapping[str, float]) -> Evaluation:
+        self.__init__()  # type: ignore[misc]
+        self.update(pattern, measurements, set())
+        return self.ev
+
+    def update(
+        self, pattern: Pattern, measurements: Mapping[str, float], edited_ids: set[int]
+    ) -> Evaluation:
+        ev = self.ev
+        changed_names: set[str] = set()
+        changed_ids: set[int] = set()
+
+        # measurements
+        for name in self._measurement_names - set(measurements):
+            ev.symbols.pop(name, None)
+            changed_names.add(name)
+        for name, value in measurements.items():
+            if name not in ev.symbols or ev.symbols[name] != value:
+                ev.symbols[name] = value
+                changed_names.add(name)
+        self._measurement_names = set(measurements)
+
+        # variables, in file order
+        for name in self._variable_names - {v.name for v in pattern.variables}:
+            ev.symbols.pop(name, None)
+            changed_names.add(name)
+        self.var_issues = []
+        for var in pattern.variables:
+            before = ev.symbols.get(var.name)
+            issue = _eval_variable(ev, var)
+            if issue is not None:
+                self.var_issues.append(issue)
+            if before is None or ev.symbols[var.name] != before:
+                changed_names.add(var.name)
+        self._variable_names = {v.name for v in pattern.variables}
+
+        # objects, in file order
+        ctx = _Ctx(pattern.unit, ev)
+        ctx.order = {o.id: i for i, o in enumerate(pattern.objects())}
+        present = {o.id for b in pattern.blocks for o in b.objects}
+        for oid in [i for i in self.records if i not in present]:
+            self._drop(oid, changed_ids, changed_names)
+        count = 0
+        for block in pattern.blocks:
+            for o in block.objects:
+                rec = self.records.get(o.id)
+                dirty = (
+                    rec is None
+                    or o.id in edited_ids
+                    or not rec.uses_ids.isdisjoint(changed_ids)
+                    or not rec.uses_names.isdisjoint(changed_names)
                 )
+                if not dirty:
+                    continue
+                count += 1
+                ctx.current = ctx.order[o.id]
+                self._run_object(ctx, o, changed_ids, changed_names)
+        self.last_reevaluated = count
+
+        ev.issues = list(self.var_issues)
+        for block in pattern.blocks:
+            for o in block.objects:
+                ev.issues.extend(self.records[o.id].issues)
+        return ev
+
+    # -- internals --------------------------------------------------------------------------
+    def _snapshot(
+        self, rec: ObjRecord | None
+    ) -> tuple[dict[int, PointGeom], dict[int, CurveGeom], dict[str, float]]:
+        if rec is None:
+            return {}, {}, {}
+        ev = self.ev
+        return (
+            {i: ev.points[i] for i in rec.points if i in ev.points},
+            {i: ev.curves[i] for i in rec.curves if i in ev.curves},
+            {n: ev.symbols[n] for n in rec.symbols if n in ev.symbols},
+        )
+
+    def _remove_outputs(self, oid: int, rec: ObjRecord | None) -> None:
+        if rec is None:
+            return
+        ev = self.ev
+        for i in rec.points:
+            ev.points.pop(i, None)
+        for i in rec.curves:
+            ev.curves.pop(i, None)
+        for n in rec.symbols:
+            if ev.owners.get(n) == oid:
+                ev.symbols.pop(n, None)
+                ev.owners.pop(n, None)
+        ev.deps.pop(oid, None)
+
+    def _drop(self, oid: int, changed_ids: set[int], changed_names: set[str]) -> None:
+        rec = self.records.pop(oid, None)
+        if rec is None:
+            return
+        changed_ids.update(rec.points)
+        changed_ids.update(rec.curves)
+        changed_names.update(rec.symbols)
+        self._remove_outputs(oid, rec)
+
+    def _run_object(
+        self, ctx: _Ctx, o: Obj, changed_ids: set[int], changed_names: set[str]
+    ) -> None:
+        old = self.records.get(o.id)
+        old_points, old_curves, old_symbols = self._snapshot(old)
+        self._remove_outputs(o.id, old)
+        rec = ctx.begin()
+        key = kind_key(o)
+        handler = HANDLERS.get(key)
+        if handler is None:
+            code = "pending_kind" if key in PENDING_KINDS else "unknown_kind"
+            rec.issues.append(
+                Issue(code, f"object kind {o.kind!r} is not evaluated yet", o.id, None)
             )
-
-    for block in pattern.blocks:
-        for o in block.objects:
-            key = kind_key(o)
-            handler = HANDLERS.get(key)
-            if handler is None:
-                code = "pending_kind" if key in PENDING_KINDS else "unknown_kind"
-                ev.issues.append(
-                    Issue(code, f"object kind {o.kind!r} is not evaluated yet", o.id, None)
-                )
-                continue
-            ctx.deps = set()
+        else:
             try:
                 handler(ctx, o)
             except _ObjectError as err:
-                ev.issues.append(err.issue)
-            ev.deps[o.id] = frozenset(ctx.deps)
-    return ev
+                rec.issues.append(err.issue)
+        self.records[o.id] = rec
+        self.ev.deps[o.id] = frozenset(rec.uses_ids)
+        # what changed, for the objects built from this one
+        for pid in old_points.keys() | rec.points:
+            new_pt = self.ev.points.get(pid)
+            if old_points.get(pid) != new_pt:
+                changed_ids.add(pid)
+        for cid in old_curves.keys() | rec.curves:
+            if old_curves.get(cid) != self.ev.curves.get(cid):
+                changed_ids.add(cid)
+        for name in old_symbols.keys() | rec.symbols:
+            if old_symbols.get(name) != self.ev.symbols.get(name):
+                changed_names.add(name)
 
 
-__all__ = ["Evaluation", "Issue", "PointGeom", "evaluate", "points_equal"]
+def evaluate(pattern: Pattern, measurements: Mapping[str, float]) -> Evaluation:
+    """Run the whole pattern. Never raises for a bad pattern: problems come back as issues."""
+    return Evaluator().run(pattern, measurements)
+
+
+__all__ = ["Evaluation", "Evaluator", "Issue", "PointGeom", "evaluate", "points_equal"]

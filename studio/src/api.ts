@@ -32,3 +32,28 @@ export const fetchHealth = () => getJson<Health>("/api/health");
 export const fetchBuild = () => getJson<BuildInfo>("/api/build");
 export const fetchFixtures = (token: string) =>
   getJson<{ files: FixtureFile[] }>("/api/fixtures", token).then((r) => r.files);
+
+export interface BaseSummary {
+  name: string;
+  locked: boolean;
+  format: string;
+  unit: string;
+  objects: number;
+  points: number;
+  curves: number;
+  variables: number;
+  issues: number;
+  state_hash: string;
+  size: number;
+  height: number;
+}
+
+export const fetchBaseSummary = (token: string) => getJson<BaseSummary>("/api/library/base", token);
+
+export async function fetchBaseSvg(token: string): Promise<string> {
+  const res = await fetch("/api/library/base/render.svg", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error(`render: ${res.status}`);
+  return res.text();
+}

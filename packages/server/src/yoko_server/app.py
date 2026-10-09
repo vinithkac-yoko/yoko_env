@@ -8,11 +8,12 @@ from pathlib import Path
 from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from yoko_server import __version__
 from yoko_server.buildinfo import build_info, fixture_manifest, repo_root
+from yoko_server.library import base_summary, base_svg
 
 
 def require_token(authorization: Annotated[str | None, Header()] = None) -> None:
@@ -48,6 +49,14 @@ def create_app() -> FastAPI:
     @app.get("/api/fixtures", dependencies=[Depends(require_token)])
     def fixtures() -> dict[str, Any]:
         return {"files": fixture_manifest()}
+
+    @app.get("/api/library/base", dependencies=[Depends(require_token)])
+    def library_base() -> dict[str, Any]:
+        return base_summary()
+
+    @app.get("/api/library/base/render.svg", dependencies=[Depends(require_token)])
+    def library_base_svg() -> Response:
+        return Response(base_svg(), media_type="image/svg+xml")
 
     dist = studio_dist()
     if dist is not None:

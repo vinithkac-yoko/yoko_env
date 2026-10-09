@@ -41,3 +41,22 @@ def test_cli_placeholders_exit_nonzero(capsys) -> None:  # type: ignore[no-untyp
     assert main(["bench"]) == 2
     assert "Phase 9" in capsys.readouterr().err
     assert build_parser().parse_args(["serve", "--port", "1234"]).port == 1234
+
+
+def test_library_base_needs_the_token_and_describes_the_locked_basic_set(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.setenv("STUDIO_TOKEN", "s3cret")
+    c = client()
+    assert c.get("/api/library/base").status_code == 401
+    assert c.get("/api/library/base/render.svg").status_code == 401
+    auth = {"Authorization": "Bearer s3cret"}
+    body = c.get("/api/library/base", headers=auth).json()
+    assert body["locked"] is True
+    assert body["objects"] == 425
+    assert body["points"] == 302
+    assert body["curves"] == 37
+    assert body["issues"] == 0
+    assert len(body["state_hash"]) == 64
+    svg = c.get("/api/library/base/render.svg", headers=auth)
+    assert svg.status_code == 200
+    assert svg.headers["content-type"].startswith("image/svg+xml")
+    assert svg.text.startswith("<svg")

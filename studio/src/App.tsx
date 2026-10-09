@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import {
+  type BaseSummary,
   type BuildInfo,
   type FixtureFile,
+  fetchBaseSummary,
+  fetchBaseSvg,
   fetchBuild,
   fetchFixtures,
   fetchHealth,
@@ -24,6 +27,8 @@ export default function App() {
   const [token, setToken] = useState(loadToken);
   const [files, setFiles] = useState<FixtureFile[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [base, setBase] = useState<BaseSummary | null>(null);
+  const [svgUrl, setSvgUrl] = useState<string | null>(null);
 
   useEffect(() => {
     fetchHealth()
@@ -45,12 +50,16 @@ export default function App() {
         setFiles(null);
         setError(e.message);
       });
+    fetchBaseSummary(token).then(setBase).catch(() => setBase(null));
+    fetchBaseSvg(token)
+      .then((svg) => setSvgUrl(URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }))))
+      .catch(() => setSvgUrl(null));
   };
 
   return (
-    <main className="mx-auto max-w-3xl p-6 font-sans text-slate-900">
+    <main className="mx-auto max-w-5xl p-6 font-sans text-slate-900">
       <h1 className="text-2xl font-semibold">yoko-env studio</h1>
-      <p className="text-slate-600">Phase 0: scaffold. The engine arrives in Phase 1.</p>
+      <p className="text-slate-600">Phase 1: the engine evaluates and draws the basic pattern set.</p>
 
       <section className="mt-6 rounded border p-4">
         <h2 className="font-medium">Status</h2>
@@ -96,6 +105,26 @@ export default function App() {
           </ul>
         )}
       </section>
+
+      {base && (
+        <section className="mt-6 rounded border p-4" data-testid="base-pattern">
+          <h2 className="font-medium">
+            {base.name} {base.locked && <span className="text-slate-500">(locked)</span>}
+          </h2>
+          <p className="mt-1 text-sm text-slate-600">
+            {base.points} points, {base.curves} curves, {base.variables} variables from{" "}
+            {base.objects} objects · {base.issues} issues · size {base.size}, height {base.height}
+            · <span className="font-mono">{base.state_hash.slice(0, 12)}</span>
+          </p>
+          {svgUrl && (
+            <img
+              src={svgUrl}
+              alt="The basic pattern set, every object Seamly2D draws"
+              className="mt-3 w-full rounded border bg-white"
+            />
+          )}
+        </section>
+      )}
     </main>
   );
 }
