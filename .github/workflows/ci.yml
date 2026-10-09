@@ -18,7 +18,7 @@ jobs:
       - run: uv run lint-imports
       - run: uv run pytest --cov --cov-report=term-missing
       - name: engine coverage gate (90%)
-        run: uv run pytest packages/engine --cov=packages/engine/src --cov-fail-under=90 -q
+        run: uv run pytest packages/engine tests --cov=packages/engine/src --cov-fail-under=90 -q
 
   studio:
     runs-on: ubuntu-latest

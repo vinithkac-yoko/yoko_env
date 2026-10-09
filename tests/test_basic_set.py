@@ -6,7 +6,7 @@ from collections import Counter
 from pathlib import Path
 
 import pytest
-from yoko_engine.evaluator import PENDING_KINDS, evaluate
+from yoko_engine.evaluator import evaluate
 from yoko_engine.model import MeasurementSet, Pattern
 from yoko_io.seamly import SeamlyFileError, read_measurements, read_pattern
 
@@ -65,14 +65,13 @@ def test_variables_evaluate_at_base_size(pattern: Pattern, table: MeasurementSet
     assert not [i for i in ev.issues if i.object_id is None]
 
 
-def test_objects_before_the_first_unimplemented_kind_evaluate_cleanly(
+def test_the_whole_basic_set_evaluates_without_a_single_issue(
     pattern: Pattern, table: MeasurementSet
 ) -> None:
     ev = evaluate(pattern, table.values())
-    first_pending = next(o.id for o in pattern.objects() if o.kind in PENDING_KINDS)
-    early = [i for i in ev.issues if i.object_id is not None and i.object_id < first_pending]
-    assert early == []
-    assert len(ev.points) > 100
+    assert ev.issues == []
+    assert len(ev.points) == 302  # every point in the calculation section
+    assert len(ev.curves) == 37  # 15 arcs, 9 Beziers, 13 Bezier paths
 
 
 def test_evaluation_is_fast_and_deterministic(pattern: Pattern, table: MeasurementSet) -> None:

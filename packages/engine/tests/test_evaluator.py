@@ -289,9 +289,7 @@ def test_bad_variable_formula_is_reported() -> None:
     assert ev.issues[0].code == "formula_unexpected_eof"
 
 
-def test_unsupported_kind_is_flagged() -> None:
-    ev = evaluate(pattern(origin(), obj(2, "pointOfContact", name="Q")), {})
-    assert ev.issues[0].code == "pending_kind"
+def test_unknown_kind_is_flagged() -> None:
     ev = evaluate(pattern(origin(), obj(2, "madeUp", name="Q")), {})
     assert ev.issues[0].code == "unknown_kind"
 

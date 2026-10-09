@@ -14,7 +14,7 @@ import math
 from dataclasses import dataclass
 from itertools import pairwise
 
-from yoko_engine.fuzzy import fuzzy_compare_possible_nulls
+from yoko_engine.fuzzy import fuzzy_compare_possible_nulls, fuzzy_is_null
 from yoko_engine.geometry.qt import Line, Pt
 
 _COLLINEARITY_EPSILON = 1e-30
@@ -164,6 +164,58 @@ class Bezier:
         return Line(self.p4, self.c2).length()
 
 
+@dataclass(frozen=True, slots=True)
+class Spline:
+    """Seamly2D's `VSpline`: a cubic Bezier stored as end points, handle angles and handle lengths.
+
+    Its control points are not stored; they are re-derived from the angle and length each time
+    (`VSpline::GetP2`: a horizontal line of length c1 from p1, rotated to angle1). The re-derived
+    points differ from the original ones in the last bit, which shows up in curve lengths, so path
+    segments (which are `VSpline`s) must go through this form to match Seamly2D exactly.
+    """
+
+    p1: Pt
+    p4: Pt
+    angle1: float
+    angle2: float
+    c1_len: float
+    c2_len: float
+
+    @staticmethod
+    def from_points(p1: Pt, p2: Pt, p3: Pt, p4: Pt) -> Spline:
+        h1 = Line(p1, p2)
+        h2 = Line(p4, p3)
+        return Spline(p1, p4, h1.angle(), h2.angle(), h1.length(), h2.length())
+
+    @property
+    def c1(self) -> Pt:
+        line = Line(self.p1, Pt(self.p1.x + self.c1_len, self.p1.y))
+        return line.set_angle(self.angle1).p2
+
+    @property
+    def c2(self) -> Pt:
+        line = Line(self.p4, Pt(self.p4.x + self.c2_len, self.p4.y))
+        return line.set_angle(self.angle2).p2
+
+    def points(self) -> list[Pt]:
+        return flatten_bezier(self.p1, self.c1, self.c2, self.p4)
+
+    def length(self) -> float:
+        return path_length(self.points())
+
+    def start_angle(self) -> float:
+        return self.angle1
+
+    def end_angle(self) -> float:
+        return self.angle2
+
+    def c1_length(self) -> float:
+        return self.c1_len
+
+    def c2_length(self) -> float:
+        return self.c2_len
+
+
 def count_sub_splines(size: int) -> int:
     """VCubicBezierPath::CountSubSpl(size)."""
     if size <= 0:
@@ -180,7 +232,7 @@ class BezierPath:
     def count(self) -> int:
         return count_sub_splines(len(self.pts))
 
-    def segment(self, index: int) -> Bezier:
+    def segment(self, index: int) -> Spline:
         """Segment `index` (1-based). Like Seamly2D, the first control point of every segment after
         the first is re-aimed to continue the previous segment's last handle (a smooth join),
         keeping its own length."""
@@ -195,9 +247,9 @@ class BezierPath:
             foot1 = Line(b, self.pts[base - 1])
             foot2 = Line(b, p2)
             p2 = foot2.set_angle(foot1.angle() + 180).p2
-        return Bezier(self.pts[base], p2, self.pts[base + 2], self.pts[base + 3])
+        return Spline.from_points(self.pts[base], p2, self.pts[base + 2], self.pts[base + 3])
 
-    def segments(self) -> list[Bezier]:
+    def segments(self) -> list[Spline]:
         return [self.segment(i) for i in range(1, self.count() + 1)]
 
     def length(self) -> float:
@@ -266,6 +318,60 @@ class Arc:
     def end_angle(self) -> float:
         return self.f2
 
+    def points(self) -> list[Pt]:
+        """VArc::getPoints: the arc as a polyline, built from cubic Beziers of at most 45 degrees,
+        each flattened like any other spline."""
+        p_start = self.p1()
+        angle = self.angle_arc()
+        if fuzzy_is_null(angle):
+            return [p_start]
+        if angle > 360 or angle < 0:
+            angle = Line(Pt(0, 0), Pt(100, 0)).set_angle(angle).angle()
+        interpolation = 45.0
+        sections = math.floor(angle / interpolation)
+        section_angles = [interpolation] * sections
+        tail = angle - sections * interpolation
+        if tail > 0:
+            section_angles.append(tail)
+        points: list[Pt] = []
+        center = self.center
+        for i, sec in enumerate(section_angles):
+            distance = self.radius * 4.0 / 3.0 * math.tan(math.radians(sec) * 0.25)
+            p1p2 = Line(p_start, center)
+            p1p2 = p1p2.set_angle(p1p2.angle() - 90.0).set_length(distance)
+            p4p3 = Line(center, p_start)
+            p4p3 = p4p3.set_angle(p4p3.angle() + sec).set_length(self.radius)
+            p4p3 = Line(p4p3.p2, center)
+            p4p3 = p4p3.set_angle(p4p3.angle() + 90.0).set_length(distance)
+            spl = Spline.from_points(p_start, p1p2.p2, p4p3.p2, p4p3.p1)
+            spl_points = spl.points()
+            if spl_points and i != len(section_angles) - 1:
+                spl_points.pop()
+            points.extend(spl_points)
+            p_start = p4p3.p1
+        return points
+
+    def cut(self, length: float) -> tuple[Pt, Arc, Arc] | None:
+        """VArc::CutArc: split at arc length `length` from the start. None when the arc is shorter
+        than 2 mm."""
+        min_length = 2.0 / 25.4 * 96.0  # ToPixel(2, Unit::Mm)
+        full = self.length()
+        if abs(full) <= min_length:
+            return None
+        line = Line(self.center, self.p1())
+        one_mm = (1.0 / 25.4) * 96.0
+        if length < 0:
+            length = full + length
+        lo, hi = one_mm, full - one_mm
+        length = max(lo, min(length, hi))  # qBound(min, value, max)
+        line = line.set_angle(line.angle() + math.degrees(length / self.radius))
+        a = line.angle()
+        return (
+            line.p2,
+            Arc(self.center, self.radius, self.f1, a),
+            Arc(self.center, self.radius, a, self.f2),
+        )
+
     def p1(self) -> Pt:
         line = Line(self.center, Pt(self.center.x + self.radius, self.center.y))
         return line.set_angle(self.f1).p2
@@ -279,6 +385,7 @@ __all__ = [
     "Arc",
     "Bezier",
     "BezierPath",
+    "Spline",
     "count_sub_splines",
     "flatten_bezier",
     "normalize_angle",

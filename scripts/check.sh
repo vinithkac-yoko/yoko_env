@@ -7,6 +7,6 @@ uv run ruff format --check .
 uv run pyright
 uv run lint-imports
 uv run pytest -q --cov
-uv run pytest packages/engine --cov=packages/engine/src --cov-fail-under=90 -q
+uv run pytest packages/engine tests --cov=packages/engine/src --cov-fail-under=90 -q
 (cd studio && npm run typecheck && npm test && npm run build)
 echo "all checks passed"

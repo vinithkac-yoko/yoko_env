@@ -1,9 +1,10 @@
-"""Our QLineF port against real Qt, bit for bit.
+"""Our Qt ports against real Qt, bit for bit.
 
-`fixtures/oracle/qt_lines.jsonl.gz` holds Qt's results for 4000 random lines, produced by
-`tools/oracle/qt_vectors.cpp` (Qt 6.4.2 on Linux/glibc). Every comparison here is exact equality:
-Seamly2D truncates angles to 5 decimals, which magnifies last-bit differences, so near enough is
-not enough. The CI oracle job regenerates the file with Qt 6.11.1.
+`fixtures/oracle/qt_lines.jsonl.gz` holds Qt's QLineF results for 4000 random lines, produced by
+`tools/oracle/qt_vectors.cpp` (Qt 6.4.2 on Linux/glibc). The QTransform flip and QPainterPath length
+vectors come from `qt_flip.cpp` and `qt_polyline_length.cpp`. Every comparison is exact equality:
+Seamly2D truncates angles to 5 decimals, which magnifies last-bit differences, so near enough is not
+enough. The CI oracle job regenerates the files with Qt 6.11.1.
 """
 
 from __future__ import annotations
@@ -83,4 +84,33 @@ def test_unit_vector_normal_vector_and_intersection_match_qt_exactly() -> None:
             and not same_pt(point, r["isect"])
         ):
             bad.append(("point", r["i"]))
+    assert bad == []
+
+
+# -- QTransform flip and QPainterPath::length ----------------------------------------
+def _load_gz(name: str) -> list[dict[str, Any]]:
+    path = VECTORS.parent / name
+    return [json.loads(line) for line in gzip.decompress(path.read_bytes()).decode().splitlines()]
+
+
+def test_flip_across_a_line_matches_qt_exactly() -> None:
+    from yoko_engine.geometry.transform import flip_point
+
+    rows = _load_gz("qt_flip.jsonl.gz")
+    assert len(rows) == 2000
+    bad = []
+    for i, r in enumerate(rows):
+        axis = Line(Pt(r["a"][0], r["a"][1]), Pt(r["a"][2], r["a"][3]))
+        got = flip_point(axis, Pt(*r["p"]))
+        if (got.x, got.y) != tuple(r["r"]):
+            bad.append(i)
+    assert bad == []
+
+
+def test_polyline_length_matches_qpainterpath_exactly() -> None:
+    from yoko_engine.geometry.curves import path_length
+
+    rows = _load_gz("qt_polyline_length.jsonl.gz")
+    assert len(rows) == 400
+    bad = [i for i, r in enumerate(rows) if path_length([Pt(*p) for p in r["pts"]]) != r["len"]]
     assert bad == []

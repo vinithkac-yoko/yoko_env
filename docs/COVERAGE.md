@@ -2,7 +2,7 @@
 
 Target: pinned Seamly2D `v2026.10.5.154` (ADR 0002). Phase 3 is not done until every in-scope row is green.
 
-Source of the rows: the `Tool` enum in `src/libs/vmisc/def.h` and the `ToolType` strings in `src/libs/vtools`, read from the develop branch on 2026-10-07. **Tool names are my proposals** (snake_case, final names are fixed in Phase 4 with the YAML tool files). "In basic set" counts come from `Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d`. Status: `todo` for everything today; nothing is implemented in Phase 0.
+Source of the rows: the `Tool` enum in `src/libs/vmisc/def.h` and the `ToolType` strings in `src/libs/vtools`, read from the develop branch on 2026-10-07. **Tool names are my proposals** (snake_case, final names are fixed in Phase 4 with the YAML tool files). "In basic set" counts come from `Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d`. Status: `evaluates, exact vs Seamly2D` means the engine computes the object and its variables bit for bit like Seamly2D v2026.10.5.154 on the basic set (`tests/test_oracle_basic_set.py`). Creating and editing it through tools comes with Phases 3 and 4. `todo` is everything else.
 
 Every creating tool also needs an **edit** and a **delete** tool with dependency checks (Addendum 1 §8). That is listed once at the bottom, not per row.
 
@@ -10,17 +10,17 @@ Every creating tool also needs an **edit** and a **delete** tool with dependency
 
 | Seamly2D action | XML `type` | Proposed tool | In basic set | Phase | Status |
 | --- | --- | --- | --- | --- | --- |
-| Base (origin) point | `single` | `point_origin` | 1 | 1 | todo |
-| Point at distance and angle | `endLine` | `point_at_distance_angle` | 81 | 1 | todo |
-| Point along line | `alongLine` | `point_along_line` | 127 | 1 | todo |
-| Point perpendicular to line (normal) | `normal` | `point_perpendicular` | 43 | 1 | todo |
-| Point on bisector | `bisector` | `point_bisector` | 4 | 1 | todo |
-| Point from X of one point and Y of another | `intersectXY` | `point_from_xy` | 22 | 1 | todo |
-| Intersection of line and axis | `lineIntersectAxis` | `point_line_axis` | 5 | 1 | todo |
-| Intersection of curve and axis | `curveIntersectAxis` | `point_curve_axis` | 6 | 3 | todo |
+| Base (origin) point | `single` | `point_origin` | 1 | 1 | evaluates, exact vs Seamly2D |
+| Point at distance and angle | `endLine` | `point_at_distance_angle` | 81 | 1 | evaluates, exact vs Seamly2D |
+| Point along line | `alongLine` | `point_along_line` | 127 | 1 | evaluates, exact vs Seamly2D |
+| Point perpendicular to line (normal) | `normal` | `point_perpendicular` | 43 | 1 | evaluates, exact vs Seamly2D |
+| Point on bisector | `bisector` | `point_bisector` | 4 | 1 | evaluates, exact vs Seamly2D |
+| Point from X of one point and Y of another | `intersectXY` | `point_from_xy` | 22 | 1 | evaluates, exact vs Seamly2D |
+| Intersection of line and axis | `lineIntersectAxis` | `point_line_axis` | 5 | 1 | evaluates, exact vs Seamly2D |
+| Intersection of curve and axis | `curveIntersectAxis` | `point_curve_axis` | 6 | 3 | evaluates, exact vs Seamly2D |
 | Intersection of arc and axis | verify (may share `curveIntersectAxis`) | `point_arc_axis` | 0 | 3 | todo |
 | Intersection of two lines | `lineIntersect` | `point_line_line` | 0 | 1 | todo |
-| Intersection of arc and line | `pointOfContact` | `point_arc_line` | 4 | 3 | todo |
+| Intersection of arc and line | `pointOfContact` | `point_arc_line` | 4 | 3 | evaluates, exact vs Seamly2D |
 | Intersection of two arcs | `pointOfIntersectionArcs` | `point_arc_arc` | 0 | 3 | todo |
 | Intersection of two circles | `pointOfIntersectionCircles` | `point_circle_circle` | 0 | 3 | todo |
 | Intersection of two curves | `pointOfIntersectionCurves` | `point_curve_curve` | 0 | 3 | todo |
@@ -33,21 +33,21 @@ Every creating tool also needs an **edit** and a **delete** tool with dependency
 | Cut arc (point on arc) | `cutArc` | `cut_arc` | 0 | 3 | todo |
 | Cut spline (point on curve) | `cutSpline` | `cut_curve` | 0 | 3 | todo |
 | Cut spline path | `cutSplinePath` | `cut_curve_path` | 0 | 3 | todo |
-| True darts (two points) | `trueDarts` | `true_darts` | 4 | 3 | todo |
+| True darts (two points) | `trueDarts` | `true_darts` | 4 | 3 | evaluates, exact vs Seamly2D |
 | Anchor point | `anchor` | `anchor_point` | 16 (modeling) | keep | todo, preserve only |
 
 ## Lines and curves
 
 | Seamly2D action | XML | Proposed tool | In basic set | Phase | Status |
 | --- | --- | --- | --- | --- | --- |
-| Line | tag `line` | `line` | 90 | 1 | todo |
-| Arc (radius, angles) | `simple` | `arc_radius` | 15 | 1 | todo |
+| Line | tag `line` | `line` | 90 | 1 | evaluates, exact vs Seamly2D |
+| Arc (radius, angles) | `simple` | `arc_radius` | 15 | 1 | evaluates, exact vs Seamly2D |
 | Arc with length | `arcWithLength` | `arc_length` | 0 | 1 | todo |
 | Elliptical arc | verify (`simple` under its own tag) | `arc_elliptical` | 0 | 3 | todo |
 | Simple curve (spline) | `simpleInteractive` | `curve_spline` | 0 | 1 | todo |
 | Spline path | `pathInteractive` | `curve_spline_path` | 0 | 1 | todo |
-| Cubic Bezier | `cubicBezier` | `curve_bezier` | 9 | 1 | todo |
-| Cubic Bezier path | `cubicBezierPath` | `curve_bezier_path` | 13 | 1 | todo |
+| Cubic Bezier | `cubicBezier` | `curve_bezier` | 9 | 1 | evaluates, exact vs Seamly2D |
+| Cubic Bezier path | `cubicBezierPath` | `curve_bezier_path` | 13 | 1 | evaluates, exact vs Seamly2D |
 
 Curve control points and handles are part of the curve objects. 0.7.4 adds `autoSmooth` and `lengthMode` (ADR 0002).
 
@@ -55,7 +55,7 @@ Curve control points and handles are part of the curve objects. 0.7.4 adds `auto
 
 | Seamly2D action | XML | Proposed tool | In basic set | Phase | Status |
 | --- | --- | --- | --- | --- | --- |
-| Mirror by line | `flippingByLine` | `mirror_by_line` | 1 | 3 | todo |
+| Mirror by line | `flippingByLine` | `mirror_by_line` | 1 | 3 | evaluates points, exact; curves and arcs later |
 | Mirror by axis | `flippingByAxis` | `mirror_by_axis` | 0 | 3 | todo |
 | Rotate | `rotation` | `rotate` | 0 | 3 | todo |
 | Move | `moving` | `move` | 0 | 3 | todo |

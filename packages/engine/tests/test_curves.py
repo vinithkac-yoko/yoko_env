@@ -79,14 +79,16 @@ def test_path_segments_join_smoothly() -> None:
     )
     assert path.count() == 2
     first = path.segment(1)
-    assert first.c1 == Pt(10, 0)  # the first segment is untouched
+    assert first.c1.x == pytest.approx(10.0)  # the first segment is untouched
+    assert first.c1.y == pytest.approx(0.0)
     second = path.segment(2)
     # The second segment's first handle is re-aimed along the previous handle's continuation
     # (previous handle p3->c2 points left, so the continuation points right), keeping its length.
     assert second.p1 == Pt(30, 10)
     assert second.c1.y == pytest.approx(10.0)
     assert second.c1.x == pytest.approx(30 + math.hypot(10, 5))
-    assert second.c2 == Pt(50, 20)
+    assert second.c2.x == pytest.approx(50.0)
+    assert second.c2.y == pytest.approx(20.0)
 
 
 def test_path_length_points_and_angles() -> None:

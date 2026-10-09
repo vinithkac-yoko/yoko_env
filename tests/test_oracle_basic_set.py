@@ -18,8 +18,10 @@ from yoko_io.seamly import read_measurements, read_pattern
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 ORACLE = json.loads((FIXTURES / "oracle/base_set.seamly2d.json").read_text())
 
-MIN_POINTS = 197
-MIN_VARIABLES = 747
+# 302 = all 447 points Seamly2D holds minus the 145 piece nodes in the <modeling> section
+# (Phase 3). 1573 = every variable.
+MIN_POINTS = 302
+MIN_VARIABLES = 1573
 
 
 @pytest.fixture(scope="module")
