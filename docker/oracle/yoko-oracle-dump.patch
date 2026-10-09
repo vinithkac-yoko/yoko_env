@@ -1,0 +1,100 @@
+diff --git a/src/app/seamly2d/mainwindow.cpp b/src/app/seamly2d/mainwindow.cpp
+index a2aeacb..f89b46d 100644
+--- a/src/app/seamly2d/mainwindow.cpp
++++ b/src/app/seamly2d/mainwindow.cpp
+@@ -8092,6 +8092,83 @@ bool MainWindow::setHeight(const QString &text)
+ }
+ 
+ //---------------------------------------------------------------------------------------------------------------------
++
++// ---- yoko-env oracle patch (not part of Seamly2D) ---------------------------------------------------------------
++// Dumps everything the pattern computed (points, curves, arcs, variables) as JSON so that an independent engine can
++// be compared against Seamly2D. Active only when the environment variable YOKO_ORACLE_DUMP names an output file.
++#include <QJsonArray>
++#include <QJsonDocument>
++#include <QJsonObject>
++#include "../../libs/vgeometry/vabstractcurve.h"
++#include "../../libs/vgeometry/varc.h"
++#include "../../libs/vgeometry/vpointf.h"
++#include "../../libs/vpatterndb/variables/vinternalvariable.h"
++
++static void yokoOracleDump(const VContainer *data, const QString &path)
++{
++    QJsonArray points;
++    QJsonArray curves;
++    const QHash<quint32, QSharedPointer<VGObject> > *objs = data->DataGObjects();
++    QList<quint32> ids = objs->keys();
++    std::sort(ids.begin(), ids.end());
++    for (quint32 id : ids)
++    {
++        const QSharedPointer<VGObject> obj = objs->value(id);
++        QJsonObject o;
++        o.insert("id", static_cast<qint64>(id));
++        o.insert("name", obj->name());
++        switch (obj->getType())
++        {
++            case GOType::Point:
++            {
++                const QSharedPointer<VPointF> p = qSharedPointerDynamicCast<VPointF>(obj);
++                o.insert("x_px", p->x());
++                o.insert("y_px", p->y());
++                points.append(o);
++                break;
++            }
++            default:
++            {
++                const QSharedPointer<VAbstractCurve> c = qSharedPointerDynamicCast<VAbstractCurve>(obj);
++                if (c.isNull())
++                {
++                    break;
++                }
++                o.insert("type", static_cast<int>(obj->getType()));
++                o.insert("length_px", c->GetLength());
++                o.insert("start_angle", c->GetStartAngle());
++                o.insert("end_angle", c->GetEndAngle());
++                if (obj->getType() == GOType::Arc)
++                {
++                    const QSharedPointer<VArc> a = qSharedPointerDynamicCast<VArc>(obj);
++                    o.insert("radius_px", a->GetRadius());
++                }
++                curves.append(o);
++                break;
++            }
++        }
++    }
++
++    QJsonObject variables;
++    const QHash<QString, QSharedPointer<VInternalVariable> > *vars = data->DataVariables();
++    for (auto it = vars->constBegin(); it != vars->constEnd(); ++it)
++    {
++        const VInternalVariable *constVar = it.value().data();
++        variables.insert(it.key(), constVar->GetValue());
++    }
++
++    QJsonObject root;
++    root.insert("points", points);
++    root.insert("curves", curves);
++    root.insert("variables", variables);
++    QFile out(path);
++    if (out.open(QIODevice::WriteOnly))
++    {
++        out.write(QJsonDocument(root).toJson(QJsonDocument::Indented));
++    }
++}
++// ---- end of yoko-env oracle patch -------------------------------------------------------------------------------
++
+ void MainWindow::processCommandLine()
+ {
+     const VCommandLinePtr cmd = qApp->commandLine();
+@@ -8137,6 +8214,11 @@ void MainWindow::processCommandLine()
+             }
+         }
+ 
++        if (loaded && !qgetenv("YOKO_ORACLE_DUMP").isEmpty())
++        {
++            yokoOracleDump(pattern, QString::fromUtf8(qgetenv("YOKO_ORACLE_DUMP")));
++        }
++
+         if (!cmd->IsTestModeEnabled())
+         {
+             if (cmd->IsExportEnabled())

@@ -16,13 +16,41 @@ unit does not change behaviour.
 
 from __future__ import annotations
 
+import ctypes
+import ctypes.util
 import math
 from dataclasses import dataclass
 from enum import Enum
 
 from yoko_engine.fuzzy import fuzzy_compare, fuzzy_is_null
 
-_M_2PI = 6.28318530717958647692
+
+def _load_libm_hypot():  # type: ignore[no-untyped-def]
+    """Qt computes lengths with std::hypot, i.e. the C library's hypot. Python's math.hypot is a
+    different algorithm and differs from it in the last bit for about 0.4% of inputs, so call the
+    C library's directly when it is available (glibc on Linux, which is what Seamly2D uses)."""
+    try:
+        name = ctypes.util.find_library("m")
+        if name is None:
+            return None
+        libm = ctypes.CDLL(name)
+        fn = libm.hypot
+        fn.restype = ctypes.c_double
+        fn.argtypes = [ctypes.c_double, ctypes.c_double]
+        if fn(3.0, 4.0) != 5.0:
+            return None
+        return fn
+    except (OSError, AttributeError):
+        return None
+
+
+_libm_hypot = _load_libm_hypot()
+
+
+def qt_hypot(x: float, y: float) -> float:
+    if _libm_hypot is not None:
+        return float(_libm_hypot(x, y))
+    return math.hypot(x, y)  # pragma: no cover
 
 
 def _coord_equal(a: float, b: float) -> bool:
@@ -77,7 +105,7 @@ class Line:
         return points_equal(self.p1, self.p2)
 
     def length(self) -> float:
-        return math.hypot(self.dx, self.dy)
+        return qt_hypot(self.dx, self.dy)
 
     def angle(self) -> float:
         """Angle in [0, 360), counter-clockwise on screen (QLineF::angle)."""
@@ -99,7 +127,7 @@ class Line:
 
     def set_angle(self, angle: float) -> Line:
         """Rotate about p1 keeping the length (QLineF::setAngle)."""
-        angle_r = angle * _M_2PI / 360.0
+        angle_r = math.radians(angle)  # qDegreesToRadians: angle * (M_PI / 180)
         length = self.length()
         dx = math.cos(angle_r) * length
         dy = -math.sin(angle_r) * length
@@ -108,17 +136,24 @@ class Line:
     def unit_vector(self) -> Line:
         x = self.dx
         y = self.dy
-        length = math.hypot(x, y)
+        length = qt_hypot(x, y)
         if length == 0.0:
             return Line(self.p1, Pt(math.nan, math.nan))
         return Line(self.p1, Pt(self.p1.x + x / length, self.p1.y + y / length))
 
     def set_length(self, length: float) -> Line:
-        """Scale about p1 (QLineF::setLength). A null line is returned unchanged."""
+        """Scale about p1 (QLineF::setLength). A null line is returned unchanged.
+
+        Qt computes `p1 + (d / current_length) * length`; the order of operations matters in the
+        last bit and was fixed by differential testing against Qt (tests/test_qt_vectors.py).
+        """
         if self.is_null():
             return self
-        v = self.unit_vector()
-        return Line(self.p1, Pt(self.p1.x + v.dx * length, self.p1.y + v.dy * length))
+        current = self.length()
+        return Line(
+            self.p1,
+            Pt(self.p1.x + self.dx / current * length, self.p1.y + self.dy / current * length),
+        )
 
     def normal_vector(self) -> Line:
         """Perpendicular through p1, same length, rotated 90 degrees counter-clockwise on screen."""

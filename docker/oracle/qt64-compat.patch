@@ -1,0 +1,100 @@
+diff --git a/src/app/seamly2d/core/application_2d.cpp b/src/app/seamly2d/core/application_2d.cpp
+index 66bb784..53f6164 100644
+--- a/src/app/seamly2d/core/application_2d.cpp
++++ b/src/app/seamly2d/core/application_2d.cpp
+@@ -318,6 +318,7 @@ void Application2D::setTheme()
+ 
+     if (theme == 3)
+     {
++#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+         // Get system mode (theme)
+         Qt::ColorScheme scheme = styleHints()->colorScheme();
+ 
+@@ -329,6 +330,9 @@ void Application2D::setTheme()
+         {
+             theme = 1;
+         }
++#else
++        theme = 0;
++#endif
+     }
+ 
+     switch (theme)
+diff --git a/src/libs/ifc/xml/vdomdocument.cpp b/src/libs/ifc/xml/vdomdocument.cpp
+index 9dc6368..eabfacb 100644
+--- a/src/libs/ifc/xml/vdomdocument.cpp
++++ b/src/libs/ifc/xml/vdomdocument.cpp
+@@ -685,19 +685,29 @@ void VDomDocument::setXMLContent(const QString &fileName)
+         throw VException(errorMsg);
+     }
+ 
+-    // Use setContent (introduced in Qt 6.5)
+-    // Returns QDomDocument::ParseResult which evaluates to true on success
++#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+     QDomDocument::ParseResult result = QDomDocument::setContent(&file);
+-
+     if (!result)
+     {
+-    // Failure: result.errorMessage, result.errorLine, result.errorColumn are available
+-    VException error(result.errorMessage );
+-    error.AddMoreInformation(tr("Parsing error file %3 in line %1 column %2").arg(result.errorLine)
+-                                                                             .arg(result.errorColumn)
+-                                                                             .arg(fileName));
+-    throw error;
+-    }
++        VException error(result.errorMessage);
++        error.AddMoreInformation(tr("Parsing error file %3 in line %1 column %2").arg(result.errorLine)
++                                                                                 .arg(result.errorColumn)
++                                                                                 .arg(fileName));
++        throw error;
++    }
++#else
++    QString errorMessage;
++    int errorLine = 0;
++    int errorColumn = 0;
++    if (!QDomDocument::setContent(&file, false, &errorMessage, &errorLine, &errorColumn))
++    {
++        VException error(errorMessage);
++        error.AddMoreInformation(tr("Parsing error file %3 in line %1 column %2").arg(errorLine)
++                                                                                 .arg(errorColumn)
++                                                                                 .arg(fileName));
++        throw error;
++    }
++#endif
+ 
+     file.close(); // Optional: QFile destructor handles this
+ }
+diff --git a/src/libs/vdxf/vdxfpaintdevice.cpp b/src/libs/vdxf/vdxfpaintdevice.cpp
+index 42cbf66..6009645 100644
+--- a/src/libs/vdxf/vdxfpaintdevice.cpp
++++ b/src/libs/vdxf/vdxfpaintdevice.cpp
+@@ -196,10 +196,12 @@ int VDxfPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
+         case QPaintDevice::PdmDevicePixelRatio:
+         case QPaintDevice::PdmDevicePixelRatioScaled:
+             return 1;
++#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+         case QPaintDevice::PdmDevicePixelRatioF_EncodedA:
+             return QPaintDevice::encodeMetricF(QPaintDevice::PdmDevicePixelRatioF_EncodedA, 1.0);
+         case QPaintDevice::PdmDevicePixelRatioF_EncodedB:
+             return QPaintDevice::encodeMetricF(QPaintDevice::PdmDevicePixelRatioF_EncodedB, 1.0);
++#endif
+         default:
+             qWarning("VDxfPaintDevice::metric(), unhandled metric %d\n", metric);
+             break;
+diff --git a/src/libs/vobj/vobjpaintdevice.cpp b/src/libs/vobj/vobjpaintdevice.cpp
+index fcc097c..1f4242e 100644
+--- a/src/libs/vobj/vobjpaintdevice.cpp
++++ b/src/libs/vobj/vobjpaintdevice.cpp
+@@ -182,10 +182,12 @@ int VObjPaintDevice::metric(QPaintDevice::PaintDeviceMetric metric) const
+         case QPaintDevice::PdmDevicePixelRatio:
+         case QPaintDevice::PdmDevicePixelRatioScaled:
+             return 1;
++#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+         case QPaintDevice::PdmDevicePixelRatioF_EncodedA:
+             return QPaintDevice::encodeMetricF(QPaintDevice::PdmDevicePixelRatioF_EncodedA, 1.0);
+         case QPaintDevice::PdmDevicePixelRatioF_EncodedB:
+             return QPaintDevice::encodeMetricF(QPaintDevice::PdmDevicePixelRatioF_EncodedB, 1.0);
++#endif
+         default:
+             qWarning("VObjPaintDevice::metric(), unhandled metric %d\n", metric);
+             break;
