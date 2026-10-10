@@ -69,7 +69,7 @@ Backlog the test patterns give Phase 3 (issues per not-yet-evaluated kind over t
 
 - **CI oracle: first findings.** Under Qt 6.11.1 on the runner everything Seamly2D produced matches what was committed from Qt 6.4.2 (patterns, upgrades, converted measurement files, basic-set output), after fixing the scripts (a relative binary path, a random temp-directory name and Qt-version-specific warnings in the failure notes, measurement copies stored in canonical XML). The real-Qt vectors differ by one ulp in 1 of 4000 `setAngle` cases and 1 of 2000 flip cases: bit-exactness depends on the platform's maths library (ADR 0011). The check now allows 2 ulp and says how many differ.
 
-Checkpoint check: the basic set round-trips byte for byte, and the engine equals Seamly2D exactly (deviation 0, the limit was 0.01 mm). Waiting for the first green run of the CI oracle job.
+Checkpoint check: the basic set round-trips byte for byte, and the engine equals Seamly2D exactly (deviation 0, the limit was 0.01 mm). The CI oracle job is green on GitHub (Seamly2D built with Qt 6.11.1): every committed oracle file equals what it produced, and the exactness tests pass.
 
 ## Environment variables by phase
 
