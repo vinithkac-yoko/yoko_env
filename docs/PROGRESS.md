@@ -65,7 +65,9 @@ Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI do
 
 Backlog the test patterns give Phase 3 (issues per not-yet-evaluated kind over the 23 patterns; `scripts/external_report.py` prints the current list): `simple` 91, `simpleInteractive` 66, `lineIntersect` 46, `pathInteractive` 38, `height` 23, `cutSpline` 22, `shoulder` 12, `rotation` 10, `path` 10, `cutSplinePath` 9, then a handful each of `arcWithLength`, `pointOfIntersectionCircles`, `pointOfIntersectionArcs`, `pointFromCircleAndTangent`, `triangle`, `pointOfIntersectionCurves`, `cutArc`, `pointFromArcAndTangent`, `flippingByAxis`, `moving`. All the "undefined name" issues in those patterns are knock-on effects of these.
 
-Still to do in Phase 2: PNG render; then the checkpoint (basic set round-trips losslessly; oracle deviation under 0.01 mm).
+- **PNG render: done.** `yoko_io.render.render_png` draws the same scene as the SVG (shared `build_scene`) with Pillow, which is a new dependency of `yoko_io` (wheels only, no system libraries or fonts). 0.26 s for the whole basic set at 1200 px; deterministic.
+
+Checkpoint check: the basic set round-trips byte for byte, and the engine equals Seamly2D exactly (deviation 0, the limit was 0.01 mm). Waiting for the first green run of the CI oracle job.
 
 ## Environment variables by phase
 

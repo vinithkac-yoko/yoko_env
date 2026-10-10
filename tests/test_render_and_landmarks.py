@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
+import io
 from pathlib import Path
 
 import pytest
 from defusedxml import ElementTree as SafeET
+from PIL import Image
 from yoko_engine.evaluator import evaluate
 from yoko_engine.landmarks import Landmarks
 from yoko_engine.model import DraftBlock, Obj, Pattern
 from yoko_io.landmarks import read_landmarks
-from yoko_io.render import render_svg
+from yoko_io.render import render_png, render_svg
 from yoko_io.seamly import read_measurements, read_pattern
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
@@ -154,3 +156,50 @@ def test_landmarks_file_can_be_read_from_disk(tmp_path: Path) -> None:
     f.write_text(YAML)
     assert isinstance(read_landmarks(f), Landmarks)
     assert read_landmarks(str(f)).names() == ("bodice_front.origin", "bodice_front.shoulder")
+
+
+def test_png_is_a_valid_image_of_the_requested_width() -> None:
+    pat = small(ORIGIN, o(2, "endLine", name="B", basePoint="1", length="10", angle="0"))
+    data = render_png(pat, evaluate(pat, {}), width_px=400)
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    img = Image.open(io.BytesIO(data))
+    assert img.size[0] == 400 and img.size[1] > 0
+    # the line A-B is drawn: dark pixels exist, and the page is otherwise white
+    rgb = img.convert("RGB")
+    pixels = [rgb.getpixel((x, y)) for x in range(rgb.width) for y in range(rgb.height)]
+    assert (255, 255, 255) in pixels
+    assert any(isinstance(c, tuple) and max(c) < 120 for c in pixels)
+
+
+def test_png_is_deterministic_and_line_type_none_changes_it() -> None:
+    solid = small(
+        ORIGIN,
+        o(2, "endLine", name="B", basePoint="1", length="5", angle="0", lineType="solidLine"),
+    )
+    none = small(
+        ORIGIN, o(2, "endLine", name="B", basePoint="1", length="5", angle="0", lineType="none")
+    )
+    a = render_png(solid, evaluate(solid, {}))
+    assert a == render_png(solid, evaluate(solid, {}))
+    assert a != render_png(none, evaluate(none, {}))
+    assert render_png(solid, evaluate(solid, {}), labels=False) != a
+
+
+def test_png_of_the_basic_set_renders_in_well_under_a_second() -> None:
+    p = read_pattern(FIXTURES / "patterns/base/Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d")
+    t = read_measurements(FIXTURES / "measurements/Aldrich-Womens-MultiSize-06-14.smms")
+    ev = evaluate(p, t.values())
+    img = Image.open(io.BytesIO(render_png(p, ev, width_px=800)))
+    assert img.size[0] == 800 and img.size[1] > 800
+
+
+def test_png_zooms_to_the_focused_points() -> None:
+    pat = small(
+        ORIGIN,
+        o(2, "endLine", name="B", basePoint="1", length="10", angle="0"),
+        o(3, "endLine", name="C", basePoint="1", length="200", angle="90"),
+    )
+    ev = evaluate(pat, {})
+    full = Image.open(io.BytesIO(render_png(pat, ev, width_px=300))).size
+    zoomed = Image.open(io.BytesIO(render_png(pat, ev, focus_ids={1, 2}, width_px=300))).size
+    assert zoomed[1] < full[1]
