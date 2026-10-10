@@ -15,3 +15,4 @@ One short record per major choice. Status: `accepted` (settled by the spec or ad
 | 0009 | Held-out rules and seed ranges | proposed |
 | 0010 | Branching and deploy workflow | accepted |
 | 0011 | Evaluation kernel scale and object identity | accepted |
+| 0012 | Lossless Seamly2D files, and upgrades checked against Seamly2D | accepted |

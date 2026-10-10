@@ -8,5 +8,14 @@
 from yoko_engine.formula.errors import FormulaError, FormulaErrorCode
 from yoko_engine.formula.formula import Formula, parse
 from yoko_engine.formula.functions import CONSTANTS, FUNCTIONS
+from yoko_engine.formula.parser import is_valid_name
 
-__all__ = ["CONSTANTS", "FUNCTIONS", "Formula", "FormulaError", "FormulaErrorCode", "parse"]
+__all__ = [
+    "CONSTANTS",
+    "FUNCTIONS",
+    "Formula",
+    "FormulaError",
+    "FormulaErrorCode",
+    "is_valid_name",
+    "parse",
+]

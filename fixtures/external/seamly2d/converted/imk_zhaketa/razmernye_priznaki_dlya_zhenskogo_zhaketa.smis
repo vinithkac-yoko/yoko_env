@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<smis>
+    <!--Measurements created with Seamly2D v2023.11.20.149 (https://seamly.io/).-->
+    <version>0.3.4</version>
+    <read-only>false</read-only>
+    <notes/>
+    <unit>cm</unit>
+    <pm_system>998</pm_system>
+    <personal>
+        <family-name/>
+        <given-name/>
+        <birth-date>1800-01-01</birth-date>
+        <gender>unknown</gender>
+        <email/>
+    </personal>
+    <body-measurements>
+        <m value="46" description="Обхват груди (Ог)" full_name="Полуобхват груди" name="@Сг"/>
+        <m value="42" name="@Дс"/>
+        <m value="32" name="@Ст"/>
+        <m value="48" name="@Сб"/>
+        <m value="18" name="@Дб"/>
+        <m value="28" name="@Ди"/>
+        <m value="18" name="@Во"/>
+        <m value="61" name="@Др"/>
+        <m value="37.25" name="@Дл"/>
+    </body-measurements>
+</smis>

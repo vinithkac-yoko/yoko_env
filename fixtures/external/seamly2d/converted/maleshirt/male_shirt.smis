@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<smis>
+    <!--Measurements created with Seamly2D v2023.11.20.149 (https://seamly.io/).-->
+    <version>0.3.4</version>
+    <read-only>false</read-only>
+    <notes/>
+    <unit>cm</unit>
+    <pm_system>998</pm_system>
+    <personal>
+        <family-name/>
+        <given-name/>
+        <birth-date>1800-01-01</birth-date>
+        <gender>unknown</gender>
+        <email/>
+    </personal>
+    <body-measurements>
+        <m value="173" name="height"/>
+        <m value="24 " name="hand_circ"/>
+        <m value="41" name="neck_circ"/>
+        <m value="102" name="bust_circ"/>
+        <m value="92" name="waist_circ"/>
+        <m value="101" name="hip_circ"/>
+        <m value="50" name="neck_back_to_waist_b"/>
+        <m value="13" name="shoulder_length"/>
+        <m value="65" name="arm_shoulder_tip_to_wrist_bent"/>
+    </body-measurements>
+</smis>

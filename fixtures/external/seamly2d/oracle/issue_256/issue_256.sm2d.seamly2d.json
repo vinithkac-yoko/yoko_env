@@ -1,0 +1,90 @@
+{
+    "curves": [
+    ],
+    "points": [
+        {
+            "id": 1,
+            "name": "A",
+            "x_px": 51.000188976377956,
+            "y_px": 46.999937007874024
+        },
+        {
+            "id": 2,
+            "name": "A1",
+            "x_px": 504.5434960629922,
+            "y_px": 46.999937007874024
+        },
+        {
+            "id": 3,
+            "name": "A2",
+            "x_px": 48.77585134682136,
+            "y_px": 500.5377895904039
+        },
+        {
+            "id": 4,
+            "name": "A3",
+            "x_px": 504.5434960629922,
+            "y_px": 500.5377895904039
+        },
+        {
+            "id": 7,
+            "name": "A",
+            "x_px": 51.000188976377956,
+            "y_px": 46.999937007874024
+        },
+        {
+            "id": 8,
+            "name": "A1",
+            "x_px": 504.5434960629922,
+            "y_px": 46.999937007874024
+        },
+        {
+            "id": 9,
+            "name": "A3",
+            "x_px": 504.5434960629922,
+            "y_px": 500.5377895904039
+        },
+        {
+            "id": 10,
+            "name": "A2",
+            "x_px": 48.77585134682136,
+            "y_px": 500.5377895904039
+        },
+        {
+            "id": 11,
+            "name": "A",
+            "x_px": 51.000188976377956,
+            "y_px": 46.999937007874024
+        }
+    ],
+    "variables": {
+        "AngleLine_A1_A3": 270,
+        "AngleLine_A2_A3": 0,
+        "AngleLine_A_A1": 0,
+        "AngleLine_A_A2": 269.71899,
+        "Line_A1_A3": 11.99985568291277,
+        "Line_A2_A3": 12.058852266448685,
+        "Line_A_A1": 12,
+        "Line_A_A2": 12.000000000000004,
+        "height": 167.64,
+        "height_ankle": 9,
+        "height_ankle_high": 11.5,
+        "height_armpit": 0,
+        "height_bustpoint": 0,
+        "height_calf": 30.3,
+        "height_gluteal_fold": 0,
+        "height_highhip": 0,
+        "height_hip": 82,
+        "height_knee": 42,
+        "height_neck_back": 141.5,
+        "height_neck_back_to_knee": 99.5,
+        "height_neck_front": 133,
+        "height_neck_side": 0,
+        "height_scapula": 120,
+        "height_shoulder_tip": 0,
+        "height_waist_front": 101.2,
+        "height_waist_side": 101,
+        "height_waist_side_to_hip": 19,
+        "height_waist_side_to_knee": 59
+    }
+}

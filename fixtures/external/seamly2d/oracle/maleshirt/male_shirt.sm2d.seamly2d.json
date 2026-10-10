@@ -1,0 +1,973 @@
+{
+    "curves": [
+        {
+            "end_angle": 281.751,
+            "id": 29,
+            "length_px": 2343.1719683775145,
+            "name": "SplPath_A23_A17",
+            "start_angle": 262.679,
+            "type": 4
+        },
+        {
+            "end_angle": 267.394,
+            "id": 42,
+            "length_px": 408.37881024064905,
+            "name": "Spl_A20_A22",
+            "start_angle": 2.71281,
+            "type": 3
+        },
+        {
+            "end_angle": 185.832,
+            "id": 45,
+            "length_px": 386.1941334014184,
+            "name": "Spl_A15_A28",
+            "start_angle": 273.614,
+            "type": 3
+        },
+        {
+            "end_angle": 180.368,
+            "id": 47,
+            "length_px": 893.6752546073866,
+            "name": "Spl_A27_A25",
+            "start_angle": 9.62256,
+            "type": 3
+        },
+        {
+            "end_angle": 180.026,
+            "id": 50,
+            "length_px": 2480.3605451409785,
+            "name": "SplPath_A8_Hemline",
+            "start_angle": 0.024999999999958968,
+            "type": 4
+        },
+        {
+            "end_angle": 281.751,
+            "id": 168,
+            "length_px": 2343.1719683775145,
+            "name": "SplPath_A23_A17",
+            "start_angle": 262.679,
+            "type": 4
+        },
+        {
+            "end_angle": 185.832,
+            "id": 171,
+            "length_px": 386.1941334014184,
+            "name": "Spl_A15_A28",
+            "start_angle": 273.614,
+            "type": 3
+        },
+        {
+            "end_angle": 267.394,
+            "id": 392,
+            "length_px": 408.37881024064905,
+            "name": "Spl_A20_A22",
+            "start_angle": 2.71281,
+            "type": 3
+        },
+        {
+            "end_angle": 281.751,
+            "id": 395,
+            "length_px": 2343.1719683775145,
+            "name": "SplPath_A23_A17",
+            "start_angle": 262.679,
+            "type": 4
+        },
+        {
+            "end_angle": 180.026,
+            "id": 399,
+            "length_px": 2480.3605451409785,
+            "name": "SplPath_A8_Hemline",
+            "start_angle": 0.024999999999958968,
+            "type": 4
+        },
+        {
+            "end_angle": 180.026,
+            "id": 424,
+            "length_px": 2480.3605451409785,
+            "name": "SplPath_A8_Hemline",
+            "start_angle": 0.024999999999958968,
+            "type": 4
+        },
+        {
+            "end_angle": 180.026,
+            "id": 432,
+            "length_px": 2480.3605451409785,
+            "name": "SplPath_A8_Hemline",
+            "start_angle": 0.024999999999958968,
+            "type": 4
+        },
+        {
+            "end_angle": 281.751,
+            "id": 436,
+            "length_px": 2343.1719683775145,
+            "name": "SplPath_A23_A17",
+            "start_angle": 262.679,
+            "type": 4
+        },
+        {
+            "end_angle": 180.368,
+            "id": 438,
+            "length_px": 893.6752546073866,
+            "name": "Spl_A27_A25",
+            "start_angle": 9.62256,
+            "type": 3
+        }
+    ],
+    "points": [
+        {
+            "id": 1,
+            "name": "ShoulderLine",
+            "x_px": 0.49188283464566934,
+            "y_px": 135.59546456692914
+        },
+        {
+            "id": 2,
+            "name": "Hemline",
+            "x_px": 0.4918828346451381,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 3,
+            "name": "BustLine",
+            "x_px": 0.49188283464548044,
+            "y_px": 1163.6269606299213
+        },
+        {
+            "id": 4,
+            "name": "Waistline",
+            "x_px": 0.4918828346453221,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 5,
+            "name": "A1",
+            "x_px": -2399.5081171653546,
+            "y_px": 1163.6269606299209
+        },
+        {
+            "id": 6,
+            "name": "A2",
+            "x_px": -910.374258897638,
+            "y_px": 1163.626960629921
+        },
+        {
+            "id": 7,
+            "name": "A3",
+            "x_px": -1579.350636850394,
+            "y_px": 1163.626960629921
+        },
+        {
+            "id": 8,
+            "name": "A4",
+            "x_px": -1199.5081171653544,
+            "y_px": 1163.626960629921
+        },
+        {
+            "id": 9,
+            "name": "A5",
+            "x_px": -910.3742588976378,
+            "y_px": 135.59546456692897
+        },
+        {
+            "id": 10,
+            "name": "A6",
+            "x_px": -1579.350636850394,
+            "y_px": 158.27262992125952
+        },
+        {
+            "id": 11,
+            "name": "A7",
+            "x_px": -2399.5081171653546,
+            "y_px": 158.2726299212593
+        },
+        {
+            "id": 12,
+            "name": "A8",
+            "x_px": -2399.508117165355,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 13,
+            "name": "A9",
+            "x_px": -2399.5081171653546,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 14,
+            "name": "A10",
+            "x_px": -1199.5081171653549,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 15,
+            "name": "A11",
+            "x_px": -1199.5081171653546,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 16,
+            "name": "A12",
+            "x_px": -295.5711092913386,
+            "y_px": 135.59546456692908
+        },
+        {
+            "id": 17,
+            "name": "A13",
+            "x_px": -295.5711092913386,
+            "y_px": 60.00491338582671
+        },
+        {
+            "id": 18,
+            "name": "A14",
+            "x_px": -910.3742588976378,
+            "y_px": 211.18601574803134
+        },
+        {
+            "id": 19,
+            "name": "A15",
+            "x_px": -309.1087035672145,
+            "y_px": 4.9520299972645105
+        },
+        {
+            "id": 20,
+            "name": "A16",
+            "x_px": -923.9118531735137,
+            "y_px": 156.13313235946913
+        },
+        {
+            "id": 21,
+            "name": "A17",
+            "x_px": -969.7433042299608,
+            "y_px": 167.40316130777578
+        },
+        {
+            "id": 22,
+            "name": "A18",
+            "x_px": -2141.2404006299216,
+            "y_px": 158.27262992125938
+        },
+        {
+            "id": 23,
+            "name": "A19",
+            "x_px": -1579.350636850394,
+            "y_px": 309.45373228346426
+        },
+        {
+            "id": 24,
+            "name": "A20",
+            "x_px": -2399.5081171653546,
+            "y_px": 454.33562204724353
+        },
+        {
+            "id": 25,
+            "name": "A21",
+            "x_px": -1579.350636850394,
+            "y_px": 366.14664566929105
+        },
+        {
+            "id": 26,
+            "name": "A22",
+            "x_px": -2141.2404006299216,
+            "y_px": 214.96554330708616
+        },
+        {
+            "id": 27,
+            "name": "A23",
+            "x_px": -1484.2891185366152,
+            "y_px": 391.7237357985589
+        },
+        {
+            "id": 28,
+            "name": "A24",
+            "x_px": -1199.5081171653544,
+            "y_px": 1201.4222362204723
+        },
+        {
+            "id": 30,
+            "name": "A25",
+            "x_px": 0.4918828346456138,
+            "y_px": 437.9576692913386
+        },
+        {
+            "id": 31,
+            "name": "A26",
+            "x_px": -904.9340065758779,
+            "y_px": 437.9576692913385
+        },
+        {
+            "id": 32,
+            "name": "A27",
+            "x_px": -890.3967060323571,
+            "y_px": 493.7687026094432
+        },
+        {
+            "id": 33,
+            "name": "A28",
+            "x_px": 0.4918828346456624,
+            "y_px": 173.3907401574803
+        },
+        {
+            "id": 34,
+            "name": "A29",
+            "x_px": -1199.5081171653549,
+            "y_px": 2837.957669291339
+        },
+        {
+            "id": 35,
+            "name": "A30",
+            "x_px": -1246.7522116535436,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 36,
+            "name": "A31",
+            "x_px": -1152.2640226771657,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 37,
+            "name": "A32",
+            "x_px": -2607.382132913386,
+            "y_px": 454.3356220472435
+        },
+        {
+            "id": 38,
+            "name": "A33",
+            "x_px": -2607.3821329133866,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 55,
+            "name": "A34",
+            "x_px": 113.87770960629916,
+            "y_px": 437.9576692913386
+        },
+        {
+            "id": 56,
+            "name": "A35",
+            "x_px": 113.8777096062987,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 167,
+            "name": "A26",
+            "x_px": -904.9340065758779,
+            "y_px": 437.9576692913385
+        },
+        {
+            "id": 169,
+            "name": "A17",
+            "x_px": -969.7433042299608,
+            "y_px": 167.40316130777578
+        },
+        {
+            "id": 170,
+            "name": "A15",
+            "x_px": -309.1087035672145,
+            "y_px": 4.9520299972645105
+        },
+        {
+            "id": 172,
+            "name": "A28",
+            "x_px": 0.4918828346456624,
+            "y_px": 173.3907401574803
+        },
+        {
+            "id": 173,
+            "name": "A25",
+            "x_px": 0.4918828346456138,
+            "y_px": 437.9576692913386
+        },
+        {
+            "id": 333,
+            "name": "A36",
+            "x_px": -599.5081171653546,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 334,
+            "name": "A37",
+            "x_px": -599.5081171653546,
+            "y_px": 1163.6269606299213
+        },
+        {
+            "id": 335,
+            "name": "A38",
+            "x_px": -599.5081171653547,
+            "y_px": 2526.1466456692915
+        },
+        {
+            "id": 336,
+            "name": "A39",
+            "x_px": -552.2640226771657,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 337,
+            "name": "A40",
+            "x_px": -646.7522116535436,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 341,
+            "name": "A41",
+            "x_px": -599.5081171653549,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 342,
+            "name": "A42",
+            "x_px": -594.783707716536,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 343,
+            "name": "A43",
+            "x_px": -604.2325266141737,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 344,
+            "name": "A44",
+            "x_px": -1194.783707716536,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 345,
+            "name": "A45",
+            "x_px": -1204.2325266141738,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 348,
+            "name": "A46",
+            "x_px": -599.8860699212603,
+            "y_px": 2526.1466456692915
+        },
+        {
+            "id": 385,
+            "name": "A47",
+            "x_px": -1212.260959789997,
+            "y_px": 2837.81919417985
+        },
+        {
+            "id": 388,
+            "name": "A48",
+            "x_px": -1186.772322796263,
+            "y_px": 2838.2215539290105
+        },
+        {
+            "id": 389,
+            "name": "A33",
+            "x_px": -2607.3821329133866,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 390,
+            "name": "A32",
+            "x_px": -2607.382132913386,
+            "y_px": 454.3356220472435
+        },
+        {
+            "id": 391,
+            "name": "A20",
+            "x_px": -2399.5081171653546,
+            "y_px": 454.33562204724353
+        },
+        {
+            "id": 393,
+            "name": "A22",
+            "x_px": -2141.2404006299216,
+            "y_px": 214.96554330708616
+        },
+        {
+            "id": 394,
+            "name": "A23",
+            "x_px": -1484.2891185366152,
+            "y_px": 391.7237357985589
+        },
+        {
+            "id": 396,
+            "name": "A24",
+            "x_px": -1199.5081171653544,
+            "y_px": 1201.4222362204723
+        },
+        {
+            "id": 397,
+            "name": "A30",
+            "x_px": -1246.7522116535436,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 398,
+            "name": "A47",
+            "x_px": -1212.260959789997,
+            "y_px": 2837.81919417985
+        },
+        {
+            "id": 400,
+            "name": "A8",
+            "x_px": -2399.508117165355,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 402,
+            "name": "A49",
+            "x_px": -604.0716962927365,
+            "y_px": 3008.4039087812453
+        },
+        {
+            "id": 405,
+            "name": "A50",
+            "x_px": -594.9520316733679,
+            "y_px": 3009.091701642338
+        },
+        {
+            "id": 422,
+            "name": "A35",
+            "x_px": 113.8777096062987,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 423,
+            "name": "Hemline",
+            "x_px": 0.4918828346451381,
+            "y_px": 3026.9340472440945
+        },
+        {
+            "id": 425,
+            "name": "A50",
+            "x_px": -594.9520316733679,
+            "y_px": 3009.091701642338
+        },
+        {
+            "id": 426,
+            "name": "A38",
+            "x_px": -599.5081171653547,
+            "y_px": 2526.1466456692915
+        },
+        {
+            "id": 427,
+            "name": "A39",
+            "x_px": -552.2640226771657,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 428,
+            "name": "A37",
+            "x_px": -599.5081171653546,
+            "y_px": 1163.6269606299213
+        },
+        {
+            "id": 429,
+            "name": "A40",
+            "x_px": -646.7522116535436,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 430,
+            "name": "A46",
+            "x_px": -599.8860699212603,
+            "y_px": 2526.1466456692915
+        },
+        {
+            "id": 431,
+            "name": "A49",
+            "x_px": -604.0716962927365,
+            "y_px": 3008.4039087812453
+        },
+        {
+            "id": 433,
+            "name": "A48",
+            "x_px": -1186.772322796263,
+            "y_px": 2838.2215539290105
+        },
+        {
+            "id": 434,
+            "name": "A31",
+            "x_px": -1152.2640226771657,
+            "y_px": 2025.3592440944883
+        },
+        {
+            "id": 435,
+            "name": "A24",
+            "x_px": -1199.5081171653544,
+            "y_px": 1201.4222362204723
+        },
+        {
+            "id": 437,
+            "name": "A27",
+            "x_px": -890.3967060323571,
+            "y_px": 493.7687026094432
+        },
+        {
+            "id": 439,
+            "name": "A25",
+            "x_px": 0.4918828346456138,
+            "y_px": 437.9576692913386
+        },
+        {
+            "id": 440,
+            "name": "A34",
+            "x_px": 113.87770960629916,
+            "y_px": 437.9576692913386
+        }
+    ],
+    "variables": {
+        "#ArmLength": 68,
+        "#ArmSkyeDrop": 1,
+        "#ArmSkyeHeightBack": 27.2,
+        "#ArmSkyeHeightFront": 26.6,
+        "#ArmSkyeWidth": 17.7,
+        "#BackHeight": 50,
+        "#BackIntake": 1.25,
+        "#BackIntakeWaist": 0.125,
+        "#BackPleat": 3,
+        "#BackWidth": 24.1,
+        "#BustCircumfence": 106,
+        "#ButtonPanelWidth": 5.5,
+        "#CalculationsMeasurements": 0,
+        "#CanBeAdjusted": 0,
+        "#CollarAngle": 120,
+        "#CollarButton": 1.5,
+        "#CollarFrontBaseHeight": 2,
+        "#CollarFrontHeight": 7,
+        "#CollarHeight": 3.8,
+        "#CollarUpperButtonLength": 2.5,
+        "#CuffGirth": 27,
+        "#CuffWidth": 6,
+        "#FrontWidth": 21.7,
+        "#Hemline": 76.5,
+        "#HemlineCurve": 5,
+        "#Modifications": 0,
+        "#NecWidth": 6.833333333333333,
+        "#NeckLineDropBack": 1,
+        "#NeckLineHeightFront": 7.833333333333333,
+        "#PlacketDepth": 15,
+        "#PlacketWidth": 3,
+        "#PocketBottomForm": 1,
+        "#PocketFlap": 3,
+        "#PocketFlapCenter": 1,
+        "#PocketFold": 3,
+        "#PocketFoldCenter": 1,
+        "#PocketHeight": 13,
+        "#PocketWidth": 9,
+        "#PrintingFix": 0.01,
+        "#ShortSleeveLength": 32,
+        "#ShoulderDropBack": 2,
+        "#ShoulderDropFront": 4,
+        "#ShoulderShilft": 1.5,
+        "#ShoulderWidth": 18,
+        "#SideIntake": 1.25,
+        "#SideIntakeWaist": 0.125,
+        "#SleeveCapHeightAdjust": 6,
+        "#SleeveDart": 2,
+        "#SleeveHemLineTurn": 2,
+        "#SleeveWristGirth": 31,
+        "#ToBeVerified": 0,
+        "#YokeHeight": 8,
+        "#YokeIntake": 1.5,
+        "Angle1SplPath_A23_A17": 262.679,
+        "Angle1SplPath_A23_A17_Seg_1": 262.679,
+        "Angle1SplPath_A23_A17_Seg_2": 2.6599999999999735,
+        "Angle1SplPath_A23_A26": 262.679,
+        "Angle1SplPath_A23_A27": 262.679,
+        "Angle1SplPath_A26_A17": 104.55617627109834,
+        "Angle1SplPath_A27_A17": 104.5841260443645,
+        "Angle1SplPath_A47_Hemline": 359.7483822032904,
+        "Angle1SplPath_A48_Hemline": 358.53196876466257,
+        "Angle1SplPath_A49_Hemline": 355.3096252536073,
+        "Angle1SplPath_A50_Hemline": 355.4491469695344,
+        "Angle1SplPath_A8_A47": 0.024999999999945833,
+        "Angle1SplPath_A8_A48": 0.024999999999958968,
+        "Angle1SplPath_A8_A49": 0.024999999999958968,
+        "Angle1SplPath_A8_A50": 0.024999999999958968,
+        "Angle1SplPath_A8_Hemline": 0.024999999999958968,
+        "Angle1SplPath_A8_Hemline_Seg_1": 0.024999999999958968,
+        "Angle1SplPath_A8_Hemline_Seg_2": 359.092,
+        "Angle1Spl_A15_A28": 273.614,
+        "Angle1Spl_A20_A22": 2.71281,
+        "Angle1Spl_A27_A25": 9.62256,
+        "Angle2SplPath_A23_A17": 281.751,
+        "Angle2SplPath_A23_A17_Seg_1": 182.66,
+        "Angle2SplPath_A23_A17_Seg_2": 281.751,
+        "Angle2SplPath_A23_A26": 284.5561762710983,
+        "Angle2SplPath_A23_A27": 284.5841260443645,
+        "Angle2SplPath_A26_A17": 281.7509999999999,
+        "Angle2SplPath_A27_A17": 281.7509999999999,
+        "Angle2SplPath_A47_Hemline": 180.026,
+        "Angle2SplPath_A48_Hemline": 180.026,
+        "Angle2SplPath_A49_Hemline": 180.02599999999998,
+        "Angle2SplPath_A50_Hemline": 180.02599999999998,
+        "Angle2SplPath_A8_A47": 179.74838220329062,
+        "Angle2SplPath_A8_A48": 178.53196876466194,
+        "Angle2SplPath_A8_A49": 175.30962525360735,
+        "Angle2SplPath_A8_A50": 175.44914696953447,
+        "Angle2SplPath_A8_Hemline": 180.026,
+        "Angle2SplPath_A8_Hemline_Seg_1": 179.092,
+        "Angle2SplPath_A8_Hemline_Seg_2": 180.026,
+        "Angle2Spl_A15_A28": 185.832,
+        "Angle2Spl_A20_A22": 267.394,
+        "Angle2Spl_A27_A25": 180.368,
+        "AngleLine_A10_A29": 90,
+        "AngleLine_A10_A44": 0,
+        "AngleLine_A10_A45": 180,
+        "AngleLine_A10_A8": 180,
+        "AngleLine_A11_A30": 180,
+        "AngleLine_A11_A31": 0,
+        "AngleLine_A11_A9": 180,
+        "AngleLine_A12_A13": 90,
+        "AngleLine_A12_A5": 180,
+        "AngleLine_A13_A15": 103.81502,
+        "AngleLine_A14_A16": 103.81502,
+        "AngleLine_A15_A17": 193.81502,
+        "AngleLine_A17_A15": 13.81502,
+        "AngleLine_A17_A16": 13.81502,
+        "AngleLine_A18_A22": 270,
+        "AngleLine_A18_A6": 0,
+        "AngleLine_A19_A21": 270,
+        "AngleLine_A19_A3": 270,
+        "AngleLine_A1_A7": 90,
+        "AngleLine_A20_A1": 270,
+        "AngleLine_A20_A32": 180,
+        "AngleLine_A21_A3": 270,
+        "AngleLine_A22_A23": 344.94072,
+        "AngleLine_A23_A21": 164.94072,
+        "AngleLine_A24_A10": 270,
+        "AngleLine_A24_A30": 266.71828,
+        "AngleLine_A24_A31": 273.28171,
+        "AngleLine_A25_A26": 180,
+        "AngleLine_A25_A27": 183.58469,
+        "AngleLine_A25_A34": 0,
+        "AngleLine_A25_BustLine": 270,
+        "AngleLine_A28_A25": 270,
+        "AngleLine_A29_A11": 89.99999,
+        "AngleLine_A2_A1": 180,
+        "AngleLine_A2_A3": 180,
+        "AngleLine_A2_A5": 89.99999,
+        "AngleLine_A30_A45": 272.4309,
+        "AngleLine_A30_A9": 180,
+        "AngleLine_A31_Waistline": 0,
+        "AngleLine_A33_A32": 89.99999,
+        "AngleLine_A34_A35": 270,
+        "AngleLine_A36_A11": 180,
+        "AngleLine_A36_A37": 90,
+        "AngleLine_A36_A38": 270,
+        "AngleLine_A36_A39": 0,
+        "AngleLine_A36_A40": 180,
+        "AngleLine_A37_A39": 273.13807,
+        "AngleLine_A38_A42": 270.54051,
+        "AngleLine_A38_A46": 180,
+        "AngleLine_A39_A38": 264.61068,
+        "AngleLine_A39_Waistline": 0,
+        "AngleLine_A3_A1": 180,
+        "AngleLine_A3_A6": 90,
+        "AngleLine_A40_A11": 180,
+        "AngleLine_A40_A37": 86.86192,
+        "AngleLine_A41_A10": 180,
+        "AngleLine_A41_A42": 0,
+        "AngleLine_A41_A43": 180,
+        "AngleLine_A42_A50": 90.54051,
+        "AngleLine_A42_Hemline": 0,
+        "AngleLine_A43_A10": 180,
+        "AngleLine_A43_A46": 89.50272,
+        "AngleLine_A43_A49": 89.50271,
+        "AngleLine_A44_A31": 87.56909,
+        "AngleLine_A44_A48": 87.56909,
+        "AngleLine_A44_Hemline": 0,
+        "AngleLine_A45_A47": 92.43089,
+        "AngleLine_A45_A8": 180,
+        "AngleLine_A46_A40": 95.34644,
+        "AngleLine_A4_A1": 180,
+        "AngleLine_A4_A24": 270,
+        "AngleLine_A5_A14": 270,
+        "AngleLine_A6_A19": 270,
+        "AngleLine_A7_A18": 0,
+        "AngleLine_A7_A20": 270,
+        "AngleLine_A8_A33": 180,
+        "AngleLine_BustLine_A1": 180,
+        "AngleLine_BustLine_A2": 180,
+        "AngleLine_BustLine_A4": 180,
+        "AngleLine_BustLine_Hemline": 270,
+        "AngleLine_Hemline_A10": 180,
+        "AngleLine_Hemline_A35": 0,
+        "AngleLine_Hemline_A41": 180,
+        "AngleLine_Hemline_A8": 180,
+        "AngleLine_ShoulderLine_A12": 180,
+        "AngleLine_ShoulderLine_A25": 270,
+        "AngleLine_ShoulderLine_A28": 270,
+        "AngleLine_ShoulderLine_BustLine": 270,
+        "AngleLine_ShoulderLine_Hemline": 270,
+        "AngleLine_ShoulderLine_Waistline": 270,
+        "AngleLine_Waistline_A11": 180,
+        "AngleLine_Waistline_A36": 180,
+        "AngleLine_Waistline_A9": 180,
+        "AngleLine_Waistline_Hemline": 270,
+        "C1LengthSplPath_A23_A17": 14.136100000000003,
+        "C1LengthSplPath_A23_A17_Seg_1": 14.136100000000003,
+        "C1LengthSplPath_A23_A17_Seg_2": 15.826799999999997,
+        "C1LengthSplPath_A23_A26": 14.136100000000003,
+        "C1LengthSplPath_A23_A27": 14.136100000000003,
+        "C1LengthSplPath_A26_A17": 2.3329705474593414,
+        "C1LengthSplPath_A27_A17": 2.760768416163791,
+        "C1LengthSplPath_A47_Hemline": 0.11667071680754737,
+        "C1LengthSplPath_A48_Hemline": 10.5044338359591,
+        "C1LengthSplPath_A49_Hemline": 3.721063526242973,
+        "C1LengthSplPath_A50_Hemline": 3.702162829757652,
+        "C1LengthSplPath_A8_A47": 35.324433203125004,
+        "C1LengthSplPath_A8_A48": 35.7433,
+        "C1LengthSplPath_A8_A49": 35.7433,
+        "C1LengthSplPath_A8_A50": 35.7433,
+        "C1LengthSplPath_A8_Hemline": 35.7433,
+        "C1LengthSplPath_A8_Hemline_Seg_1": 35.7433,
+        "C1LengthSplPath_A8_Hemline_Seg_2": 11.1528,
+        "C1LengthSpl_A15_A28": 1.64458,
+        "C1LengthSpl_A20_A22": 5.61197,
+        "C1LengthSpl_A27_A25": 7.57655,
+        "C2LengthSplPath_A23_A17": 15.8466,
+        "C2LengthSplPath_A23_A17_Seg_1": 10.8903,
+        "C2LengthSplPath_A23_A17_Seg_2": 15.8466,
+        "C2LengthSplPath_A23_A26": 12.058365841687435,
+        "C2LengthSplPath_A23_A27": 11.23441404993385,
+        "C2LengthSplPath_A26_A17": 2.5688824218750015,
+        "C2LengthSplPath_A27_A17": 3.1259894531250003,
+        "C2LengthSplPath_A47_Hemline": 36.07289999999999,
+        "C2LengthSplPath_A48_Hemline": 35.70081015014648,
+        "C2LengthSplPath_A49_Hemline": 7.151170605468744,
+        "C2LengthSplPath_A50_Hemline": 7.0102608398437525,
+        "C2LengthSplPath_A8_A47": 9.839230450769715,
+        "C2LengthSplPath_A8_A48": 0.1094819191043562,
+        "C2LengthSplPath_A8_A49": 15.049227364756067,
+        "C2LengthSplPath_A8_A50": 15.348162485176198,
+        "C2LengthSplPath_A8_Hemline": 36.07289999999999,
+        "C2LengthSplPath_A8_Hemline_Seg_1": 10.5341,
+        "C2LengthSplPath_A8_Hemline_Seg_2": 36.07289999999999,
+        "C2LengthSpl_A15_A28": 5.54349,
+        "C2LengthSpl_A20_A22": 4.27829,
+        "C2LengthSpl_A27_A25": 8.88116,
+        "Line_A10_A29": 4.999999999999994,
+        "Line_A10_A44": 0.12500000000000167,
+        "Line_A10_A45": 0.12500000000000167,
+        "Line_A10_A8": 31.75,
+        "Line_A11_A30": 1.2499999999999984,
+        "Line_A11_A31": 1.2499999999999984,
+        "Line_A11_A9": 31.75,
+        "Line_A12_A13": 2,
+        "Line_A12_A5": 16.266666666666666,
+        "Line_A13_A15": 1.4999999999999998,
+        "Line_A14_A16": 1.5,
+        "Line_A15_A17": 18,
+        "Line_A17_A15": 18,
+        "Line_A17_A16": 1.24874797382463,
+        "Line_A18_A22": 1.5000000000000004,
+        "Line_A18_A6": 14.866666666666669,
+        "Line_A19_A21": 1.5000000000000004,
+        "Line_A19_A3": 22.6,
+        "Line_A1_A7": 26.6,
+        "Line_A20_A1": 18.76666666666667,
+        "Line_A20_A32": 5.5,
+        "Line_A21_A3": 21.1,
+        "Line_A22_A23": 18.000000000000004,
+        "Line_A23_A21": 2.6046182971068346,
+        "Line_A24_A10": 48.3,
+        "Line_A24_A30": 21.835807747825594,
+        "Line_A24_A31": 21.835807747825594,
+        "Line_A25_A26": 23.956059990653433,
+        "Line_A25_A27": 23.617635945786645,
+        "Line_A25_A34": 3,
+        "Line_A25_BustLine": 19.2,
+        "Line_A28_A25": 7,
+        "Line_A29_A11": 21.5,
+        "Line_A2_A1": 39.400000000000006,
+        "Line_A2_A3": 17.7,
+        "Line_A2_A5": 27.2,
+        "Line_A30_A45": 26.52386896740368,
+        "Line_A30_A9": 30.5,
+        "Line_A31_Waistline": 30.5,
+        "Line_A33_A32": 68.06666666666669,
+        "Line_A34_A35": 68.49999999999999,
+        "Line_A36_A11": 15.875,
+        "Line_A36_A37": 22.8,
+        "Line_A36_A38": 13.25,
+        "Line_A36_A39": 1.2499999999999984,
+        "Line_A36_A40": 1.2499999999999984,
+        "Line_A37_A39": 22.83423964138066,
+        "Line_A38_A42": 13.250589609523036,
+        "Line_A38_A46": 0.010000000000000734,
+        "Line_A39_A38": 13.308831654206164,
+        "Line_A39_Waistline": 14.625,
+        "Line_A3_A1": 21.699999999999996,
+        "Line_A3_A6": 26.6,
+        "Line_A40_A11": 14.625,
+        "Line_A40_A37": 22.83423964138066,
+        "Line_A41_A10": 15.875,
+        "Line_A41_A42": 0.12499999999999864,
+        "Line_A41_A43": 0.12499999999999864,
+        "Line_A42_A50": 0.4720997343172016,
+        "Line_A42_Hemline": 15.75,
+        "Line_A43_A10": 15.75,
+        "Line_A43_A46": 13.250499047205725,
+        "Line_A43_A49": 0.4902950465316705,
+        "Line_A44_A31": 26.52386896740368,
+        "Line_A44_A48": 4.9975153484577906,
+        "Line_A44_Hemline": 31.624999999999993,
+        "Line_A45_A47": 5.0081706685378,
+        "Line_A45_A8": 31.625000000000007,
+        "Line_A46_A40": 13.307896152284929,
+        "Line_A4_A1": 31.75,
+        "Line_A4_A24": 1.000000000000001,
+        "Line_A5_A14": 2,
+        "Line_A6_A19": 4,
+        "Line_A7_A18": 6.833333333333331,
+        "Line_A7_A20": 7.833333333333333,
+        "Line_A8_A33": 5.5,
+        "Line_BustLine_A1": 63.5,
+        "Line_BustLine_A2": 24.1,
+        "Line_BustLine_A4": 31.75,
+        "Line_BustLine_Hemline": 49.3,
+        "Line_Hemline_A10": 31.75,
+        "Line_Hemline_A35": 3,
+        "Line_Hemline_A41": 15.875,
+        "Line_Hemline_A8": 63.5,
+        "Line_ShoulderLine_A12": 7.833333333333333,
+        "Line_ShoulderLine_A25": 8,
+        "Line_ShoulderLine_A28": 0.9999999999999997,
+        "Line_ShoulderLine_BustLine": 27.2,
+        "Line_ShoulderLine_Hemline": 76.5,
+        "Line_ShoulderLine_Waistline": 50,
+        "Line_Waistline_A11": 31.75,
+        "Line_Waistline_A36": 15.875,
+        "Line_Waistline_A9": 63.5,
+        "Line_Waistline_Hemline": 26.499999999999993,
+        "SplPath_A23_A17": 61.99642499665507,
+        "SplPath_A23_A17_Seg_1": 27.418875054200544,
+        "SplPath_A23_A17_Seg_2": 34.57754994245452,
+        "SplPath_A23_A26": 54.62016771970008,
+        "SplPath_A23_A27": 53.12295819411763,
+        "SplPath_A26_A17": 7.376261173556304,
+        "SplPath_A27_A17": 8.87346877511467,
+        "SplPath_A47_Hemline": 33.18589097376044,
+        "SplPath_A48_Hemline": 32.48904178549191,
+        "SplPath_A49_Hemline": 15.996759802234402,
+        "SplPath_A50_Hemline": 15.77515680826447,
+        "SplPath_A8_A47": 32.4403191683582,
+        "SplPath_A8_A48": 33.137165524257426,
+        "SplPath_A8_A49": 49.62944582073283,
+        "SplPath_A8_A50": 49.85104824207214,
+        "SplPath_A8_Hemline": 65.62620609018839,
+        "SplPath_A8_Hemline_Seg_1": 32.800426941052834,
+        "SplPath_A8_Hemline_Seg_2": 32.82577914913555,
+        "Spl_A15_A28": 10.218053112912528,
+        "Spl_A20_A22": 10.805022687617173,
+        "Spl_A27_A25": 23.64515777815377,
+        "arm_shoulder_tip_to_wrist_bent": 65,
+        "bust_circ": 102,
+        "hand_circ": 24,
+        "height": 173,
+        "hip_circ": 101,
+        "neck_back_to_waist_b": 50,
+        "neck_circ": 41,
+        "shoulder_length": 13,
+        "waist_circ": 92
+    }
+}

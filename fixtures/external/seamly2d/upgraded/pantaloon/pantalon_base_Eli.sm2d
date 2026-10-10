@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements>medidas_eli2015.smis</measurements>
+    <variables/>
+    <draftBlock name="pantalon base">
+        <calculation>
+            <point id="1" mx="0.132292" my="0.264583" name="A" type="single" x="0.79375" y="1.05833"/>
+            <point angle="360" basePoint="1" id="2" length="hip_circ/4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A1" type="endLine"/>
+            <point angle="270" basePoint="2" id="3" length="100" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A2" type="endLine"/>
+            <point firstPoint="1" id="4" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A3" secondPoint="3" type="intersectXY"/>
+            <line firstPoint="3" id="5" lineColor="black" lineType="solidLine" secondPoint="4"/>
+            <line firstPoint="4" id="6" lineColor="black" lineType="solidLine" secondPoint="1"/>
+            <point angle="270" basePoint="1" id="7" length="hip_circ/4-1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A4" type="endLine"/>
+            <point firstPoint="2" id="8" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A5" secondPoint="7" type="intersectXY"/>
+            <line firstPoint="7" id="9" lineColor="black" lineType="dashDotLine" secondPoint="8"/>
+            <point angle="270" basePoint="1" id="10" length="1" lineColor="black" lineType="solidLine" mx="-5.36387" my="2.04712" name="A6" type="endLine"/>
+            <point angle="0" basePoint="1" id="11" length="waist_circ/4+2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.413128" name="A7" type="endLine"/>
+            <spline angle1="356.606" angle2="191.512" color="blue" id="12" kAsm1="0.968626" kAsm2="0.666112" kCurve="1" point1="10" point4="11" type="simple"/>
+            <point angle="180" basePoint="7" id="13" length="hip_circ/2/10" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A8" type="endLine"/>
+            <point angle="270" basePoint="2" id="14" length="height_waist_side_to_hip-3" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A9" type="endLine"/>
+            <point firstPoint="1" id="15" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A10" secondPoint="14" type="intersectXY"/>
+            <line firstPoint="15" id="16" lineColor="black" lineType="dashDotLine" secondPoint="14"/>
+            <spline angle1="20.4673" angle2="251.78" color="blue" id="17" kAsm1="1.38503" kAsm2="1.21474" kCurve="1" point1="13" point4="15" type="simple"/>
+            <line firstPoint="10" id="18" lineColor="blue" lineType="solidLine" secondPoint="15"/>
+            <point angle="270" basePoint="14" id="19" length="81/2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A11" type="endLine"/>
+            <point firstPoint="7" id="20" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A12" secondPoint="19" type="intersectXY"/>
+            <point angle="360" basePoint="13" id="21" length="hip_circ/4/2+5" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A13" type="endLine"/>
+            <point basePoint="21" id="22" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A14" p1Line="4" p2Line="3" type="height"/>
+            <point basePoint="21" id="23" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A15" p1Line="1" p2Line="2" type="height"/>
+            <point angle="270" basePoint="23" id="24" length="8" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A16" type="endLine"/>
+            <point angle="180" basePoint="23" id="25" length="1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A17" type="endLine"/>
+            <point angle="360" basePoint="25" id="26" length="2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A18" type="endLine"/>
+            <line firstPoint="24" id="27" lineColor="blue" lineType="solidLine" secondPoint="26"/>
+            <line firstPoint="24" id="28" lineColor="blue" lineType="solidLine" secondPoint="25"/>
+            <point angle="360" basePoint="20" id="29" length="hip_circ/4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A19" type="endLine"/>
+            <point angle="180" basePoint="29" id="30" length="1.7" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A20" type="endLine"/>
+            <point angle="0" basePoint="20" id="31" length="1.7" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A21" type="endLine"/>
+            <point angle="359.772" basePoint="4" id="32" length="2.5" lineColor="black" lineType="solidLine" mx="-0.187818" my="0.371286" name="A22" type="endLine"/>
+            <point angle="180.263" basePoint="3" id="33" length="2.5" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A23" type="endLine"/>
+            <spline angle1="294.241" angle2="93.3546" color="blue" id="34" kAsm1="0.794457" kAsm2="1.6875" kCurve="1" point1="13" point4="31" type="simple"/>
+            <line firstPoint="31" id="35" lineColor="blue" lineType="solidLine" secondPoint="32"/>
+            <line firstPoint="32" id="36" lineColor="blue" lineType="solidLine" secondPoint="33"/>
+            <line firstPoint="33" id="37" lineColor="blue" lineType="solidLine" secondPoint="30"/>
+            <spline angle1="309.361" angle2="91.3998" color="blue" id="38" kAsm1="0.573547" kAsm2="1.31447" kCurve="1" point1="11" point4="14" type="simple"/>
+            <spline angle1="267" angle2="88" color="darkRed" id="39" kAsm1="1" kAsm2="0.99" kCurve="1" point1="14" point4="30" type="simple"/>
+            <line firstPoint="1" id="54" lineColor="black" lineType="solidLine" secondPoint="1"/>
+            <point angle="180" basePoint="13" id="55" length="5" lineColor="darkRed" lineType="dashDotDotLine" mx="0.132292" my="0.264583" name="A24" type="endLine"/>
+            <point angle="0" basePoint="1" id="56" length="4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A25" type="endLine"/>
+            <point angle="0" firstPoint="56" id="57" length="2" lineColor="darkRed" lineType="dashDotDotLine" mx="0.132292" my="0.264583" name="A26" secondPoint="2" type="normal"/>
+            <point angle="354.659" basePoint="57" id="58" length="waist_circ/4+3" lineColor="black" lineType="dashDotDotLine" mx="0.132292" my="0.264583" name="A27" type="endLine"/>
+            <point angle="0" basePoint="30" id="59" length="1" lineColor="darkRed" lineType="solidLine" mx="1.80484" my="2.11319" name="A28" type="endLine"/>
+            <point angle="180" basePoint="31" id="60" length="1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A29" type="endLine"/>
+            <point angle="0" basePoint="33" id="61" length="1" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="A30" type="endLine"/>
+            <point angle="180" basePoint="32" id="62" length="1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A31" type="endLine"/>
+            <line firstPoint="61" id="63" lineColor="darkRed" lineType="solidLine" secondPoint="59"/>
+            <spline angle1="88" angle2="263" color="darkRed" id="64" kAsm1="1" kAsm2="0.5" kCurve="1" point1="59" point4="8" type="simple"/>
+            <spline angle1="267" angle2="82" color="darkRed" id="65" kAsm1="1.08" kAsm2="0.93" kCurve="1" point1="58" point4="14" type="simple"/>
+            <spline angle1="176" angle2="352" color="darkRed" id="66" kAsm1="1.03" kAsm2="1.5" kCurve="1" point1="58" point4="57" type="simple"/>
+            <point angle="270" basePoint="55" id="67" length="1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A32" type="endLine"/>
+            <spline angle1="14" angle2="261" color="darkRed" id="68" kAsm1="0.85" kAsm2="1.23" kCurve="1" point1="67" point4="15" type="simple"/>
+            <line firstPoint="15" id="69" lineColor="darkRed" lineType="solidLine" secondPoint="57"/>
+            <spline angle1="301" angle2="97" color="darkRed" id="70" kAsm1="0.98" kAsm2="1.04" kCurve="1" point1="55" point4="60" type="simple"/>
+            <line firstPoint="60" id="71" lineColor="darkRed" lineType="solidLine" secondPoint="62"/>
+            <line firstPoint="62" id="72" lineColor="black" lineType="solidLine" secondPoint="61"/>
+            <point angle="174.959" basePoint="58" id="73" length="22.75/2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A33" type="endLine"/>
+            <point angle="270" basePoint="73" id="74" length="9" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A34" type="endLine"/>
+            <point angle="352.87" basePoint="73" id="75" length="1.5" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A35" type="endLine"/>
+            <point angle="172.415" basePoint="73" id="76" length="1.5" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A36" type="endLine"/>
+            <line firstPoint="76" id="77" lineColor="darkRed" lineType="solidLine" secondPoint="74"/>
+            <line firstPoint="74" id="78" lineColor="darkRed" lineType="solidLine" secondPoint="75"/>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+    <draftBlock name="trasero">
+        <calculation>
+            <point id="40" mx="0.132292" my="0.264583" name="B" type="single" x="42.9068" y="1.35666"/>
+            <point angle="360" basePoint="40" id="41" length="hip_circ/4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B1" type="endLine"/>
+            <point angle="270" basePoint="41" id="42" length="100" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B2" type="endLine"/>
+            <point firstPoint="40" id="43" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="B3" secondPoint="42" type="intersectXY"/>
+            <line firstPoint="40" id="44" lineColor="black" lineType="solidLine" secondPoint="43"/>
+            <line firstPoint="43" id="45" lineColor="black" lineType="solidLine" secondPoint="42"/>
+            <point angle="270" basePoint="41" id="46" length="19" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B4" type="endLine"/>
+            <point firstPoint="40" id="47" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="B5" secondPoint="46" type="intersectXY"/>
+            <line firstPoint="47" id="48" lineColor="black" lineType="dashDotDotLine" secondPoint="46"/>
+            <point angle="270" basePoint="40" id="49" length="hip_circ/4-1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B6" type="endLine"/>
+            <point firstPoint="46" id="50" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="B7" secondPoint="49" type="intersectXY"/>
+            <line firstPoint="49" id="51" lineColor="black" lineType="dashDotDotLine" secondPoint="50"/>
+            <point angle="180" basePoint="49" id="52" length="10" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="B8" type="endLine"/>
+            <point angle="270" basePoint="46" id="53" length="25" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B9" type="endLine"/>
+        </calculation>
+        <modeling/>
+        <pieces/>
+    </draftBlock>
+</pattern>

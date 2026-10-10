@@ -55,6 +55,18 @@ Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI do
 - **Phase 1 checkpoint reached:** the basic set evaluates (302 points, 37 curves, 17 variables from 425 objects, 0 issues, identical to Seamly2D) and renders with all lines visible.
 - Not done on purpose: rotate / move / mirror-by-axis operation tools (Phase 3); Playwright smoke test (Phase 10).
 
+## Phase 2 log (IO: lossless files, upgrades, oracle in CI)
+
+- **Lossless writer: done** (2026-10-10). `yoko_io.xmlwrite` copies Qt's `QXmlStreamWriter` formatting; `read_pattern` / `write_pattern` keep comments, text, the order of sections, CRLF line endings and root attributes. **The basic set writes back byte for byte**, and so do the 23 patterns the pinned Seamly2D re-saved from Seamly2D's own test folder (one is 6 MB). ADR 0012.
+- **Formats 0.6.8 to 0.7.5 read; measurement formats read** (multisize 0.4.0 to 0.4.5, root `vst` or `smms`; individual 0.3.0 to 0.3.4, root `vit` or `smis`, including values that are formulas such as `(height_neck_back - height_knee)`). Duplicate, empty or invalid measurement names fail with a clear message (the four `broken/*.smis` files).
+- **Upgrades verified by the oracle.** New hooks in the oracle patch (`YOKO_ORACLE_SAVE`, `YOKO_ORACLE_CONVERTED_DIR`) make the real Seamly2D save a pattern and keep what its converters produced. `upgrade_pattern` (0.6.8 to 0.7.5) equals Seamly2D's own save byte for byte; `upgrade_measurements` equals its converter on every file in range (the basic set's table, 14 individual files). Finding: the multisize format 0.4.5 renames the root `vst` to `smms`, so our own table (0.4.4) is not the pinned format.
+- **Seamly2D's own test patterns** (`fixtures/external/seamly2d/`, GPL note in its README): 41 patterns, 24 individual and 7 multisize measurement files. The pinned Seamly2D opens 23 of the 41; the other 18 fail in Seamly2D itself (a measurement file the folder does not contain, schema errors in old formats, an empty file, one deliberate missing measurement). `alltools_pattern.sm2d` (0.7.4) round trips and upgrades like the rest. **Across all 23, the engine never gets a point wrong** (exact equality with Seamly2D) and reproduces 1 to 166 points per pattern, limited only by tools not built yet. `tests/external_ratchet.json` only goes up.
+- **CI oracle workflow added** (`.github/workflows/oracle.yml`): builds the pinned Seamly2D with Qt 6.11.1, regenerates every committed oracle file and fails on any difference, then runs the exactness tests. It could not be run in the session (no Qt 6.11 download), so its first run on GitHub is its test.
+
+Backlog the test patterns give Phase 3 (issues per not-yet-evaluated kind over the 23 patterns; `scripts/external_report.py` prints the current list): `simple` 91, `simpleInteractive` 66, `lineIntersect` 46, `pathInteractive` 38, `height` 23, `cutSpline` 22, `shoulder` 12, `rotation` 10, `path` 10, `cutSplinePath` 9, then a handful each of `arcWithLength`, `pointOfIntersectionCircles`, `pointOfIntersectionArcs`, `pointFromCircleAndTangent`, `triangle`, `pointOfIntersectionCurves`, `cutArc`, `pointFromArcAndTangent`, `flippingByAxis`, `moving`. All the "undefined name" issues in those patterns are knock-on effects of these.
+
+Still to do in Phase 2: PNG render; then the checkpoint (basic set round-trips losslessly; oracle deviation under 0.01 mm).
+
 ## Environment variables by phase
 
 | Phase | Variables |

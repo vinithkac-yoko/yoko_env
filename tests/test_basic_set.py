@@ -92,8 +92,8 @@ def test_other_sizes_change_the_geometry(pattern: Pattern, table: MeasurementSet
     [
         ("<nope/>", "expected a <pattern>"),
         (
-            "<pattern><version>0.7.5</version><unit>cm</unit></pattern>",
-            "0.7.5 is not supported yet",
+            "<pattern><version>0.9.0</version><unit>cm</unit></pattern>",
+            r"0\.9\.0 is not supported",
         ),
         ("<pattern><version>0.6.8</version><unit>furlong</unit></pattern>", "unknown pattern unit"),
         ("not xml at all", "not valid XML"),
@@ -104,9 +104,9 @@ def test_bad_pattern_files_fail_with_a_clear_message(text: str, message: str) ->
         read_pattern(text)
 
 
-def test_individual_measurement_files_are_not_supported_yet() -> None:
-    with pytest.raises(SeamlyFileError, match="not supported yet"):
-        read_measurements("<vit><unit>cm</unit></vit>")
+def test_a_measurement_file_of_an_unknown_format_is_refused() -> None:
+    with pytest.raises(SeamlyFileError, match="not supported"):
+        read_measurements("<vit><version>0.1.0</version><unit>cm</unit></vit>")
 
 
 def test_xml_bombs_are_refused() -> None:

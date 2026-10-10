@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<smis>
+    <!--Measurements created with Seamly2D (https://seamly.net/).-->
+    <version>0.3.4</version>
+    <read-only>false</read-only>
+    <notes/>
+    <unit>cm</unit>
+    <pm_system>998</pm_system>
+    <personal>
+        <family-name>SELLIER</family-name>
+        <given-name>Anna</given-name>
+        <birth-date>1959-01-01</birth-date>
+        <gender>female</gender>
+        <email/>
+    </personal>
+    <body-measurements>
+        <m description="Tour de poitrine : 4 +1" name="@Lignetailledevant" value="97/4 +1"/>
+        <m name="@Tourdessuspoitrine" value="96"/>
+        <m description="Mesure donnée" name="@Longueurpincejupedos" value="12"/>
+        <m description="Tour d'encolure : 6" name="@Profondeurencoluredevantcorsagemaille" value="44/6"/>
+        <m description="Tour encolure/6" name="@Largeurencoluredevantdoscorsagemaille" value="44/6"/>
+        <m description="Mesure hauteur sous poitrine pour 95 = 8,5 donc déduction faite par moi (source csurmesure')" name="@Hauteursouspoitrine" value="8.5"/>
+        <m description="taille au sol" name="@Longueurjambecôté" value="0"/>
+        <m name="@Valeurpincemilieudos" value="2/2 "/>
+        <m name="@Aisancetaille" value="1"/>
+        <m description="" name="@Aisancebassin" value="1"/>
+        <m description="Dos et devant idem" name="@Aisanceprofondemmanchure" value="2.5"/>
+        <m description="dos et devant idem" name="@Aisancelongueuremmanchure" value="2"/>
+        <m description="Tour de poitrine : 4 - 1 cm" name="@Lignetailledos" value="97/4 -1 "/>
+        <m name="@Longueurdevant" value="47"/>
+        <m name="@Longueurdos" value="42"/>
+        <m description="Tour encolure : 6" name="@Largeurencoluredos" value="44/6 "/>
+        <m name="@Largeurencoluredevant" value="44/6 "/>
+        <m description="Tour encolure : 16" name="@Profondeurencoluredos" value="44/16"/>
+        <m description="Tour encolure : 6 + 2 " name="@Profondeurencoluredevant" value="(44/6)+2"/>
+        <m name="@Aisanceencolurelargeuretprofondeur" value="0.5"/>
+        <m name="@Bissectriceencoluredos" value="1.5"/>
+        <m description="" name="@Bissectriceencoluredevant" value="2.5"/>
+        <m name="@Bissectriceemanchuredevant" value="2.3"/>
+        <m name="@Bissectriceemmanchuredos" value="3"/>
+        <m name="@Longueurépaule" value="14"/>
+        <m description="" name="@Aisanceépaulelargeur" value="0.5"/>
+        <m description="(Longueur dos : 2) + 1 cm" name="@Hauteuremmanchure" value="42/2 + 1"/>
+        <m description="(Longueur dos - Hauteur emmanchure-Profondeur encolure dos) : 3 + 1 cm" name="@Hauteurcarrure" value="(42-22.2-2.75)/3+1"/>
+        <m description="carrure : 2 " name="@Demicarruredos" value="40/2"/>
+        <m name="@Aisancecarruredos" value="1"/>
+        <m description="Carrure : 2" name="@Demicarruredevant" value="37/2"/>
+        <m name="@Aisancecarruredevant" value="0.75"/>
+        <m name="@Tourdepoitrine" value="98"/>
+        <m name="@Toursouspoitrine" value="90"/>
+        <m description="écart de poitrine : 2" name="@Demiécartpoitrine" value="22/2"/>
+        <m name="@Hauteurpoitrine" value="29"/>
+        <m name="@Tourtaille" value="90"/>
+        <m name="@Tourpetiteshanches" value="99"/>
+        <m description="79" name="@Tourdetaillebassesousnombril" value="0"/>
+        <m name="@Hauteurpetiteshanches" value="9"/>
+        <m description="non mesuré" name="@Hauteurdubassin" value="20"/>
+        <m name="@Tourdebassin" value="100"/>
+        <m description="(tour de bassin : 2) + 1 cm) : 2&#xa;" name="@Demitourdebassindevant" value="((100/2)+1) /2"/>
+        <m description="(tour de bassin : 2) - 1 cm) : 2&#xa;" name="@Demitourdebassindos" value="((100/2)-1) /2"/>
+        <m name="@Longueurjupeàpartirtaille" value="54"/>
+        <m name="@Longeurrobesouspoitrine" value="65"/>
+        <m description="Longueur de bras" name="@Longueurmanchelongue" value="69"/>
+        <m name="@Tourpoignet" value="17"/>
+        <m name="@Tourencolure" value="44"/>
+        <m description="Tour de poitrine/20" name="@Valeurpincebretelle" value="97/20"/>
+        <m description="Tour de poitrine - tour de taille : 7&#xa; " name="@Valeurpincedevantetdos" value="(97-90)/7"/>
+        <m description="Valeur de la pince calculée : 2" name="@Valeurpincecôtédevantetdos" value="1/2"/>
+        <m name="@Valeurpinceépaule" value="1"/>
+        <m description="" name="@Longueurpinceépaule" value="6"/>
+        <m name="@Tourdecuisse" value="0"/>
+        <m name="@Tourdebiceps" value="0"/>
+        <m description="" name="@Hauteurgenou" value="0"/>
+        <m name="@Hauteurdumontant" value="0"/>
+        <m name="@Montantdos" value="0"/>
+        <m name="@Epaulecoude" value="0"/>
+        <m name="@Touremmanchure" value="0"/>
+        <m name="@Hauteurgenousol" value="0"/>
+        <m description="" name="@Tourdegenou" value="0"/>
+        <m name="@Tourdemollet" value="0"/>
+        <m name="@Tourdecheville" value="0"/>
+    </body-measurements>
+</smis>

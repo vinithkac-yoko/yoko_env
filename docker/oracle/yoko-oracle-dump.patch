@@ -1,5 +1,5 @@
 diff --git a/src/app/seamly2d/mainwindow.cpp b/src/app/seamly2d/mainwindow.cpp
-index a2aeacb..f89b46d 100644
+index a2aeacb..24f0726 100644
 --- a/src/app/seamly2d/mainwindow.cpp
 +++ b/src/app/seamly2d/mainwindow.cpp
 @@ -8092,6 +8092,83 @@ bool MainWindow::setHeight(const QString &text)
@@ -9,7 +9,7 @@ index a2aeacb..f89b46d 100644
 +
 +// ---- yoko-env oracle patch (not part of Seamly2D) ---------------------------------------------------------------
 +// Dumps everything the pattern computed (points, curves, arcs, variables) as JSON so that an independent engine can
-+// be compared against Seamly2D. Active only when the environment variable YOKO_ORACLE_DUMP names an output file.
++// be compared against Seamly2D. Active only when the environment variable YOKO_ORACLE_DUMP (or YOKO_ORACLE_SAVE) names an output file.
 +#include <QJsonArray>
 +#include <QJsonDocument>
 +#include <QJsonObject>
@@ -86,7 +86,7 @@ index a2aeacb..f89b46d 100644
  void MainWindow::processCommandLine()
  {
      const VCommandLinePtr cmd = qApp->commandLine();
-@@ -8137,6 +8214,11 @@ void MainWindow::processCommandLine()
+@@ -8137,6 +8214,21 @@ void MainWindow::processCommandLine()
              }
          }
  
@@ -95,6 +95,44 @@ index a2aeacb..f89b46d 100644
 +            yokoOracleDump(pattern, QString::fromUtf8(qgetenv("YOKO_ORACLE_DUMP")));
 +        }
 +
++        // Save the loaded pattern the way Seamly2D saves it (this also upgrades older formats to the pinned one).
++        if (loaded && !qgetenv("YOKO_ORACLE_SAVE").isEmpty())
++        {
++            QString saveError;
++            if (!doc->SaveDocument(QString::fromUtf8(qgetenv("YOKO_ORACLE_SAVE")), saveError))
++            {
++                qWarning() << "yoko oracle: could not save:" << saveError;
++            }
++        }
++
          if (!cmd->IsTestModeEnabled())
          {
              if (cmd->IsExportEnabled())
+diff --git a/src/libs/ifc/xml/abstract_converter.cpp b/src/libs/ifc/xml/abstract_converter.cpp
+index 72da13f..4eecb62 100644
+--- a/src/libs/ifc/xml/abstract_converter.cpp
++++ b/src/libs/ifc/xml/abstract_converter.cpp
+@@ -88,6 +88,7 @@ VAbstractConverter::VAbstractConverter(const QString &fileName)
+ //---------------------------------------------------------------------------------------------------------------------
+ QString VAbstractConverter::Convert()
+ {
++    const QString yokoOriginalName = QFileInfo(m_convertedFileName).fileName(); // yoko-env oracle patch
+     if (m_ver == maxVer())
+     {
+         return m_convertedFileName;
+@@ -113,6 +114,15 @@ QString VAbstractConverter::Convert()
+ 
+     m_ver < maxVer() ? applyPatches() : downgradeToCurrentMaxVersion();
+ 
++    // yoko-env oracle patch: keep a copy of what the converter produced, so the upgrades done by an
++    // independent implementation can be compared with Seamly2D's own. Active only when the environment
++    // variable YOKO_ORACLE_CONVERTED_DIR names a directory.
++    const QByteArray yokoDir = qgetenv("YOKO_ORACLE_CONVERTED_DIR");
++    if (!yokoDir.isEmpty())
++    {
++        QFile::copy(m_convertedFileName, QString::fromUtf8(yokoDir) + QLatin1Char('/') + yokoOriginalName);
++    }
++
+     return m_convertedFileName;
+ }
+ 

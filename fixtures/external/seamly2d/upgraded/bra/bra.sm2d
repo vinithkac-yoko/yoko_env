@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements>bra.smis</measurements>
+    <variables/>
+    <draftBlock name="Bra">
+        <calculation>
+            <point id="1" mx="0.132292" my="0.264583" name="Т" type="single" x="0.819903" y="23.1895"/>
+            <point angle="0" basePoint="1" id="2" length="highbust_circ/2" lineType="solidLine" mx="0.132292" my="0.264583" name="Т4" type="endLine"/>
+            <point firstPoint="1" id="3" length="Line_Т_Т4/2" lineType="none" mx="0.132292" my="0.264583" name="T2" secondPoint="2" type="alongLine"/>
+            <point firstPoint="1" id="4" length="Line_Т_T2/2" lineType="none" mx="0.132292" my="0.264583" name="T1" secondPoint="3" type="alongLine"/>
+            <point firstPoint="3" id="5" length="Line_T2_Т4/2" lineType="none" mx="0.132292" my="0.264583" name="T3" secondPoint="2" type="alongLine"/>
+            <point angle="90" basePoint="1" id="6" length="highbust_to_waist_f" lineType="solidLine" mx="-2.09946" my="-2.94479" name="B" type="endLine"/>
+            <point angle="90" basePoint="4" id="7" length="highbust_to_waist_f+6" lineType="solidLine" mx="0.754797" my="-1.83637" name="B1" type="endLine"/>
+            <point angle="90" basePoint="3" id="8" length="armpit_to_waist_side" lineType="solidLine" mx="0.132292" my="0.264583" name="В2" type="endLine"/>
+            <point angle="90" basePoint="5" id="9" length="across_back_to_waist_b" lineType="solidLine" mx="0.132292" my="0.264583" name="В3" type="endLine"/>
+            <point angle="0" basePoint="9" id="10" length="3" lineType="solidLine" mx="0.646079" my="-1.93736" name="В4" type="endLine"/>
+            <point angle="90" basePoint="2" id="11" length="across_back_to_waist_b-6" lineType="solidLine" mx="0.132292" my="0.264583" name="В5" type="endLine"/>
+            <line firstPoint="6" id="12" lineType="solidLine" secondPoint="7"/>
+            <spline angle1="274.169" angle2="187.017" id="13" kAsm1="0.722178" kAsm2="0.676466" kCurve="1" point1="10" point4="11" type="simple"/>
+            <point firstPoint="1" id="14" length="(highbust_circ-waist_circ)/2/2" lineType="none" mx="0.132292" my="0.264583" name="Т5" secondPoint="4" type="alongLine"/>
+            <line firstPoint="6" id="15" lineType="solidLine" secondPoint="14"/>
+            <point firstPoint="2" id="16" length="(highbust_circ-waist_circ)/2/2" lineType="none" mx="0.132292" my="0.264583" name="Т6" secondPoint="5" type="alongLine"/>
+            <line firstPoint="16" id="17" lineType="solidLine" secondPoint="11"/>
+            <point firstPoint="3" id="18" length="2.5" lineType="none" mx="0.132292" my="0.264583" name="Т7" secondPoint="8" type="alongLine"/>
+            <spline id="19" kCurve="1" type="path">
+                <pathPoint angle="10.7913" kAsm1="1" kAsm2="1.00957" pSpline="14"/>
+                <pathPoint angle="0.832637" kAsm1="1.0069" kAsm2="1.01803" pSpline="18"/>
+                <pathPoint angle="346.792" kAsm1="0.966617" kAsm2="1" pSpline="16"/>
+            </spline>
+            <point firstPoint="4" id="20" length="lowbust_to_waist_f" lineType="none" mx="0.132292" my="0.264583" name="Г" secondPoint="7" type="alongLine"/>
+            <point angle="180" basePoint="20" id="21" length="Line_Т_T1" lineType="solidLine" mx="-4.12783" my="0.896469" name="Г1х" type="endLine"/>
+            <point id="22" mx="-0.344796" my="-3.77231" name="Г1" p1Line1="6" p1Line2="20" p2Line1="14" p2Line2="21" type="lineIntersect"/>
+            <point firstPoint="22" id="23" length="2.5" lineType="none" mx="-0.813146" my="1.28881" name="Г2" secondPoint="20" type="alongLine"/>
+            <point firstPoint="6" id="24" length="2.5" lineType="none" mx="1.38006" my="-0.432699" name="Г3" secondPoint="7" type="alongLine"/>
+            <point angle="0" basePoint="20" id="25" length="Line_Г2_Г-2" lineType="solidLine" mx="0.132292" my="0.264583" name="Г4" type="endLine"/>
+            <line firstPoint="7" id="26" lineType="solidLine" secondPoint="8"/>
+            <point angle="90" basePoint="25" id="27" length="Line_Г_B1" lineType="solidLine" mx="0.132292" my="0.264583" name="В5х" type="endLine"/>
+            <point id="28" mx="1.30666" my="-1.38687" name="В51" p1Line1="7" p1Line2="25" p2Line1="8" p2Line2="27" type="lineIntersect"/>
+            <line firstPoint="20" id="29" lineType="solidLine" secondPoint="28"/>
+            <point firstPoint="20" id="30" length="Line_Г_В51/3" lineType="none" mx="-1.22557" my="-4.4329" name="Г5" secondPoint="28" type="alongLine"/>
+            <point angle="0" firstPoint="30" id="31" length="1.7" lineType="solidLine" mx="1.67258" my="-1.78048" name="Г6" secondPoint="20" type="normal"/>
+            <line firstPoint="23" id="32" lineType="solidLine" secondPoint="24"/>
+            <point firstPoint="23" id="33" length="Line_Г2_Г3/2" lineType="none" mx="1.56355" my="-1.68047" name="Г7" secondPoint="24" type="alongLine"/>
+            <line firstPoint="33" id="34" lineType="solidLine" secondPoint="20"/>
+            <point firstPoint="33" id="35" length="Line_Г7_Г/3" lineType="none" mx="0.132292" my="0.264583" name="Г8" secondPoint="20" type="alongLine"/>
+            <point angle="0" firstPoint="35" id="36" length="2.5" lineType="solidLine" mx="1.47166" my="1.60396" name="Г9" secondPoint="33" type="normal"/>
+            <spline id="37" kCurve="1" type="path">
+                <pathPoint angle="285.289" kAsm1="1" kAsm2="1" pSpline="24"/>
+                <pathPoint angle="288.038" kAsm1="0.947578" kAsm2="1.20549" pSpline="33"/>
+                <pathPoint angle="323.362" kAsm1="0.918205" kAsm2="0.343325" pSpline="36"/>
+                <pathPoint angle="9.78436" kAsm1="0.975465" kAsm2="1" pSpline="20"/>
+                <pathPoint angle="46.6117" kAsm1="1.08715" kAsm2="0.728559" pSpline="31"/>
+                <pathPoint angle="77.5159" kAsm1="1" kAsm2="1" pSpline="28"/>
+            </spline>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+</pattern>

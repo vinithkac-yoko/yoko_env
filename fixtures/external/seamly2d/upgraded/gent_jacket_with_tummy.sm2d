@@ -1,0 +1,1876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternName>Gent jacket(with tummy)</patternName>
+    <patternNumber>Jacket_20160914</patternNumber>
+    <company>StindeDesign</company>
+    <customer>Customer</customer>
+    <patternLabel>
+        <line alignment="0" bold="true" italic="false" sfIncrement="4" text="%author%"/>
+        <line alignment="0" bold="false" italic="false" sfIncrement="2" text="%patternName%"/>
+        <line alignment="0" bold="false" italic="false" sfIncrement="0" text="%patternNumber%"/>
+        <line alignment="0" bold="false" italic="true" sfIncrement="0" text="%customer%"/>
+        <line alignment="0" bold="false" italic="false" sfIncrement="0" text="Bespoke"/>
+        <line alignment="0" bold="false" italic="true" sfIncrement="0" text="%date%"/>
+    </patternLabel>
+    <measurements/>
+    <variables>
+        <variable description="" formula="0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0" name="#Säädettävät"/>
+        <variable description="2...4" formula="2.8" name="#RinnanleveysLisäys"/>
+        <variable description="RinnanleveysLisäys 2 --&gt; VatsanleveysLisäys 0&#10;RinnanleveysLisäys 2,5 --&gt; VatsanleveysLisäys 0..0,5&#10;RinnanleveysLisäys 3 --&gt; VatsanleveysLisäys 0,5...1&#10;RinnanleveysLisäys 3,5 --&gt; VatsanleveysLisäys 1&#10;RinnanleveysLisäys 4 --&gt; VatsanleveysLisäys 1...1,5&#10;&#10;&#10;" formula="0.2" name="#VatsanleveysLisäys"/>
+        <variable description="4,5...5" formula="3.9" name="#KädentienleveysLisäys"/>
+        <variable description="" formula="0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0" name="#Kaavamuutokset"/>
+        <variable description="0.7...1&#10;Takasaumaa siirretää vyötäröllä" formula="0.7" name="#TakasaumaVyötäröllä"/>
+        <variable description="Takaosan olkapään lasku" formula="2" name="#TakaolkapääLasku"/>
+        <variable description="1,5 ... 2&#10;Hartialinjan pituuslisäys" formula="2" name="#Takahartiapituuslisäys"/>
+        <variable description="Hartialinjan siirto eteenpäin" formula="1" name="#Hartialinjasiirto"/>
+        <variable description="" formula="1.5" name="#VyötärösisäänottoSivusauma"/>
+        <variable description="2,5...3" formula="3" name="#TakakappaleenlantionPoisto"/>
+        <variable description="" formula="24" name="#Sivuhalkionkorkeus"/>
+        <variable description="" formula="2.5" name="#Helmataitteenkorkeus"/>
+        <variable description="" formula="3.5" name="#KädentienleveysEtuosassa"/>
+        <variable description="6 ... 7" formula="6" name="#Lantiolisäys"/>
+        <variable description="" formula="9.2" name="#TaskunEtureunanKorkeus"/>
+        <variable description="" formula="7.8" name="#TaskunTakareunankorkeus"/>
+        <variable description="" formula="0" name="#Sivuleikkausenkorkeus"/>
+        <variable description="1...1,5" formula="1.5" name="#EtulinjanSiirto"/>
+        <variable description="" formula="4" name="#EtuolkapäänLasku"/>
+        <variable description="0,5...1" formula="0.5" name="#Etuhartiakavennus"/>
+        <variable description="" formula="1" name="#Selänlisäsaumavara"/>
+        <variable description="" formula="1.5" name="#Etuosansisäänotto"/>
+        <variable description="" formula="4" name="#EtusisäänonttoRintalinjalta"/>
+        <variable description="" formula="1.8" name="#Taitepiste"/>
+        <variable description="" formula="8" name="#Taitepistekorkeus"/>
+        <variable description="" formula="0" name="#Kauluksenpituusvähennys"/>
+        <variable description="" formula="1.5" name="#Kauluksenkäyryys"/>
+        <variable description="" formula="2.5" name="#Kauluksenalaosa"/>
+        <variable description="" formula="4" name="#Kauluksenyläosa"/>
+        <variable description="" formula="11" name="#Rintataskunleveys"/>
+        <variable description="" formula="3" name="#Rintataskunkorkeus"/>
+        <variable description="" formula="12" name="#Rintataskusyvyys"/>
+        <variable description="" formula="7" name="#Rintaliinakorkeusrinnalta"/>
+        <variable description="" formula="4" name="#Rintaliinahatiatukietu"/>
+        <variable description="" formula="7" name="#Rintaliinahatiatukikäsi"/>
+        <variable description="" formula="1.5" name="#Sivutaskunleveyslisäykset"/>
+        <variable description="" formula="6" name="#Sivutaskunläppä"/>
+        <variable description="" formula="3" name="#SivutaskuHelmasta"/>
+        <variable description="1...1,5" formula="1.5" name="#Etuhelmalisäys"/>
+        <variable description="" formula="8" name="#EtuhelmanKaartopiste"/>
+        <variable description="" formula="0.7" name="#Etureunalantiolta"/>
+        <variable description="" formula="7" name="#Etuvuorireunasta"/>
+        <variable description="" formula="0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0" name="#Hiha"/>
+        <variable description="" formula="30" name="#Hihankädentie"/>
+        <variable description="4...5" formula="4.5" name="#KyynerpääLisäys"/>
+        <variable description="" formula="9" name="#Hihahalkionkorkeus"/>
+        <variable description="" formula="4" name="#Hihahalkionleveys"/>
+        <variable description="" formula="4" name="#Hihansuunkäänne"/>
+        <variable description="" formula="0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0*0" name="#Piirtoarvot"/>
+        <variable description="" formula="20" name="#TakaEtuosaväli"/>
+        <variable description="" formula="1" name="#Printfix"/>
+        <variable description="" formula="0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0" name="#Mainvalues"/>
+        <variable description="Height" formula="180" name="#Vp"/>
+        <variable description="Bust girth" formula="122" name="#Ry"/>
+        <variable description="Waist girth" formula="130" name="#Vy"/>
+        <variable description="Hip girth" formula="122" name="#Ly"/>
+        <variable description="Arm length" formula="65" name="#Hp"/>
+        <variable description="" formula="0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0" name="#Apumitat"/>
+        <variable description="Kädentienkorkeus&#10;1/8Ry+11...12&#10;1/8Ry +1/16Vp + 0,5cm " formula="1/8*#Ry +12" name="#Ktk"/>
+        <variable description="Selänpituus&#10;¼Vp + 1,5cm " formula="1/4*#Vp+1" name="#Sp"/>
+        <variable description="Lantiolinja &#10;1/8Vp vyötäröltä &#10;" formula="1/8*#Vp" name="#Ll"/>
+        <variable description="Takin pituus &#10;½Vp % 9cm &#10;" formula="1/2*#Vp-10" name="#Tp"/>
+        <variable description="Pääntien leveys &#10;&#10;1/10pRy + 3..3,5&#10;" formula="1/20*#Ry + 3" name="#Ptl"/>
+        <variable description="Etukädentie &#10;Ktk + 2...2,5&#10;" formula="#Ktk + 3.5" name="#Ekt"/>
+        <variable description="Selänleveys &#10;1/10Ry + 11cm (Ry yli 100cm) &#10;2/10 Ry + 1cm (Ry alle 100cm)&#10;" formula="#Ry&gt;100?(1/10*#Ry + 11.4): (2/10*#Ry + 1)" name="#Sl"/>
+        <variable description="Kädentienleveys &#10;1/8Ry + KädentienleveysLisäys&#10;" formula="1/8*#Ry + #KädentienleveysLisäys" name="#Ktl"/>
+        <variable description="Rinnanleveys &#10;2/10Ry + RinnanleveysLisäys" formula="2/10*#Ry + #RinnanleveysLisäys" name="#Rl"/>
+        <variable description="Vatsanleveys &#10;¼Vy +  VatsanleveysLisäys&#10;" formula="1/4*#Vy +  #VatsanleveysLisäys" name="#Vl"/>
+        <variable description="" formula="#Rl+#Ktl+#Sl-1/2*#Ry" name="#VäljyysRinnankorkeus"/>
+    </variables>
+    <draftBlock name="Miesten takki">
+        <calculation>
+            <point id="1" mx="0.264479" my="-0.476908" name="Niskapiste" type="single" x="0.79" y="1.06"/>
+            <point angle="270" basePoint="1" id="2" length="#Tp" lineColor="black" lineType="dotLine" mx="0.590581" my="-0.308278" name="Helmalinja" type="endLine"/>
+            <point firstPoint="1" id="3" length="#Ktk" lineColor="black" lineType="none" mx="0.476008" my="-0.651994" name="Kädentie" secondPoint="2" type="alongLine"/>
+            <point firstPoint="1" id="4" length="#Sp" lineColor="black" lineType="none" mx="0.476008" my="-0.308278" name="Vyötärö" secondPoint="2" type="alongLine"/>
+            <point firstPoint="4" id="5" length="#Ll" lineColor="black" lineType="none" mx="0.590581" my="-0.537422" name="Lantio" secondPoint="2" type="alongLine"/>
+            <point firstPoint="1" id="6" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A1" secondPoint="3" type="alongLine"/>
+            <point angle="0" firstPoint="5" id="7" length="4" lineColor="black" lineType="none" mx="-2.53017" my="-1.51039" name="A2" secondPoint="4" type="normal"/>
+            <line firstPoint="6" id="8" lineColor="black" lineType="dotLine" secondPoint="7"/>
+            <point angle="180" basePoint="3" id="9" lineColor="black" lineType="none" mx="-1.35715" my="-1.22485" name="A3" p1Line="6" p2Line="7" type="lineIntersectAxis"/>
+            <point angle="180" basePoint="4" id="10" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A4" p1Line="6" p2Line="7" type="lineIntersectAxis"/>
+            <point angle="90" firstPoint="10" id="11" length="#TakasaumaVyötäröllä" lineColor="black" lineType="none" mx="-1.24257" my="-1.33943" name="A5" secondPoint="4" type="normal"/>
+            <point angle="90" firstPoint="9" id="12" length="#Sl" lineColor="black" lineType="dotLine" mx="0.361436" my="-0.99571" name="A6" secondPoint="3" type="normal"/>
+            <point firstPoint="9" id="13" length="CurrentLength+0.3" lineColor="black" lineType="none" mx="-1.35715" my="-0.42285" name="A7" secondPoint="12" type="alongLine"/>
+            <point firstPoint="12" id="14" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="-1.58629" my="-0.99571" name="A8" secondPoint="1" type="intersectXY"/>
+            <point firstPoint="1" id="15" length="#Ptl" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A9" secondPoint="14" type="alongLine"/>
+            <point firstPoint="14" id="16" length="#TakaolkapääLasku" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A10" secondPoint="12" type="alongLine"/>
+            <point angle="0" firstPoint="15" id="17" length="1.5" lineColor="black" lineType="none" mx="0.529845" my="-0.66304" name="A11" secondPoint="1" type="normal"/>
+            <point angle="180" firstPoint="17" id="18" length="1" lineColor="black" lineType="none" mx="0.397327" my="-1.06059" name="A12" secondPoint="16" type="normal"/>
+            <point angle="180" firstPoint="18" id="19" length="#Hartialinjasiirto" lineColor="black" lineType="none" mx="0.264809" my="-1.76735" name="A13" secondPoint="16" type="normal"/>
+            <point firstPoint="18" id="20" length="CurrentLength+#Takahartiapituuslisäys" lineColor="black" lineType="none" mx="-1.89964" my="-0.353832" name="A14" secondPoint="16" type="alongLine"/>
+            <point angle="0" firstPoint="20" id="21" length="#Hartialinjasiirto" lineColor="black" lineType="none" mx="-1.67878" my="-0.751385" name="A15" secondPoint="18" type="normal"/>
+            <line firstPoint="21" id="22" lineColor="darkRed" lineType="solidLine" secondPoint="19"/>
+            <spline angle1="286.829" angle2="180.09" color="darkRed" id="23" length1="2.32151" length2="5.35355" point1="19" point4="1" type="simpleInteractive"/>
+            <point firstPoint="12" id="24" length="#Ktk/4" lineColor="black" lineType="none" mx="0.476008" my="-0.42285" name="A16" secondPoint="14" type="alongLine"/>
+            <point angle="90" firstPoint="7" id="25" length="#Sl-#TakakappaleenlantionPoisto" lineColor="black" lineType="dotLine" mx="0.428122" my="1.74373" name="A17" secondPoint="5" type="normal"/>
+            <line firstPoint="12" id="26" lineColor="black" lineType="dotLine" secondPoint="25"/>
+            <point angle="180" basePoint="11" id="27" lineColor="black" lineType="dotLine" mx="-1.80009" my="-0.697495" name="A18" p1Line="13" p2Line="25" type="lineIntersectAxis"/>
+            <point firstPoint="27" id="28" length="#VyötärösisäänottoSivusauma" lineColor="black" lineType="none" mx="-1.73896" my="-1.15578" name="A19" secondPoint="11" type="alongLine"/>
+            <point firstPoint="28" id="29" length="0.5" lineColor="black" lineType="none" mx="0.315662" my="-1.05683" name="A20" secondPoint="11" type="alongLine"/>
+            <point angle="180" basePoint="24" id="30" lineColor="black" lineType="none" mx="-1.93" my="-0.42285" name="A21" p1Line="29" p2Line="12" type="lineIntersectAxis"/>
+            <point angle="180" basePoint="2" id="31" lineColor="black" lineType="none" mx="-1.81024" my="-1.31933" name="A22" p1Line="11" p2Line="7" type="lineIntersectAxis"/>
+            <point angle="0" firstPoint="31" id="32" length="Line_A2_A17" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A23" secondPoint="7" type="normal"/>
+            <point firstPoint="32" id="33" length="#Sivuhalkionkorkeus" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A24" secondPoint="25" type="alongLine"/>
+            <point angle="180" firstPoint="33" id="34" length="3" lineColor="black" lineType="none" mx="-1.14823" my="-1.51392" name="A25" secondPoint="32" type="normal"/>
+            <point firstPoint="31" id="35" length="CurrentLength+3" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A26" secondPoint="32" type="alongLine"/>
+            <point firstPoint="34" id="36" length="1" lineColor="black" lineType="none" mx="-2.07306" my="-0.233399" name="A27" secondPoint="35" type="alongLine"/>
+            <line firstPoint="32" id="37" lineColor="black" lineType="dotLine" secondPoint="35"/>
+            <line firstPoint="35" id="38" lineColor="black" lineType="dotLine" secondPoint="36"/>
+            <line firstPoint="36" id="39" lineColor="black" lineType="dotLine" secondPoint="33"/>
+            <line firstPoint="7" id="40" lineColor="black" lineType="dotLine" secondPoint="31"/>
+            <point firstPoint="7" id="41" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="none" mx="-1.24242" my="0.264583" name="A28" secondPoint="31" type="alongLine"/>
+            <point firstPoint="36" id="42" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A29" secondPoint="35" type="alongLine"/>
+            <line firstPoint="35" id="43" lineColor="black" lineType="dotLine" secondPoint="42"/>
+            <line firstPoint="42" id="44" lineColor="black" lineType="dotLine" secondPoint="41"/>
+            <line firstPoint="31" id="45" lineColor="black" lineType="dotLine" secondPoint="41"/>
+            <spline color="darkRed" id="46" type="pathInteractive">
+                <pathPoint angle1="262.34" angle2="82.34" length1="0" length2="3.41408" pSpline="33"/>
+                <pathPoint angle1="267.776" angle2="87.776" length1="1.46471" length2="4.71469" pSpline="28"/>
+                <pathPoint angle1="278.932" angle2="98.9321" length1="1.40896" length2="0.693956" pSpline="13"/>
+                <pathPoint angle1="263.773" angle2="83.7733" length1="0.498399" length2="3.84556" pSpline="30"/>
+                <pathPoint angle1="291.756" angle2="111.756" length1="6.12567" length2="0.824283" pSpline="21"/>
+            </spline>
+            <line firstPoint="12" id="47" lineColor="black" lineType="dotLine" secondPoint="14"/>
+            <spline color="black" id="48" type="pathInteractive">
+                <pathPoint angle1="87.7127" angle2="267.713" length1="0" length2="3.25569" pSpline="6"/>
+                <pathPoint angle1="85.4446" angle2="265.445" length1="3.80639" length2="1.33166" pSpline="9"/>
+                <pathPoint angle1="84.4299" angle2="264.43" length1="2.10633" length2="1.26323" pSpline="11"/>
+                <pathPoint angle1="92.2164" angle2="272.216" length1="0.797794" length2="2.54057" pSpline="7"/>
+                <pathPoint angle1="87.6072" angle2="267.607" length1="3.8662" length2="0.830048" pSpline="31"/>
+            </spline>
+            <point firstPoint="34" id="50" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A30" secondPoint="33" type="alongLine"/>
+            <point firstPoint="35" id="51" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A31" secondPoint="32" type="alongLine"/>
+            <spline color="black" id="52" type="pathInteractive">
+                <pathPoint angle1="268.361" angle2="88.3609" length1="0" length2="2.99337" pSpline="51"/>
+                <pathPoint angle1="274.457" angle2="94.457" length1="0.989665" length2="2.34913" pSpline="50"/>
+                <pathPoint angle1="276.915" angle2="96.915" length1="0.800909" length2="0.838848" pSpline="13"/>
+                <pathPoint angle1="264.115" angle2="84.115" length1="1.31711" length2="6.89725" pSpline="30"/>
+                <pathPoint angle1="289.336" angle2="109.336" length1="5.94882" length2="0.986436" pSpline="21"/>
+            </spline>
+            <point firstPoint="42" id="53" length="Line_A26_A31" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A32" secondPoint="41" type="alongLine"/>
+            <point firstPoint="5" id="69" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A33" secondPoint="2" type="alongLine"/>
+            <point firstPoint="1" id="89" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A34" secondPoint="6" type="alongLine"/>
+            <spline angle1="0.0475314" angle2="178.974" color="black" id="90" length1="10.5104" length2="23.4658" point1="13" point4="89" type="simpleInteractive"/>
+            <line firstPoint="28" id="101" lineColor="green" lineType="dashLine" secondPoint="25"/>
+            <line firstPoint="25" id="102" lineColor="green" lineType="dashLine" secondPoint="32"/>
+            <point angle="90" firstPoint="12" id="103" length="#TakaEtuosaväli" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A35" secondPoint="3" type="normal"/>
+            <point angle="90" firstPoint="103" id="104" length="#Ktl-#KädentienleveysEtuosassa" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A36" secondPoint="3" type="normal"/>
+            <point angle="90" firstPoint="104" id="105" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A37" secondPoint="3" type="normal"/>
+            <point angle="90" firstPoint="105" id="106" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A38" secondPoint="3" type="normal"/>
+            <point angle="90" firstPoint="106" id="107" length="#KädentienleveysEtuosassa" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A39" secondPoint="3" type="normal"/>
+            <point angle="90" firstPoint="107" id="108" length="#Rl" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A40" secondPoint="3" type="normal"/>
+            <point firstPoint="107" id="109" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="-3.47196" my="-2.64654" name="A41" secondPoint="4" type="intersectXY"/>
+            <point firstPoint="109" id="110" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="-1.83701" my="-0.0590823" name="A42" secondPoint="5" type="intersectXY"/>
+            <point angle="0" firstPoint="107" id="111" length="#Ekt" lineColor="black" lineType="none" mx="-1.86679" my="-3.01479" name="A43" secondPoint="3" type="normal"/>
+            <line firstPoint="110" id="112" lineColor="black" lineType="dotLine" secondPoint="111"/>
+            <point firstPoint="110" id="113" length="2" lineColor="black" lineType="dotLine" mx="0.132292" my="0.125958" name="A44" secondPoint="5" type="alongLine"/>
+            <point firstPoint="113" id="114" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A45" secondPoint="5" type="alongLine"/>
+            <point firstPoint="114" id="115" length="#Ktl+4-max(0;min(3;#Rl+#Ktl+4+Line_A2_A17-(#Ly/2+#Lantiolisäys)))" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A46" secondPoint="5" type="alongLine"/>
+            <point firstPoint="107" id="116" length="Line_A6_A16" lineColor="black" lineType="none" mx="-3.39061" my="-1.77499" name="A47" secondPoint="111" type="alongLine"/>
+            <point id="117" mx="-1.69327" my="-1.44688" name="A48" p1Line1="115" p1Line2="116" p2Line1="103" p2Line2="24" type="lineIntersect"/>
+            <point firstPoint="117" id="118" length="0.5" lineColor="black" lineType="none" mx="0.588681" my="-2.47375" name="A49" secondPoint="24" type="alongLine"/>
+            <line firstPoint="103" id="119" lineColor="black" lineType="dotLine" secondPoint="115"/>
+            <point angle="180" basePoint="4" id="120" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A50" p1Line="103" p2Line="115" type="lineIntersectAxis"/>
+            <point firstPoint="4" id="121" length="CurrentLength+Line_A18_A19" lineColor="black" lineType="none" mx="-0.21" my="0.606875" name="A51" secondPoint="120" type="alongLine"/>
+            <point firstPoint="120" id="122" length="CurrentLength+Line_A19_A20" lineColor="black" lineType="none" mx="-1.57917" my="-1.33278" name="A52" secondPoint="121" type="alongLine"/>
+            <point angle="2*270-AngleLine_A17_A23" basePoint="115" id="123" length="Line_A17_A23" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A53" type="endLine"/>
+            <point firstPoint="123" id="124" length="#Sivuhalkionkorkeus" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A54" secondPoint="115" type="alongLine"/>
+            <point angle="0" firstPoint="124" id="125" length="Line_A24_A25" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A55" secondPoint="123" type="normal"/>
+            <point angle="180" firstPoint="123" id="126" length="Line_A23_A26" lineColor="black" lineType="dotLine" mx="-0.221935" my="0.275749" name="A56" secondPoint="124" type="normal"/>
+            <point firstPoint="125" id="127" length="Line_A25_A27" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A57" secondPoint="126" type="alongLine"/>
+            <line firstPoint="124" id="128" lineColor="black" lineType="dotLine" secondPoint="127"/>
+            <point firstPoint="109" id="130" length="#TaskunTakareunankorkeus" lineColor="black" lineType="none" mx="-3.47196" my="-1.67617" name="A58" secondPoint="110" type="alongLine"/>
+            <point angle="180" firstPoint="130" id="131" length="2" lineColor="black" lineType="none" mx="-0.242761" my="0.350658" name="A59" secondPoint="109" type="normal"/>
+            <point firstPoint="130" id="132" length="CurrentLength+2" lineColor="black" lineType="none" mx="0.820894" my="-0.596169" name="A60" secondPoint="131" type="alongLine"/>
+            <line firstPoint="106" id="133" lineColor="black" lineType="dotLine" secondPoint="131"/>
+            <point id="134" mx="-0.7645" my="-1.7977" name="A61" p1Line1="131" p1Line2="109" p2Line1="106" p2Line2="120" type="lineIntersect"/>
+            <point firstPoint="109" id="135" length="CurrentLength+2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A62" secondPoint="134" type="alongLine"/>
+            <point basePoint="114" id="136" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A63" p1Line="126" p2Line="123" type="height"/>
+            <line firstPoint="136" id="137" lineColor="black" lineType="dotLine" secondPoint="123"/>
+            <point firstPoint="114" id="138" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A64" secondPoint="136" type="alongLine"/>
+            <point firstPoint="115" id="139" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A65" secondPoint="123" type="alongLine"/>
+            <point firstPoint="127" id="140" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A66" secondPoint="126" type="alongLine"/>
+            <line firstPoint="138" id="141" lineColor="black" lineType="dotLine" secondPoint="140"/>
+            <spline angle1="92.3892" angle2="257.857" color="black" id="142" length1="19.3725" length2="5.35194" point1="114" point4="104" type="simpleInteractive"/>
+            <spline angle1="358.067" angle2="252.086" color="black" id="143" length1="4.77322" length2="4.9912" point1="104" point4="118" type="simpleInteractive"/>
+            <spline color="black" id="144" type="pathInteractive">
+                <pathPoint angle1="89.3772" angle2="269.377" length1="0" length2="6.51817" pSpline="118"/>
+                <pathPoint angle1="94.5941" angle2="274.594" length1="2.91949" length2="0.778239" pSpline="121"/>
+                <pathPoint angle1="180" angle2="0" length1="0" length2="0" pSpline="124"/>
+            </spline>
+            <point firstPoint="136" id="146" length="0.8" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A67" secondPoint="138" type="alongLine"/>
+            <spline angle1="269.807" angle2="104.237" color="black" id="147" length1="27.9107" length2="4.89706" point1="118" point4="127" type="simpleInteractive"/>
+            <point firstPoint="125" id="148" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A68" secondPoint="124" type="alongLine"/>
+            <point firstPoint="140" id="149" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A69" secondPoint="139" type="alongLine"/>
+            <point id="150" length="Spl_A45_A36-#Ktk/4" mx="0.132292" my="0.264583" name="A70" spline="142" type="cutSpline"/>
+            <spline angle1="324.218" angle2="233.577" color="black" id="151" length1="0.740987" length2="7.37175" point1="150" point4="103" type="simpleInteractive"/>
+            <point angle="0" firstPoint="109" id="197" length="#Vl" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A71" secondPoint="107" type="normal"/>
+            <point firstPoint="108" id="198" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A72" secondPoint="107" type="alongLine"/>
+            <point firstPoint="197" id="199" length="CurrentLength/2" lineColor="black" lineType="none" mx="-3.31072" my="-1.8873" name="A73" secondPoint="109" type="alongLine"/>
+            <point firstPoint="199" id="200" length="CurrentLength+#Ekt" lineColor="black" lineType="none" mx="-3.14801" my="-1.8952" name="A74" secondPoint="198" type="alongLine"/>
+            <point angle="0" firstPoint="200" id="201" length="#EtulinjanSiirto" lineColor="black" lineType="none" mx="1.0641" my="-1.48255" name="A75" secondPoint="198" type="normal"/>
+            <point basePoint="111" id="202" lineColor="black" lineType="none" mx="0.132292" my="-1.86904" name="A76" p1Line="198" p2Line="201" type="height"/>
+            <point basePoint="107" id="203" lineColor="black" lineType="dotLine" mx="0.288152" my="-1.13816" name="A77" p1Line="202" p2Line="111" type="height"/>
+            <point firstPoint="202" id="204" length="#Ptl" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A78" secondPoint="198" type="alongLine"/>
+            <point firstPoint="203" id="205" length="#EtuolkapäänLasku" lineColor="black" lineType="none" mx="1.70471" my="-2.58906" name="A79" secondPoint="107" type="alongLine"/>
+            <point firstPoint="202" id="206" length="Line_A15_A13-#Etuhartiakavennus" lineColor="black" lineType="none" mx="1.29705" my="-2.00669" name="A80" secondPoint="205" type="alongLine"/>
+            <point angle="180" firstPoint="202" id="207" length="#Hartialinjasiirto" lineColor="black" lineType="solidLine" mx="-1.73503" my="-0.0313732" name="A81" secondPoint="206" type="normal"/>
+            <point angle="0" firstPoint="206" id="208" length="#Hartialinjasiirto" lineColor="black" lineType="none" mx="1.51114" my="-1.01665" name="A82" secondPoint="202" type="normal"/>
+            <point id="209" mx="-3.42021" my="0.322821" name="A83" p1Line1="207" p1Line2="107" p2Line1="208" p2Line2="203" type="lineIntersect"/>
+            <point angle="0" firstPoint="208" id="210" length="0.5" lineColor="black" lineType="none" mx="-0.450085" my="0.751855" name="A84" secondPoint="209" type="normal"/>
+            <line firstPoint="207" id="211" lineColor="black" lineType="dotLine" secondPoint="209"/>
+            <line firstPoint="209" id="212" lineColor="black" lineType="dotLine" secondPoint="210"/>
+            <line firstPoint="210" id="213" lineColor="black" lineType="dotLine" secondPoint="116"/>
+            <spline color="black" id="214" type="pathInteractive">
+                <pathPoint angle1="58.0114" angle2="238.011" length1="0" length2="4.35639" pSpline="210"/>
+                <pathPoint angle1="89.1064" angle2="269.106" length1="4.0652" length2="3.94529" pSpline="116"/>
+                <pathPoint angle1="160.698" angle2="340.698" length1="2.69465" length2="0.668073" pSpline="106"/>
+            </spline>
+            <point firstPoint="107" id="215" length="#Ktl/4-0.5" lineColor="black" lineType="none" mx="-3.4256" my="0.694527" name="A85" secondPoint="111" type="alongLine"/>
+            <point angle="0" basePoint="215" curve="214" id="216" lineColor="black" lineType="none" mx="0.785286" my="-1.16368" name="Äe" type="curveIntersectAxis"/>
+            <line firstPoint="107" id="219" lineColor="green" lineType="dashLine" secondPoint="210"/>
+            <point firstPoint="21" id="220" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="-0.802868" my="0.264583" name="A86" secondPoint="3" type="intersectXY"/>
+            <line firstPoint="21" id="221" lineColor="green" lineType="dashLine" secondPoint="220"/>
+            <point angle="180" firstPoint="204" id="222" length="#Ptl+2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A87" secondPoint="198" type="normal"/>
+            <line firstPoint="108" id="223" lineColor="black" lineType="dotLine" secondPoint="222"/>
+            <spline angle1="355.904" angle2="254.721" color="black" id="224" length1="6.67668" length2="4.38153" point1="222" point4="207" type="simpleInteractive"/>
+            <point angle="0" firstPoint="1" id="400" length="#Selänlisäsaumavara" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A88" secondPoint="6" type="normal"/>
+            <point angle="0" firstPoint="6" id="401" length="#Selänlisäsaumavara" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A89" secondPoint="3" type="normal"/>
+            <point firstPoint="7" id="402" length="#Selänlisäsaumavara" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A90" secondPoint="5" type="alongLine"/>
+            <point firstPoint="31" id="403" length="#Selänlisäsaumavara" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A91" secondPoint="2" type="alongLine"/>
+            <point firstPoint="199" id="441" length="#Vl/10" lineColor="black" lineType="none" mx="-0.672362" my="0.929248" name="A92" secondPoint="109" type="alongLine"/>
+            <point angle="90" basePoint="441" id="442" length="Line_Niskapiste_Vyötärö-Line_Niskapiste_Kädentie-#EtusisäänonttoRintalinjalta" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A93" type="endLine"/>
+            <point firstPoint="442" id="443" length="CurrentLength+#TaskunEtureunanKorkeus" lineColor="black" lineType="dotLine" mx="-1.06566" my="0.546453" name="A94" secondPoint="441" type="alongLine"/>
+            <point firstPoint="130" id="444" length="#Sivuleikkausenkorkeus" lineColor="black" lineType="none" mx="-2.70819" my="1.21141" name="A95" secondPoint="110" type="alongLine"/>
+            <point angle="0" firstPoint="441" id="445" length="#Etuosansisäänotto/2" lineColor="black" lineType="none" mx="-2.38164" my="0.966741" name="A96" secondPoint="442" type="normal"/>
+            <point angle="180" firstPoint="441" id="446" length="#Etuosansisäänotto/2" lineColor="black" lineType="none" mx="0.540204" my="1.08706" name="A97" secondPoint="442" type="normal"/>
+            <point angle="0" firstPoint="443" id="447" length="#Etuosansisäänotto/2" lineColor="black" lineType="none" mx="-2.26361" my="-1.2857" name="A98" secondPoint="442" type="normal"/>
+            <point angle="180" firstPoint="443" id="448" length="#Etuosansisäänotto/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A99" secondPoint="442" type="normal"/>
+            <line firstPoint="443" id="449" lineColor="black" lineType="dotLine" secondPoint="444"/>
+            <point firstPoint="447" id="450" length="Line_A94_A95+2" lineColor="black" lineType="solidLine" mx="0.448657" my="1.42468" name="A100" secondPoint="444" type="alongLine"/>
+            <point firstPoint="448" id="451" length="Line_A94_A95+2" lineColor="black" lineType="none" mx="0.48463" my="-1.56757" name="A101" secondPoint="130" type="alongLine"/>
+            <line firstPoint="107" id="452" lineColor="black" lineType="dotLine" secondPoint="134"/>
+            <line firstPoint="109" id="453" lineColor="black" lineType="dotLine" secondPoint="106"/>
+            <spline angle1="253.655" angle2="95.4543" color="black" id="454" length1="9.74874" length2="7.56679" point1="106" point4="451" type="simpleInteractive"/>
+            <line firstPoint="448" id="455" lineColor="black" lineType="solidLine" secondPoint="451"/>
+            <line firstPoint="447" id="456" lineColor="black" lineType="solidLine" secondPoint="445"/>
+            <line firstPoint="445" id="457" lineColor="black" lineType="solidLine" secondPoint="442"/>
+            <line firstPoint="442" id="458" lineColor="black" lineType="solidLine" secondPoint="446"/>
+            <line firstPoint="446" id="459" lineColor="black" lineType="solidLine" secondPoint="448"/>
+            <point angle="175" basePoint="197" id="460" length="#Taitepiste" lineColor="black" lineType="none" mx="-3.10922" my="-0.581028" name="A102" type="endLine"/>
+            <point angle="0" firstPoint="460" id="461" length="#Taitepistekorkeus" lineColor="black" lineType="none" mx="-4.37763" my="-0.792431" name="Taitepiste" secondPoint="197" type="normal"/>
+            <point firstPoint="209" id="462" length="CurrentLength+2" lineColor="black" lineType="none" mx="-2.54548" my="-1.0743" name="A103" secondPoint="207" type="alongLine"/>
+            <point firstPoint="461" id="463" length="CurrentLength+sqrt((Spl_A13_Niskapiste-#Kauluksenpituusvähennys)^2-(Line_A83_A103-Line_A81_A83)^2)" lineColor="black" lineType="dotLine" mx="-1.98174" my="0.0531802" name="A104" secondPoint="462" type="alongLine"/>
+            <point angle="0" firstPoint="463" id="464" length="#Kauluksenkäyryys+#Kauluksenalaosa" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A105" secondPoint="462" type="normal"/>
+            <point firstPoint="462" id="465" length="#Kauluksenalaosa" lineColor="black" lineType="none" mx="-0.431449" my="0.616921" name="A106" secondPoint="207" type="alongLine"/>
+            <point angle="180" firstPoint="464" id="466" length="#Kauluksenalaosa" lineColor="black" lineType="none" mx="0.132292" my="-1.2857" name="A107" secondPoint="465" type="normal"/>
+            <point firstPoint="464" id="467" length="CurrentLength+#Kauluksenyläosa" lineColor="black" lineType="solidLine" mx="-2.0522" my="-1.21524" name="A108" secondPoint="466" type="alongLine"/>
+            <point angle="180" firstPoint="461" id="468" length="Line_A103_A106" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A109" secondPoint="462" type="normal"/>
+            <line firstPoint="468" id="469" lineColor="black" lineType="dotLine" secondPoint="465"/>
+            <point id="470" mx="0.132292" my="0.264583" name="A110" p1Line1="108" p1Line2="465" p2Line1="198" p2Line2="468" type="lineIntersect"/>
+            <point firstPoint="470" id="471" length="#Rintaliinakorkeusrinnalta" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A111" secondPoint="468" type="alongLine"/>
+            <spline angle1="240.851" angle2="357.87" color="black" id="472" length1="4.30669" length2="19.7554" point1="106" point4="471" type="simpleInteractive"/>
+            <point firstPoint="465" id="473" length="#Rintaliinahatiatukietu" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A112" secondPoint="468" type="alongLine"/>
+            <point id="474" length="#Rintaliinahatiatukikäsi" mx="0.132292" my="0.264583" name="A113" splinePath="214" type="cutSplinePath"/>
+            <line firstPoint="473" id="475" lineColor="black" lineType="dotLine" secondPoint="474"/>
+            <point angle="180" firstPoint="107" id="500" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A114" secondPoint="198" type="normal"/>
+            <point angle="180" firstPoint="108" id="501" length="1" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A115" secondPoint="198" type="normal"/>
+            <point id="502" mx="-0.572384" my="-1.2857" name="A116" p1Line1="501" p1Line2="441" p2Line1="500" p2Line2="442" type="lineIntersect"/>
+            <point firstPoint="502" id="503" length="#Rintataskunleveys/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A117" secondPoint="500" type="alongLine"/>
+            <point firstPoint="503" id="504" length="CurrentLength*2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A118" secondPoint="502" type="alongLine"/>
+            <point angle="AngleLine_A93_A94+180" basePoint="504" id="505" length="#Rintataskunkorkeus" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A119" type="endLine"/>
+            <point angle="AngleLine_A118_A119" basePoint="503" id="506" length="Line_A118_A119" lineColor="black" lineType="solidLine" mx="0.317708" my="-2.42395" name="A120" type="endLine"/>
+            <line firstPoint="505" id="507" lineColor="black" lineType="solidLine" secondPoint="506"/>
+            <point firstPoint="505" id="508" length="CurrentLength+#Rintataskusyvyys" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A121" secondPoint="504" type="alongLine"/>
+            <point basePoint="508" id="509" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A122" p1Line="506" p2Line="503" type="height"/>
+            <line firstPoint="503" id="510" lineColor="black" lineType="dotLine" secondPoint="509"/>
+            <point angle="180" firstPoint="197" id="529" length="Line_A19_A17+Line_A17_A23+#Etuhelmalisäys+#Sivuleikkausenkorkeus" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A123" secondPoint="109" type="normal"/>
+            <point firstPoint="197" id="530" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A124" secondPoint="5" type="intersectXY"/>
+            <line firstPoint="530" id="531" lineColor="black" lineType="dotLine" secondPoint="110"/>
+            <point firstPoint="113" id="532" length="max(0;min(3;((Line_A2_A17+Line_A45_A46+Line_A44_A45+Line_A42_A44+Line_A39_A40)-(#Ly+#Lantiolisäys))))" lineColor="black" lineType="none" mx="-1.93851" my="0.659023" name="A125" secondPoint="530" type="alongLine"/>
+            <spline angle1="276.29" angle2="93.2069" color="black" id="533" length1="4.34158" length2="2.14661" point1="450" point4="532" type="simpleInteractive"/>
+            <point firstPoint="450" id="534" length="CurrentLength+(Line_A45_A63+Spl_A45_A36-Spl_A38_A101-Spl_A100_A125)" lineColor="black" lineType="dotLine" mx="-2.09422" my="-0.595658" name="A126" secondPoint="113" type="alongLine"/>
+            <point firstPoint="108" id="536" length="CurrentLength+Line_A71_A123" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A127" secondPoint="197" type="alongLine"/>
+            <point firstPoint="529" id="537" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A128" secondPoint="536" type="alongLine"/>
+            <line firstPoint="197" id="538" lineColor="black" lineType="dotLine" secondPoint="537"/>
+            <operation angle="AngleLine_A71_A128-AngleLine_A71_A123" center="443" id="539" suffix="a1" type="rotation">
+                <source>
+                    <item idObject="450"/>
+                    <item idObject="533"/>
+                    <item idObject="532"/>
+                    <item idObject="534"/>
+                </source>
+                <destination>
+                    <item idObject="540" mx="0.503715" my="-0.348155"/>
+                    <item idObject="541" mx="2.14748e+9" my="2.14748e+9"/>
+                    <item idObject="542" mx="-4.38338" my="7.40094"/>
+                    <item idObject="543" mx="-0.586122" my="0.290011"/>
+                </destination>
+            </operation>
+            <operation angle="180/3.14*atan(0.5/Line_A93_A94)" center="442" id="545" suffix="a2" type="rotation">
+                <source>
+                    <item idObject="446"/>
+                    <item idObject="448"/>
+                    <item idObject="451"/>
+                    <item idObject="454"/>
+                </source>
+                <destination>
+                    <item idObject="546" mx="0.466268" my="-1.73927"/>
+                    <item idObject="547" mx="0.688919" my="-1.90626"/>
+                    <item idObject="548" mx="0.48463" my="-1.56757"/>
+                    <item idObject="549" mx="2.14748e+9" my="2.14748e+9"/>
+                </destination>
+            </operation>
+            <operation angle="-180/3.14*atan(0.5/Line_A93_A94)" center="442" id="550" suffix="a3" type="rotation">
+                <source>
+                    <item idObject="197"/>
+                    <item idObject="530"/>
+                    <item idObject="537"/>
+                    <item idObject="543"/>
+                    <item idObject="542"/>
+                    <item idObject="541"/>
+                    <item idObject="540"/>
+                    <item idObject="447"/>
+                    <item idObject="445"/>
+                </source>
+                <destination>
+                    <item idObject="551" mx="-1.49762" my="-2.32846"/>
+                    <item idObject="552" mx="0.402094" my="-2.96971"/>
+                    <item idObject="553" mx="-2.07762" my="1.86382"/>
+                    <item idObject="554" mx="-4.54482" my="-1.54733"/>
+                    <item idObject="555" mx="-4.79297" my="-1.3117"/>
+                    <item idObject="556" mx="2.14748e+9" my="2.14748e+9"/>
+                    <item idObject="557" mx="-4.06113" my="-0.194657"/>
+                    <item idObject="558" mx="-3.15399" my="-2.65979"/>
+                    <item idObject="559" mx="-3.33099" my="-2.50587"/>
+                </destination>
+            </operation>
+            <line firstPoint="108" id="563" lineColor="black" lineType="dotLine" secondPoint="551"/>
+            <line firstPoint="551" id="564" lineColor="black" lineType="dotLine" secondPoint="553"/>
+            <line firstPoint="553" id="565" lineColor="black" lineType="dotLine" secondPoint="554"/>
+            <line firstPoint="555" id="566" lineColor="black" lineType="solidLine" secondPoint="554"/>
+            <line firstPoint="558" id="568" lineColor="black" lineType="solidLine" secondPoint="559"/>
+            <line firstPoint="559" id="569" lineColor="black" lineType="solidLine" secondPoint="442"/>
+            <line firstPoint="442" id="570" lineColor="black" lineType="solidLine" secondPoint="546"/>
+            <line firstPoint="546" id="571" lineColor="black" lineType="solidLine" secondPoint="547"/>
+            <line firstPoint="547" id="572" lineColor="black" lineType="solidLine" secondPoint="548"/>
+            <point firstPoint="558" id="574" length="CurrentLength+#Sivutaskunleveyslisäykset" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A129" secondPoint="557" type="alongLine"/>
+            <point firstPoint="574" id="575" length="CurrentLength+#Sivutaskunleveyslisäykset" lineColor="black" lineType="solidLine" mx="-2.31183" my="-0.999615" name="A130" secondPoint="558" type="alongLine"/>
+            <point angle="0" firstPoint="574" id="576" length="#Sivutaskunläppä" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A131" secondPoint="575" type="normal"/>
+            <point angle="180" firstPoint="575" id="577" length="Line_A129_A131" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A132" secondPoint="574" type="normal"/>
+            <line firstPoint="577" id="578" lineColor="black" lineType="solidLine" secondPoint="576"/>
+            <point firstPoint="575" id="579" length="Spl_A100_A125a1a3+Line_A125a1a3_A126a1a3-#SivutaskuHelmasta" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A133" secondPoint="577" type="alongLine"/>
+            <point basePoint="579" id="580" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A134" p1Line="574" p2Line="576" type="height"/>
+            <line firstPoint="577" id="581" lineColor="black" lineType="dotLine" secondPoint="579"/>
+            <line firstPoint="576" id="582" lineColor="black" lineType="dotLine" secondPoint="580"/>
+            <point firstPoint="575" id="588" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A135" secondPoint="577" type="alongLine"/>
+            <point firstPoint="574" id="589" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A136" secondPoint="576" type="alongLine"/>
+            <point id="600" mx="-4.80348" my="-1.46294" name="A137" p1Line1="551" p1Line2="552" p2Line1="553" p2Line2="110" type="lineIntersect"/>
+            <point firstPoint="600" id="601" length="#Etureunalantiolta" lineColor="black" lineType="none" mx="1.85981" my="-4.79458" name="A138" secondPoint="110" type="alongLine"/>
+            <point firstPoint="553" id="602" length="#EtuhelmanKaartopiste" lineColor="black" lineType="none" mx="-4.80609" my="-0.24531" name="A139" secondPoint="554" type="alongLine"/>
+            <point firstPoint="602" id="603" length="1" lineColor="black" lineType="none" mx="1.32675" my="-2.12433" name="A140" secondPoint="554" type="alongLine"/>
+            <point firstPoint="555" id="604" length="CurrentLength+#Helmataitteenkorkeus" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A141" secondPoint="554" type="alongLine"/>
+            <point angle="0" firstPoint="602" id="605" length="#Helmataitteenkorkeus" lineColor="black" lineType="dotLine" mx="-4.65679" my="-0.285317" name="A142" secondPoint="553" type="normal"/>
+            <line firstPoint="605" id="606" lineColor="black" lineType="dotLine" secondPoint="604"/>
+            <point basePoint="603" id="607" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A143" p1Line="605" p2Line="604" type="height"/>
+            <point firstPoint="207" id="608" length="#Etuvuorireunasta" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A144" secondPoint="209" type="alongLine"/>
+            <spline angle1="83.6147" angle2="211.454" color="blue" id="609" length1="17.433" length2="21.0101" point1="603" point4="608" type="simpleInteractive"/>
+            <line firstPoint="109" id="621" lineColor="black" lineType="dotLine" secondPoint="551"/>
+            <point firstPoint="462" id="622" length="15" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A145" secondPoint="461" type="alongLine"/>
+            <point firstPoint="622" id="623" length="6" lineColor="black" lineType="none" mx="-2.16935" my="-1.53197" name="A146" secondPoint="462" type="alongLine"/>
+            <point angle="0" firstPoint="622" id="624" length="10" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A147" secondPoint="623" type="normal"/>
+            <point firstPoint="624" id="625" length="4.5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A148" secondPoint="623" type="alongLine"/>
+            <point c1Center="624" c1Radius="4.8" c2Center="625" c2Radius="4" crossPoint="2" id="626" mx="0.132292" my="0.264583" name="A149" type="pointOfIntersectionCircles"/>
+            <point id="627" mx="0.204154" my="0.0489961" name="A150" p1Line1="624" p1Line2="465" p2Line1="625" p2Line2="468" type="lineIntersect"/>
+            <spline color="black" id="628" type="pathInteractive">
+                <pathPoint angle1="240.05" angle2="60.0505" length1="0" length2="2.90807" pSpline="627"/>
+                <pathPoint angle1="236.453" angle2="56.453" length1="2.19081" length2="1.026" pSpline="465"/>
+                <pathPoint angle1="231.34" angle2="51.34" length1="0.971785" length2="0.721012" pSpline="464"/>
+            </spline>
+            <spline angle1="55.4877" angle2="235.565" color="black" id="629" length1="1.83367" length2="1.27997" point1="462" point4="466" type="simpleInteractive"/>
+            <spline angle1="20.7585" angle2="0" color="black" id="630" length1="7.26827" length2="0" point1="626" point4="467" type="simpleInteractive"/>
+            <line firstPoint="624" id="631" lineColor="black" lineType="solidLine" secondPoint="627"/>
+            <line firstPoint="626" id="632" lineColor="black" lineType="solidLine" secondPoint="625"/>
+            <point firstPoint="466" id="634" length="0.5" lineColor="black" lineType="none" mx="0.82882" my="-0.748549" name="A151" secondPoint="464" type="alongLine"/>
+            <point firstPoint="627" id="635" length="CurrentLength/2.5" lineColor="black" lineType="none" mx="-2.33016" my="1.20232" name="A152" secondPoint="623" type="alongLine"/>
+            <spline angle1="228.914" angle2="66.105" color="black" id="636" length1="2.17502" length2="3.73922" point1="634" point4="635" type="simpleInteractive"/>
+            <point firstPoint="465" id="637" length="Line_A146_A103+Spl_A103_A107-SplPath_A150_A105_Seg_2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="A153" secondPoint="627" type="alongLine"/>
+            <spline color="black" id="670" type="pathInteractive">
+                <pathPoint angle1="351.003" angle2="171.003" length1="0" length2="5.71129" pSpline="602"/>
+                <pathPoint angle1="270.94" angle2="90.9399" length1="2.7862" length2="6.09427" pSpline="601"/>
+                <pathPoint angle1="293.524" angle2="113.524" length1="0.418328" length2="3.76429" pSpline="461"/>
+                <pathPoint angle1="234.939" angle2="54.939" length1="11.3209" length2="1.10965" pSpline="624"/>
+            </spline>
+            <point firstPoint="506" id="671" length="#Printfix" lineColor="black" lineType="none" mx="1.15208" my="0.171875" name="A154" secondPoint="503" type="alongLine"/>
+            <point id="672" length="SplPath_A84_A38_Seg_1+#Printfix" mx="3.56249" my="-1.12604" name="A155" splinePath="214" type="cutSplinePath"/>
+            <operation id="769" p1Line="467" p2Line="464" suffix="a4" type="flippingByLine">
+                <source>
+                    <item idObject="630"/>
+                    <item idObject="626"/>
+                    <item idObject="625"/>
+                    <item idObject="623"/>
+                    <item idObject="635"/>
+                    <item idObject="637"/>
+                    <item idObject="627"/>
+                    <item idObject="628"/>
+                    <item idObject="636"/>
+                    <item idObject="462"/>
+                    <item idObject="629"/>
+                </source>
+                <destination>
+                    <item idObject="770" mx="2.14748e+9" my="2.14748e+9"/>
+                    <item idObject="771" mx="0.132292" my="0.264583"/>
+                    <item idObject="772" mx="0.132292" my="0.264583"/>
+                    <item idObject="773" mx="-3.67846" my="-0.669627"/>
+                    <item idObject="774" mx="-3.69555" my="-0.45051"/>
+                    <item idObject="775" mx="0.347879" my="-1.17266"/>
+                    <item idObject="776" mx="-0.155157" my="0.408308"/>
+                    <item idObject="777" mx="2.14748e+9" my="2.14748e+9"/>
+                    <item idObject="778" mx="2.14748e+9" my="2.14748e+9"/>
+                    <item idObject="779" mx="-2.54548" my="-1.0743"/>
+                    <item idObject="780" mx="2.14748e+9" my="2.14748e+9"/>
+                </destination>
+            </operation>
+            <line firstPoint="771" id="794" lineColor="black" lineType="solidLine" secondPoint="772"/>
+            <line firstPoint="772" id="795" lineColor="black" lineType="solidLine" secondPoint="776"/>
+            <line firstPoint="774" id="796" lineColor="black" lineType="solidLine" secondPoint="775"/>
+            <line firstPoint="776" id="797" lineColor="black" lineType="solidLine" secondPoint="775"/>
+            <line firstPoint="635" id="798" lineColor="black" lineType="solidLine" secondPoint="637"/>
+            <line firstPoint="627" id="799" lineColor="black" lineType="solidLine" secondPoint="637"/>
+        </calculation>
+        <modeling>
+            <point id="55" idObject="42" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="56" idObject="35" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="57" idObject="36" inUse="true" mx="-2.07306" my="-0.233399" type="modeling"/>
+            <point id="58" idObject="33" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="59" idObject="46" inUse="true" type="modelingPath"/>
+            <point id="60" idObject="21" inUse="true" mx="-1.67878" my="-0.751385" type="modeling"/>
+            <point id="61" idObject="19" inUse="true" mx="0.264809" my="-1.76735" type="modeling"/>
+            <spline id="62" idObject="23" inUse="true" type="modelingSpline"/>
+            <point id="63" idObject="1" inUse="true" mx="0.264479" my="-0.476908" type="modeling"/>
+            <point id="64" idObject="6" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="65" idObject="48" inUse="true" type="modelingPath"/>
+            <point id="66" idObject="31" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="67" idObject="41" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="81" idObject="42" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="82" idObject="35" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="83" idObject="36" inUse="true" mx="-2.07306" my="-0.233399" type="modeling"/>
+            <point id="84" idObject="33" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="85" idObject="50" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="86" idObject="51" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="87" idObject="53" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="91" idObject="1" inUse="true" mx="0.264479" my="-0.476908" type="modeling"/>
+            <point id="92" idObject="89" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="93" idObject="90" inUse="true" type="modelingSpline"/>
+            <point id="94" idObject="13" inUse="true" mx="-1.35715" my="-0.42285" type="modeling"/>
+            <spline id="95" idObject="46" inUse="true" type="modelingPath"/>
+            <point id="96" idObject="21" inUse="true" mx="-1.67878" my="-0.751385" type="modeling"/>
+            <point id="97" idObject="19" inUse="true" mx="0.264809" my="-1.76735" type="modeling"/>
+            <spline id="98" idObject="23" inUse="true" type="modelingSpline"/>
+            <point id="153" idObject="138" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="154" idObject="136" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="155" idObject="114" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="156" idObject="142" inUse="true" type="modelingSpline"/>
+            <point id="157" idObject="104" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="158" idObject="143" inUse="true" type="modelingSpline"/>
+            <point id="159" idObject="118" inUse="true" mx="0.588681" my="-2.47375" type="modeling"/>
+            <spline id="160" idObject="144" inUse="true" type="modelingPath"/>
+            <point id="161" idObject="124" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="162" idObject="127" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="163" idObject="126" inUse="true" mx="-0.221935" my="0.275749" type="modeling"/>
+            <point id="164" idObject="140" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="165" idObject="139" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="167" idObject="146" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="168" idObject="136" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="169" idObject="114" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="170" idObject="142" inUse="true" type="modelingSpline"/>
+            <point id="171" idObject="104" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="172" idObject="143" inUse="true" type="modelingSpline"/>
+            <point id="173" idObject="118" inUse="true" mx="0.588681" my="-2.47375" type="modeling"/>
+            <spline id="174" idObject="147" inUse="true" type="modelingSpline"/>
+            <point id="175" idObject="127" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="176" idObject="126" inUse="true" mx="-0.221935" my="0.275749" type="modeling"/>
+            <point id="177" idObject="140" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="178" idObject="139" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="180" idObject="149" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="181" idObject="148" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="182" idObject="124" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="183" idObject="127" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="184" idObject="126" inUse="true" mx="-0.221935" my="0.275749" type="modeling"/>
+            <point id="185" idObject="140" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="186" idObject="139" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="188" idObject="118" inUse="true" mx="0.588681" my="-2.47375" type="modeling"/>
+            <spline id="189" idObject="144" inUse="true" type="modelingPath"/>
+            <point id="190" idObject="103" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="191" idObject="151" inUse="true" type="modelingSpline"/>
+            <point id="192" idObject="150" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="193" idObject="142" inUse="true" type="modelingSpline"/>
+            <point id="194" idObject="104" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="195" idObject="143" inUse="true" type="modelingSpline"/>
+            <point id="428" idObject="51" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="429" idObject="52" inUse="true" type="modelingPath"/>
+            <point id="430" idObject="21" inUse="true" mx="-1.67878" my="-0.751385" type="modeling"/>
+            <point id="431" idObject="19" inUse="true" mx="0.264809" my="-1.76735" type="modeling"/>
+            <spline id="432" idObject="23" inUse="true" type="modelingSpline"/>
+            <point id="433" idObject="1" inUse="true" mx="0.264479" my="-0.476908" type="modeling"/>
+            <point id="434" idObject="400" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="435" idObject="401" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="436" idObject="402" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="437" idObject="403" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="476" idObject="471" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="477" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="478" idObject="209" inUse="true" mx="0.0125135" my="-0.435986" type="modeling"/>
+            <point id="479" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="480" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="481" idObject="106" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="482" idObject="472" inUse="true" type="modelingSpline"/>
+            <point id="484" idObject="471" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="485" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="486" idObject="209" inUse="true" mx="-3.42021" my="0.322821" type="modeling"/>
+            <point id="487" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="488" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="489" idObject="106" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="490" idObject="472" inUse="true" type="modelingSpline"/>
+            <point id="492" idObject="473" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="493" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="494" idObject="209" inUse="true" mx="-3.42021" my="0.322821" type="modeling"/>
+            <point id="495" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="496" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="497" idObject="474" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="511" idObject="504" inUse="true" mx="1.13543" my="0.933338" type="modeling"/>
+            <point id="512" idObject="505" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="513" idObject="506" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="514" idObject="503" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="516" idObject="508" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="517" idObject="504" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="518" idObject="503" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="519" idObject="509" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="521" idObject="508" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="522" idObject="505" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="523" idObject="506" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="524" idObject="509" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="583" idObject="577" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="584" idObject="575" inUse="true" mx="-2.31183" my="-0.999615" type="modeling"/>
+            <point id="585" idObject="574" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="586" idObject="576" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="590" idObject="588" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="591" idObject="575" inUse="true" mx="-2.31183" my="-0.999615" type="modeling"/>
+            <point id="592" idObject="574" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="593" idObject="589" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="595" idObject="579" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="596" idObject="575" inUse="true" mx="-2.31183" my="-0.999615" type="modeling"/>
+            <point id="597" idObject="574" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="598" idObject="580" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="610" idObject="603" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="611" idObject="609" inUse="true" type="modelingSpline"/>
+            <point id="612" idObject="608" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="613" idObject="209" inUse="true" mx="-3.42021" my="0.322821" type="modeling"/>
+            <point id="614" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="615" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="616" idObject="106" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="617" idObject="134" inUse="true" mx="-0.7645" my="-1.7977" type="modeling"/>
+            <point id="618" idObject="110" inUse="true" mx="-1.83701" my="-0.0590823" type="modeling"/>
+            <point id="619" idObject="554" inUse="true" mx="-4.54482" my="-1.54733" type="modeling"/>
+            <point id="673" idObject="605" inUse="true" mx="-4.65679" my="-0.285317" type="modeling"/>
+            <point id="674" idObject="602" inUse="true" mx="-4.80609" my="-0.24531" type="modeling"/>
+            <spline id="675" idObject="670" inUse="true" type="modelingPath"/>
+            <point id="676" idObject="624" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="677" idObject="627" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="678" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="679" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="680" idObject="209" inUse="true" mx="-3.42021" my="0.322821" type="modeling"/>
+            <point id="681" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="682" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="683" idObject="116" inUse="true" mx="-3.39061" my="-1.77499" type="modeling"/>
+            <point id="684" idObject="506" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="685" idObject="505" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="686" idObject="504" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="687" idObject="503" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="688" idObject="671" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="689" idObject="672" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="690" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="691" idObject="106" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="692" idObject="549" inUse="true" type="modelingSpline"/>
+            <point id="693" idObject="548" inUse="true" mx="0.48463" my="-1.56757" type="modeling"/>
+            <point id="694" idObject="547" inUse="true" mx="0.688919" my="-1.90626" type="modeling"/>
+            <point id="695" idObject="546" inUse="true" mx="0.466268" my="-1.73927" type="modeling"/>
+            <point id="696" idObject="442" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="697" idObject="559" inUse="true" mx="-3.33099" my="-2.50587" type="modeling"/>
+            <point id="698" idObject="558" inUse="true" mx="-3.15399" my="-2.65979" type="modeling"/>
+            <point id="699" idObject="557" inUse="true" mx="-4.06113" my="-0.194657" type="modeling"/>
+            <spline id="700" idObject="556" inUse="true" type="modelingSpline"/>
+            <point id="701" idObject="555" inUse="true" mx="-4.79297" my="-1.3117" type="modeling"/>
+            <point id="702" idObject="554" inUse="true" mx="-4.54482" my="-1.54733" type="modeling"/>
+            <point id="703" idObject="604" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="704" idObject="607" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="706" idObject="605" inUse="true" mx="-4.65679" my="-0.285317" type="modeling"/>
+            <point id="707" idObject="602" inUse="true" mx="-4.80609" my="-0.24531" type="modeling"/>
+            <spline id="708" idObject="670" inUse="true" type="modelingPath"/>
+            <point id="709" idObject="624" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="710" idObject="627" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="711" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="712" idObject="608" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="713" idObject="609" inUse="true" type="modelingSpline"/>
+            <point id="714" idObject="603" inUse="true" mx="1.32675" my="-2.12433" type="modeling"/>
+            <point id="715" idObject="607" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="717" idObject="605" inUse="true" mx="-4.65679" my="-0.285317" type="modeling"/>
+            <point id="718" idObject="602" inUse="true" mx="-4.80609" my="-0.24531" type="modeling"/>
+            <spline id="719" idObject="670" inUse="true" type="modelingPath"/>
+            <point id="720" idObject="624" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="721" idObject="627" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="722" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="723" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="724" idObject="608" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="725" idObject="609" inUse="true" type="modelingSpline"/>
+            <point id="726" idObject="603" inUse="true" mx="1.32675" my="-2.12433" type="modeling"/>
+            <point id="727" idObject="607" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="729" idObject="605" inUse="true" mx="-4.65679" my="-0.285317" type="modeling"/>
+            <point id="730" idObject="602" inUse="true" mx="-4.80609" my="-0.24531" type="modeling"/>
+            <spline id="731" idObject="670" inUse="true" type="modelingPath"/>
+            <point id="732" idObject="624" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="733" idObject="627" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="734" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="735" idObject="465" inUse="true" mx="-0.431449" my="0.616921" type="modeling"/>
+            <point id="736" idObject="209" inUse="true" mx="-3.42021" my="0.322821" type="modeling"/>
+            <point id="737" idObject="210" inUse="true" mx="-0.450085" my="0.751855" type="modeling"/>
+            <spline id="738" idObject="214" inUse="true" type="modelingPath"/>
+            <point id="739" idObject="106" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="740" idObject="549" inUse="true" type="modelingSpline"/>
+            <point id="741" idObject="548" inUse="true" mx="0.48463" my="-1.56757" type="modeling"/>
+            <point id="742" idObject="547" inUse="true" mx="0.688919" my="-1.90626" type="modeling"/>
+            <point id="743" idObject="546" inUse="true" mx="0.466268" my="-1.73927" type="modeling"/>
+            <point id="744" idObject="442" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="745" idObject="559" inUse="true" mx="-3.33099" my="-2.50587" type="modeling"/>
+            <point id="746" idObject="558" inUse="true" mx="-3.15399" my="-2.65979" type="modeling"/>
+            <point id="747" idObject="557" inUse="true" mx="-4.06113" my="-0.194657" type="modeling"/>
+            <point id="748" idObject="555" inUse="true" mx="-4.79297" my="-1.3117" type="modeling"/>
+            <point id="749" idObject="554" inUse="true" mx="-4.54482" my="-1.54733" type="modeling"/>
+            <point id="750" idObject="604" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="751" idObject="607" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="781" idObject="625" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="782" idObject="626" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="783" idObject="630" inUse="true" type="modelingSpline"/>
+            <point id="784" idObject="467" inUse="true" mx="-2.0522" my="-1.21524" type="modeling"/>
+            <spline id="785" idObject="770" inUse="true" type="modelingSpline"/>
+            <point id="786" idObject="771" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="787" idObject="772" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="788" idObject="776" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="789" idObject="777" inUse="true" type="modelingPath"/>
+            <point id="790" idObject="464" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="791" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="792" idObject="627" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="800" idObject="625" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="801" idObject="626" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="802" idObject="630" inUse="true" type="modelingSpline"/>
+            <point id="803" idObject="467" inUse="true" mx="-2.0522" my="-1.21524" type="modeling"/>
+            <spline id="804" idObject="770" inUse="true" type="modelingSpline"/>
+            <point id="805" idObject="771" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="806" idObject="772" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="807" idObject="773" inUse="true" mx="-1.45073" my="0.264583" type="modeling"/>
+            <point id="808" idObject="779" inUse="true" mx="-2.54548" my="-1.0743" type="modeling"/>
+            <spline id="809" idObject="780" inUse="true" type="modelingSpline"/>
+            <point id="810" idObject="466" inUse="true" mx="0.132292" my="-1.2857" type="modeling"/>
+            <spline id="811" idObject="629" inUse="true" type="modelingSpline"/>
+            <point id="812" idObject="462" inUse="true" mx="-2.54548" my="-1.0743" type="modeling"/>
+            <point id="813" idObject="623" inUse="true" mx="-1.45073" my="0.264583" type="modeling"/>
+            <point id="815" idObject="625" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="816" idObject="626" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="817" idObject="630" inUse="true" type="modelingSpline"/>
+            <point id="818" idObject="467" inUse="true" mx="-2.0522" my="-1.21524" type="modeling"/>
+            <spline id="819" idObject="770" inUse="true" type="modelingSpline"/>
+            <point id="820" idObject="771" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="821" idObject="772" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="822" idObject="774" inUse="true" mx="-3.69555" my="-0.45051" type="modeling"/>
+            <spline id="823" idObject="778" inUse="true" type="modelingSpline"/>
+            <point id="824" idObject="634" inUse="true" mx="0.82882" my="-0.748549" type="modeling"/>
+            <spline id="825" idObject="636" inUse="true" type="modelingSpline"/>
+            <point id="826" idObject="635" inUse="true" mx="-2.33016" my="1.20232" type="modeling"/>
+            <point id="828" idObject="625" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="829" idObject="626" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="830" idObject="630" inUse="true" type="modelingSpline"/>
+            <point id="831" idObject="467" inUse="true" mx="-2.0522" my="-1.21524" type="modeling"/>
+            <spline id="832" idObject="770" inUse="true" type="modelingSpline"/>
+            <point id="833" idObject="771" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="834" idObject="772" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="835" idObject="774" inUse="true" mx="-3.69555" my="-0.45051" type="modeling"/>
+            <spline id="836" idObject="778" inUse="true" type="modelingSpline"/>
+            <point id="837" idObject="634" inUse="true" mx="0.82882" my="-0.748549" type="modeling"/>
+            <point id="838" idObject="635" inUse="true" mx="-2.33016" my="1.20232" type="modeling"/>
+            <point id="840" idObject="635" inUse="true" mx="-2.33016" my="1.20232" type="modeling"/>
+            <spline id="841" idObject="636" inUse="true" type="modelingSpline"/>
+            <point id="842" idObject="634" inUse="true" mx="0.82882" my="-0.748549" type="modeling"/>
+            <spline id="843" idObject="778" inUse="true" type="modelingSpline"/>
+            <point id="844" idObject="774" inUse="true" mx="-3.69555" my="-0.45051" type="modeling"/>
+            <point id="845" idObject="775" inUse="true" mx="0.347879" my="-1.17266" type="modeling"/>
+            <point id="846" idObject="776" inUse="true" mx="-0.155157" my="0.408308" type="modeling"/>
+            <spline id="847" idObject="777" inUse="true" type="modelingPath"/>
+            <point id="848" idObject="464" inUse="true" mx="-0.787431" my="-2.25745" type="modeling"/>
+            <spline id="849" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="850" idObject="627" inUse="true" mx="0.204154" my="0.0489961" type="modeling"/>
+            <point id="851" idObject="637" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="853" idObject="635" inUse="true" mx="-2.33016" my="1.20232" type="modeling"/>
+            <spline id="854" idObject="636" inUse="true" type="modelingSpline"/>
+            <point id="855" idObject="634" inUse="true" mx="0.82882" my="-0.748549" type="modeling"/>
+            <spline id="856" idObject="778" inUse="true" type="modelingSpline"/>
+            <point id="857" idObject="774" inUse="true" mx="-3.69555" my="-0.45051" type="modeling"/>
+            <point id="858" idObject="775" inUse="true" mx="0.347879" my="-1.17266" type="modeling"/>
+            <point id="859" idObject="776" inUse="true" mx="-0.155157" my="0.408308" type="modeling"/>
+            <spline id="860" idObject="777" inUse="true" type="modelingPath"/>
+            <point id="861" idObject="464" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="862" idObject="628" inUse="true" type="modelingPath"/>
+            <point id="863" idObject="627" inUse="true" mx="0.204154" my="0.0489961" type="modeling"/>
+            <point id="864" idObject="637" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" forbidFlipping="0" id="68" mx="142.856" my="1.37149" name="Takakappale" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="31" height="2.56805" letter="" mx="-502.728" my="405.865" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="4.6904">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="1.94406" mx="-478.177" my="231.103" rotation="0" visible="true" width="3.79897"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="55" type="NodePoint"/>
+                    <node idObject="56" type="NodePoint"/>
+                    <node idObject="57" type="NodePoint"/>
+                    <node idObject="58" type="NodePoint"/>
+                    <node idObject="59" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="60" type="NodePoint"/>
+                    <node idObject="61" type="NodePoint"/>
+                    <node idObject="62" reverse="0" type="NodeSpline"/>
+                    <node idObject="63" type="NodePoint"/>
+                    <node idObject="64" type="NodePoint"/>
+                    <node idObject="65" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="66" type="NodePoint"/>
+                    <node idObject="67" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="88" mx="146.858" my="37.2986" name="Takapalahalkio" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="22" height="3.47538" letter="" mx="-979.891" my="2381.14" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="4.49651">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="4.04175" mx="-982.988" my="2193.29" rotation="0" visible="true" width="4.9685"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="81" type="NodePoint"/>
+                    <node idObject="82" type="NodePoint"/>
+                    <node idObject="83" type="NodePoint"/>
+                    <node idObject="84" type="NodePoint"/>
+                    <node idObject="85" type="NodePoint"/>
+                    <node idObject="86" type="NodePoint"/>
+                    <node idObject="87" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="99" mx="140.791" my="-31.2562" name="Takakappalehartia" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="26" height="3.381" letter="" mx="-422.219" my="99.3217" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.29002">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="3.66416" mx="-749.659" my="103.462" rotation="0" visible="true" width="5.53485"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="91" type="NodePoint"/>
+                    <node idObject="92" type="NodePoint"/>
+                    <node idObject="93" reverse="1" type="NodeSpline"/>
+                    <node idObject="94" type="NodePoint"/>
+                    <node idObject="95" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="96" type="NodePoint"/>
+                    <node idObject="97" type="NodePoint"/>
+                    <node idObject="98" reverse="0" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="166" mx="140.524" my="17.4216" name="Sivupala" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="37" height="3.01376" letter="" mx="-2063.24" my="1339.29" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.58181">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="15" height="3.37032" mx="-2059.88" my="1547.39" rotation="0" visible="true" width="5.22523"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="153" type="NodePoint"/>
+                    <node idObject="154" type="NodePoint"/>
+                    <node idObject="155" type="NodePoint"/>
+                    <node idObject="156" reverse="0" type="NodeSpline"/>
+                    <node idObject="157" type="NodePoint"/>
+                    <node idObject="158" reverse="0" type="NodeSpline"/>
+                    <node idObject="159" type="NodePoint"/>
+                    <node idObject="160" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="161" type="NodePoint"/>
+                    <node idObject="162" type="NodePoint"/>
+                    <node idObject="163" type="NodePoint"/>
+                    <node idObject="164" type="NodePoint"/>
+                    <node idObject="165" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="179" mx="143.753" my="121.506" name="Sivupalavuori" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="34" height="3.81603" letter="" mx="-2126.84" my="1459.34" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.93836">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="16" height="4.08345" mx="-2089.37" my="1670.82" rotation="0" visible="true" width="4.77954"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="167" type="NodePoint"/>
+                    <node idObject="168" type="NodePoint"/>
+                    <node idObject="169" type="NodePoint"/>
+                    <node idObject="170" reverse="0" type="NodeSpline"/>
+                    <node idObject="171" type="NodePoint"/>
+                    <node idObject="172" reverse="0" type="NodeSpline"/>
+                    <node idObject="173" type="NodePoint"/>
+                    <node idObject="174" reverse="0" type="NodeSpline"/>
+                    <node idObject="175" type="NodePoint"/>
+                    <node idObject="176" type="NodePoint"/>
+                    <node idObject="177" type="NodePoint"/>
+                    <node idObject="178" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="187" mx="137.4" my="50.3768" name="SIvupalahalkio" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="22" height="2.92462" letter="" mx="-1604.6" my="2386.91" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="4.6904">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="15" height="3.37032" mx="-1604.6" my="2211.72" rotation="0" visible="true" width="4.42296"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="180" type="NodePoint"/>
+                    <node idObject="181" type="NodePoint"/>
+                    <node idObject="182" type="NodePoint"/>
+                    <node idObject="183" type="NodePoint"/>
+                    <node idObject="184" type="NodePoint"/>
+                    <node idObject="185" type="NodePoint"/>
+                    <node idObject="186" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="196" mx="141.284" my="4.19391" name="Sivupalakainalo" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="21" height="2.12234" letter="" mx="-2164.48" my="1121.16" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="4.51212">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="14" height="3.28118" mx="-1866.37" my="1003.44" rotation="0" visible="true" width="4.42296"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="188" type="NodePoint"/>
+                    <node idObject="189" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="190" type="NodePoint"/>
+                    <node idObject="191" reverse="1" type="NodeSpline"/>
+                    <node idObject="192" type="NodePoint"/>
+                    <node idObject="193" reverse="0" type="NodeSpline"/>
+                    <node idObject="194" type="NodePoint"/>
+                    <node idObject="195" reverse="0" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="438" mx="144.109" my="135.998" name="Takakappalevuori" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="23" height="2.56805" letter="" mx="-499.937" my="411.031" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.49267">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="2.83546" mx="-486.461" my="552.533" rotation="0" visible="true" width="4.95782"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="428" type="NodePoint"/>
+                    <node idObject="429" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="430" type="NodePoint"/>
+                    <node idObject="431" type="NodePoint"/>
+                    <node idObject="432" reverse="0" type="NodeSpline"/>
+                    <node idObject="433" type="NodePoint"/>
+                    <node idObject="434" type="NodePoint"/>
+                    <node idObject="435" type="NodePoint"/>
+                    <node idObject="436" type="NodePoint"/>
+                    <node idObject="437" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="483" mx="124.219" my="39.1375" name="Rintaliina2" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="34" height="3.66419" letter="" mx="-2905" my="250.105" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.18617">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterlining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="3.66419" mx="-2882.42" my="530.712" rotation="0" visible="true" width="6.39384"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="476" type="NodePoint"/>
+                    <node idObject="477" type="NodePoint"/>
+                    <node idObject="478" type="NodePoint"/>
+                    <node idObject="479" type="NodePoint"/>
+                    <node idObject="480" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="481" type="NodePoint"/>
+                    <node idObject="482" reverse="0" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="491" mx="124.484" my="-4.7493" name="Rintaliina" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="33" height="3.66419" letter="" mx="-2935.47" my="317.693" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.9785">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterlining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="19" height="4.0795" mx="-2957.1" my="614.163" rotation="0" visible="true" width="5.87468"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="484" type="NodePoint"/>
+                    <node idObject="485" type="NodePoint"/>
+                    <node idObject="486" type="NodePoint"/>
+                    <node idObject="487" type="NodePoint"/>
+                    <node idObject="488" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="489" type="NodePoint"/>
+                    <node idObject="490" reverse="0" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="498" mx="122.882" my="-18.2062" name="Rintaliinatuki" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="32" height="2.99008" letter="" mx="-2769.45" my="25.4365" onFold="false" orientation="" quantity="1" rotation="37.282" rotationWay="" tilt="" visible="true" width="6.21527">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterlining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="15" height="3.35267" mx="-2548.68" my="190.365" rotation="39.0619" visible="true" width="5.25169"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="492" type="NodePoint"/>
+                    <node idObject="493" type="NodePoint"/>
+                    <node idObject="494" type="NodePoint"/>
+                    <node idObject="495" type="NodePoint"/>
+                    <node idObject="496" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="497" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="515" mx="118.962" my="62.9512" name="Rintatasku" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="27" height="2.52528" letter="" mx="-3032.35" my="932.762" onFold="false" orientation="" quantity="1" rotation="-6.75916" rotationWay="" tilt="" visible="true" width="4.17139">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="2.52528" mx="-3189.04" my="955.059" rotation="-7.01212" visible="true" width="3.47313"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="511" type="NodePoint"/>
+                    <node idObject="512" type="NodePoint"/>
+                    <node idObject="513" type="NodePoint"/>
+                    <node idObject="514" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="520" mx="119.725" my="74.5331" name="Rintataskutaka" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="28" height="3.145" letter="" mx="-3150.65" my="1140.39" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.56318">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="4.0795" mx="-3127.11" my="1306.13" rotation="0" visible="true" width="4.94017"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="516" type="NodePoint"/>
+                    <node idObject="517" type="NodePoint"/>
+                    <node idObject="518" type="NodePoint"/>
+                    <node idObject="519" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="525" mx="122.02" my="99.9371" name="Rintataskuetu" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="34" height="3.56034" letter="" mx="-3146.69" my="1068.19" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.08235">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="21" height="4.391" mx="-3163.36" my="1284.98" rotation="0" visible="true" width="6.60151"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="521" type="NodePoint"/>
+                    <node idObject="522" type="NodePoint"/>
+                    <node idObject="523" type="NodePoint"/>
+                    <node idObject="524" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="587" mx="113.431" my="119.05" name="Taskukansi/peite" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="26" height="4.00587" letter="" mx="-3073.28" my="2171.26" onFold="false" orientation="" quantity="1" rotation="2.32439" rotationWay="" tilt="" visible="true" width="5.67137">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="2.9137" mx="-2796.12" my="2212.54" rotation="1.48468" visible="true" width="5.51535"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="583" type="NodePoint"/>
+                    <node idObject="584" type="NodePoint"/>
+                    <node idObject="585" type="NodePoint"/>
+                    <node idObject="586" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="594" mx="114.768" my="105.252" name="Taskunauha" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="19" height="1.5875" letter="" mx="-2775.24" my="2150.58" onFold="false" orientation="" quantity="1" rotation="2.54415" rotationWay="" tilt="" visible="true" width="3.175">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="1.5875" mx="-3047.66" my="2120.86" rotation="5.7495" visible="true" width="4.65722"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="590" type="NodePoint"/>
+                    <node idObject="591" type="NodePoint"/>
+                    <node idObject="592" type="NodePoint"/>
+                    <node idObject="593" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="599" mx="111.079" my="131.924" name="Taskupussi" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="44" height="4.55194" letter="" mx="-3017.25" my="2259.71" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.68554">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="3.77182" mx="-2990.71" my="2542.76" rotation="0" visible="true" width="6.21747"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="595" type="NodePoint"/>
+                    <node idObject="596" type="NodePoint"/>
+                    <node idObject="597" type="NodePoint"/>
+                    <node idObject="598" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="620" mx="53.9074" my="93.1202" name="Etuvuori" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="41" height="1.5875" letter="" mx="-2866.24" my="708.158" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="3.175">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="12" height="1.5875" mx="-2777.77" my="442.762" rotation="0" visible="true" width="3.175"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="610" type="NodePoint"/>
+                    <node idObject="611" reverse="0" type="NodeSpline"/>
+                    <node idObject="612" type="NodePoint"/>
+                    <node idObject="613" type="NodePoint"/>
+                    <node idObject="614" type="NodePoint"/>
+                    <node idObject="615" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="616" type="NodePoint"/>
+                    <node idObject="617" type="NodePoint"/>
+                    <node idObject="618" type="NodePoint"/>
+                    <node idObject="619" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="705" mx="-1.61616" my="-6.60211" name="Etukappale" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="46" height="4.26675" letter="" mx="-3275.65" my="407.531" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.89139">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="19" height="4.4396" mx="-3275.64" my="656.794" rotation="0" visible="true" width="5.6814"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="673" type="NodePoint"/>
+                    <node idObject="674" type="NodePoint"/>
+                    <node idObject="675" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="676" type="NodePoint"/>
+                    <node idObject="677" type="NodePoint"/>
+                    <node idObject="678" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="679" type="NodePoint"/>
+                    <node idObject="680" type="NodePoint"/>
+                    <node idObject="681" type="NodePoint"/>
+                    <node idObject="682" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="683" type="NodePoint"/>
+                    <node idObject="684" type="NodePoint"/>
+                    <node idObject="685" type="NodePoint"/>
+                    <node idObject="686" type="NodePoint"/>
+                    <node idObject="687" type="NodePoint"/>
+                    <node idObject="688" type="NodePoint"/>
+                    <node idObject="689" type="NodePoint"/>
+                    <node idObject="690" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="691" type="NodePoint"/>
+                    <node idObject="692" reverse="0" type="NodeSpline"/>
+                    <node idObject="693" type="NodePoint"/>
+                    <node idObject="694" type="NodePoint"/>
+                    <node idObject="695" type="NodePoint"/>
+                    <node idObject="696" type="NodePoint"/>
+                    <node idObject="697" type="NodePoint"/>
+                    <node idObject="698" type="NodePoint"/>
+                    <node idObject="699" type="NodePoint"/>
+                    <node idObject="700" reverse="0" type="NodeSpline"/>
+                    <node idObject="701" type="NodePoint"/>
+                    <node idObject="702" type="NodePoint"/>
+                    <node idObject="703" type="NodePoint"/>
+                    <node idObject="704" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="716" mx="51.0573" my="-7.21109" name="Laitavaate" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="42" height="3.40249" letter="" mx="-3393.67" my="308.094" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.37281">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="16" height="3.57534" mx="-3415.15" my="550.356" rotation="0" visible="true" width="5.94069"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="706" type="NodePoint"/>
+                    <node idObject="707" type="NodePoint"/>
+                    <node idObject="708" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="709" type="NodePoint"/>
+                    <node idObject="710" type="NodePoint"/>
+                    <node idObject="711" type="NodePoint"/>
+                    <node idObject="712" type="NodePoint"/>
+                    <node idObject="713" reverse="1" type="NodeSpline"/>
+                    <node idObject="714" type="NodePoint"/>
+                    <node idObject="715" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="728" mx="42.4253" my="92.2594" name="Laitavaatetuki" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="36" height="2.62463" letter="" mx="-3461.81" my="353.424" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="7.32351">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="15" height="3.57534" mx="-3467.4" my="520.906" rotation="0" visible="true" width="4.55784"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="717" type="NodePoint"/>
+                    <node idObject="718" type="NodePoint"/>
+                    <node idObject="719" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="720" type="NodePoint"/>
+                    <node idObject="721" type="NodePoint"/>
+                    <node idObject="722" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="723" type="NodePoint"/>
+                    <node idObject="724" type="NodePoint"/>
+                    <node idObject="725" reverse="1" type="NodeSpline"/>
+                    <node idObject="726" type="NodePoint"/>
+                    <node idObject="727" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="752" mx="-4.11817" my="88.3865" name="Etukappaletuki" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="76" height="2.62463" letter="" mx="-3098.54" my="519.382" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.59496">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="18" height="3.92105" mx="-3114.87" my="770.906" rotation="0" visible="true" width="6.0271"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="729" type="NodePoint"/>
+                    <node idObject="730" type="NodePoint"/>
+                    <node idObject="731" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="732" type="NodePoint"/>
+                    <node idObject="733" type="NodePoint"/>
+                    <node idObject="734" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="735" type="NodePoint"/>
+                    <node idObject="736" type="NodePoint"/>
+                    <node idObject="737" type="NodePoint"/>
+                    <node idObject="738" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="739" type="NodePoint"/>
+                    <node idObject="740" reverse="0" type="NodeSpline"/>
+                    <node idObject="741" type="NodePoint"/>
+                    <node idObject="742" type="NodePoint"/>
+                    <node idObject="743" type="NodePoint"/>
+                    <node idObject="744" type="NodePoint"/>
+                    <node idObject="745" type="NodePoint"/>
+                    <node idObject="746" type="NodePoint"/>
+                    <node idObject="747" type="NodePoint"/>
+                    <node idObject="748" type="NodePoint"/>
+                    <node idObject="749" type="NodePoint"/>
+                    <node idObject="750" type="NodePoint"/>
+                    <node idObject="751" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="793" mx="-30.1672" my="218.528" name="Alakaulus" seamAllowance="0" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="32" height="2.38814" letter="" mx="-3101.59" my="-239.985" onFold="false" orientation="" quantity="1" rotation="-51.2986" rotationWay="" tilt="" visible="true" width="6.21744">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterlining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="18" height="3.98941" mx="-2524.93" my="-983.324" rotation="-50.8512" visible="true" width="5.25666"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="781" type="NodePoint"/>
+                    <node idObject="782" type="NodePoint"/>
+                    <node idObject="783" reverse="0" type="NodeSpline"/>
+                    <node idObject="784" type="NodePoint"/>
+                    <node idObject="785" reverse="1" type="NodeSpline"/>
+                    <node idObject="786" type="NodePoint"/>
+                    <node idObject="787" type="NodePoint"/>
+                    <node idObject="788" type="NodePoint"/>
+                    <node idObject="789" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="790" type="NodePoint"/>
+                    <node idObject="791" reverse="1" type="NodeSplinePath"/>
+                    <node idObject="792" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="814" mx="-9.0312" my="222.998" name="Alakaulussauma" seamAllowance="0" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="33" height="2.78847" letter="" mx="-3213.12" my="-186.202" onFold="false" orientation="" quantity="1" rotation="-54.8298" rotationWay="" tilt="" visible="true" width="6.93801">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                </data>
+                <patternInfo fontSize="14" height="3.74923" mx="-2451.39" my="-1146.94" rotation="-61.8834" visible="true" width="4.37597"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="800" type="NodePoint"/>
+                    <node idObject="801" type="NodePoint"/>
+                    <node idObject="802" reverse="0" type="NodeSpline"/>
+                    <node idObject="803" type="NodePoint"/>
+                    <node idObject="804" reverse="1" type="NodeSpline"/>
+                    <node idObject="805" type="NodePoint"/>
+                    <node idObject="806" type="NodePoint"/>
+                    <node idObject="807" type="NodePoint"/>
+                    <node idObject="808" type="NodePoint"/>
+                    <node idObject="809" reverse="0" type="NodeSpline"/>
+                    <node idObject="810" type="NodePoint"/>
+                    <node idObject="811" reverse="1" type="NodeSpline"/>
+                    <node idObject="812" type="NodePoint"/>
+                    <node idObject="813" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="827" mx="36.1357" my="225.764" name="Yläkaulustuki" seamAllowance="0" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="33" height="2.86853" letter="" mx="-3159.68" my="-227.227" onFold="false" orientation="" quantity="1" rotation="-51.915" rotationWay="" tilt="" visible="true" width="6.77788">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="15" height="3.82929" mx="-2462.14" my="-1077.53" rotation="-53.41" visible="true" width="4.45603"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="815" type="NodePoint"/>
+                    <node idObject="816" type="NodePoint"/>
+                    <node idObject="817" reverse="0" type="NodeSpline"/>
+                    <node idObject="818" type="NodePoint"/>
+                    <node idObject="819" reverse="1" type="NodeSpline"/>
+                    <node idObject="820" type="NodePoint"/>
+                    <node idObject="821" type="NodePoint"/>
+                    <node idObject="822" type="NodePoint"/>
+                    <node idObject="823" reverse="1" type="NodeSpline"/>
+                    <node idObject="824" type="NodePoint"/>
+                    <node idObject="825" reverse="0" type="NodeSpline"/>
+                    <node idObject="826" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="839" mx="11.0901" my="225.039" name="Yläkaulus" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="41" height="2.86853" letter="" mx="-3142.79" my="-221.208" onFold="false" orientation="" quantity="1" rotation="-53.4077" rotationWay="" tilt="" visible="true" width="6.13738">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="18" height="4.30967" mx="-2482.87" my="-1089.45" rotation="-59.9105" visible="true" width="5.49685"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="828" type="NodePoint"/>
+                    <node idObject="829" type="NodePoint"/>
+                    <node idObject="830" reverse="0" type="NodeSpline"/>
+                    <node idObject="831" type="NodePoint"/>
+                    <node idObject="832" reverse="1" type="NodeSpline"/>
+                    <node idObject="833" type="NodePoint"/>
+                    <node idObject="834" type="NodePoint"/>
+                    <node idObject="835" type="NodePoint"/>
+                    <node idObject="836" reverse="1" type="NodeSpline"/>
+                    <node idObject="837" type="NodePoint"/>
+                    <node idObject="838" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="852" mx="77.6252" my="221.103" name="Tikkutuki" seamAllowance="0" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="26" height="1.5875" letter="" mx="-2707.67" my="-496.475" onFold="false" orientation="" quantity="1" rotation="-54.8771" rotationWay="" tilt="" visible="true" width="3.175">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                </data>
+                <patternInfo fontSize="12" height="1.5875" mx="-2765.01" my="-428.115" rotation="0" visible="false" width="3.175"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="840" type="NodePoint"/>
+                    <node idObject="841" reverse="1" type="NodeSpline"/>
+                    <node idObject="842" type="NodePoint"/>
+                    <node idObject="843" reverse="0" type="NodeSpline"/>
+                    <node idObject="844" type="NodePoint"/>
+                    <node idObject="845" type="NodePoint"/>
+                    <node idObject="846" type="NodePoint"/>
+                    <node idObject="847" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="848" type="NodePoint"/>
+                    <node idObject="849" reverse="1" type="NodeSplinePath"/>
+                    <node idObject="850" type="NodePoint"/>
+                    <node idObject="851" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="865" mx="49.5831" my="234.565" name="Tikku" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="45" height="1.5875" letter="" mx="-2654.95" my="-566.711" onFold="false" orientation="" quantity="1" rotation="-46.3647" rotationWay="" tilt="" visible="true" width="3.25506">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                </data>
+                <patternInfo fontSize="12" height="1.5875" mx="-2750.74" my="-442.385" rotation="0" visible="false" width="3.175"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="853" type="NodePoint"/>
+                    <node idObject="854" reverse="1" type="NodeSpline"/>
+                    <node idObject="855" type="NodePoint"/>
+                    <node idObject="856" reverse="0" type="NodeSpline"/>
+                    <node idObject="857" type="NodePoint"/>
+                    <node idObject="858" type="NodePoint"/>
+                    <node idObject="859" type="NodePoint"/>
+                    <node idObject="860" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="861" type="NodePoint"/>
+                    <node idObject="862" reverse="1" type="NodeSplinePath"/>
+                    <node idObject="863" type="NodePoint"/>
+                    <node idObject="864" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+        <groups>
+            <group id="49" name="Takakappale" visible="true">
+                <item object="1" tool="1"/>
+                <item object="2" tool="2"/>
+                <item object="3" tool="3"/>
+                <item object="4" tool="4"/>
+                <item object="5" tool="5"/>
+                <item object="6" tool="6"/>
+                <item object="7" tool="7"/>
+                <item object="8" tool="8"/>
+                <item object="9" tool="9"/>
+                <item object="10" tool="10"/>
+                <item object="11" tool="11"/>
+                <item object="12" tool="12"/>
+                <item object="13" tool="13"/>
+                <item object="14" tool="14"/>
+                <item object="15" tool="15"/>
+                <item object="16" tool="16"/>
+                <item object="17" tool="17"/>
+                <item object="18" tool="18"/>
+                <item object="19" tool="19"/>
+                <item object="20" tool="20"/>
+                <item object="21" tool="21"/>
+                <item object="22" tool="22"/>
+                <item object="23" tool="23"/>
+                <item object="24" tool="24"/>
+                <item object="25" tool="25"/>
+                <item object="26" tool="26"/>
+                <item object="27" tool="27"/>
+                <item object="28" tool="28"/>
+                <item object="29" tool="29"/>
+                <item object="30" tool="30"/>
+                <item object="31" tool="31"/>
+                <item object="32" tool="32"/>
+                <item object="33" tool="33"/>
+                <item object="34" tool="34"/>
+                <item object="35" tool="35"/>
+                <item object="36" tool="36"/>
+                <item object="37" tool="37"/>
+                <item object="38" tool="38"/>
+                <item object="39" tool="39"/>
+                <item object="40" tool="40"/>
+                <item object="41" tool="41"/>
+                <item object="42" tool="42"/>
+                <item object="43" tool="43"/>
+                <item object="44" tool="44"/>
+                <item object="45" tool="45"/>
+                <item object="46" tool="46"/>
+                <item object="47" tool="47"/>
+                <item object="48" tool="48"/>
+            </group>
+            <group id="70" name="Takavuori" visible="false">
+                <item object="50" tool="50"/>
+                <item object="51" tool="51"/>
+                <item object="52" tool="52"/>
+                <item object="53" tool="53"/>
+                <item object="69" tool="69"/>
+            </group>
+            <group id="100" name="Takaliimakangas" visible="false">
+                <item object="89" tool="89"/>
+                <item object="90" tool="90"/>
+            </group>
+            <group id="145" name="Sivukappale" visible="true">
+                <item object="101" tool="101"/>
+                <item object="102" tool="102"/>
+                <item object="103" tool="103"/>
+                <item object="104" tool="104"/>
+                <item object="105" tool="105"/>
+                <item object="106" tool="106"/>
+                <item object="114" tool="114"/>
+                <item object="115" tool="115"/>
+                <item object="117" tool="117"/>
+                <item object="118" tool="118"/>
+                <item object="119" tool="119"/>
+                <item object="120" tool="120"/>
+                <item object="121" tool="121"/>
+                <item object="122" tool="122"/>
+                <item object="123" tool="123"/>
+                <item object="124" tool="124"/>
+                <item object="125" tool="125"/>
+                <item object="126" tool="126"/>
+                <item object="127" tool="127"/>
+                <item object="128" tool="128"/>
+                <item object="132" tool="132"/>
+                <item object="133" tool="133"/>
+                <item object="135" tool="135"/>
+                <item object="136" tool="136"/>
+                <item object="137" tool="137"/>
+                <item object="138" tool="138"/>
+                <item object="139" tool="139"/>
+                <item object="140" tool="140"/>
+                <item object="141" tool="141"/>
+                <item object="142" tool="142"/>
+                <item object="143" tool="143"/>
+                <item object="144" tool="144"/>
+            </group>
+            <group id="152" name="SivukappaleVuoriLiimakangas" visible="false">
+                <item object="146" tool="146"/>
+                <item object="147" tool="147"/>
+                <item object="148" tool="148"/>
+                <item object="149" tool="149"/>
+                <item object="150" tool="150"/>
+                <item object="151" tool="151"/>
+            </group>
+            <group id="440" name="Ylimääräiset etuhartiapisteet" visible="false">
+                <item object="111" tool="111"/>
+                <item object="200" tool="200"/>
+                <item object="201" tool="201"/>
+                <item object="202" tool="202"/>
+                <item object="203" tool="203"/>
+                <item object="204" tool="204"/>
+                <item object="205" tool="205"/>
+                <item object="206" tool="206"/>
+                <item object="208" tool="208"/>
+            </group>
+            <group id="499" name="Rintaliina" visible="false">
+                <item object="468" tool="468"/>
+                <item object="469" tool="469"/>
+                <item object="470" tool="470"/>
+                <item object="471" tool="471"/>
+                <item object="472" tool="472"/>
+                <item object="473" tool="473"/>
+                <item object="474" tool="474"/>
+                <item object="475" tool="475"/>
+            </group>
+            <group id="544" name="Siirta a1" visible="false">
+                <item object="450" tool="450"/>
+                <item object="532" tool="532"/>
+                <item object="533" tool="533"/>
+                <item object="534" tool="534"/>
+            </group>
+            <group id="562" name="Rintatasku" visible="true">
+                <item object="500" tool="500"/>
+                <item object="501" tool="501"/>
+                <item object="502" tool="502"/>
+                <item object="503" tool="503"/>
+                <item object="504" tool="504"/>
+                <item object="505" tool="505"/>
+                <item object="506" tool="506"/>
+                <item object="507" tool="507"/>
+                <item object="508" tool="508"/>
+                <item object="509" tool="509"/>
+                <item object="510" tool="510"/>
+            </group>
+            <group id="567" name="Siirto a2-3" visible="false">
+                <item object="130" tool="130"/>
+                <item object="131" tool="131"/>
+                <item object="197" tool="197"/>
+                <item object="444" tool="444"/>
+                <item object="445" tool="445"/>
+                <item object="446" tool="446"/>
+                <item object="447" tool="447"/>
+                <item object="448" tool="448"/>
+                <item object="451" tool="451"/>
+                <item object="454" tool="454"/>
+                <item object="455" tool="455"/>
+                <item object="456" tool="456"/>
+                <item object="457" tool="457"/>
+                <item object="458" tool="458"/>
+                <item object="459" tool="459"/>
+                <item object="529" tool="529"/>
+                <item object="530" tool="530"/>
+                <item object="536" tool="536"/>
+                <item object="537" tool="537"/>
+                <item object="538" tool="538"/>
+                <item object="540" tool="539"/>
+                <item object="541" tool="539"/>
+                <item object="542" tool="539"/>
+                <item object="543" tool="539"/>
+            </group>
+            <group id="633" name="Etuosakaulakaari" visible="false">
+                <item object="207" tool="207"/>
+                <item object="222" tool="222"/>
+                <item object="224" tool="224"/>
+            </group>
+        </groups>
+    </draftBlock>
+    <draftBlock name="Hiha">
+        <calculation>
+            <point id="225" mx="0.132292" my="0.264583" name="B" type="single" x="20.401" y="2.16387"/>
+            <point angle="270" basePoint="225" id="226" length="#Hp" lineColor="black" lineType="dotLine" mx="-1.83319" my="-1.4192" name="B1" type="endLine"/>
+            <point firstPoint="225" id="227" length="((Line_A15_A86+Line_A39_A84)/2)-(((Line_A15_A86+Line_A39_A84)/2)/10+1)" lineColor="black" lineType="none" mx="-0.853047" my="0.827634" name="B2" secondPoint="226" type="alongLine"/>
+            <point firstPoint="226" id="228" length="1.5" lineColor="black" lineType="none" mx="-1.34862" my="-2.46575" name="B3" secondPoint="227" type="alongLine"/>
+            <point firstPoint="228" id="229" length="CurrentLength+1.5" lineColor="black" lineType="none" mx="-1.7009" my="-1.36865" name="B4" secondPoint="226" type="alongLine"/>
+            <point firstPoint="227" id="230" length="CurrentLength/2-1.5" lineColor="black" lineType="none" mx="1.1537" my="-3.46854" name="B5" secondPoint="228" type="alongLine"/>
+            <point angle="180" firstPoint="229" id="231" length="sqrt((#Hihankädentie/2)^2-Line_B3_B4^2)" lineColor="black" lineType="dotLine" mx="-2.17918" my="-3.27486" name="B6" secondPoint="228" type="normal"/>
+            <point angle="0" firstPoint="230" id="232" length="1.5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B7" secondPoint="228" type="normal"/>
+            <point firstPoint="230" id="233" length="CurrentLength+Line_B4_B6+#KyynerpääLisäys" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B8" secondPoint="232" type="alongLine"/>
+            <point firstPoint="232" id="234" length="2" lineColor="black" lineType="none" mx="-4.65364" my="-0.157705" name="B9" secondPoint="230" type="alongLine"/>
+            <point firstPoint="234" id="235" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B10" secondPoint="232" type="alongLine"/>
+            <point angle="0" firstPoint="228" id="236" length="2" lineColor="black" lineType="dotLine" mx="-3.38677" my="-1.98762" name="B11" secondPoint="232" type="normal"/>
+            <point firstPoint="236" id="237" length="CurrentLength*2" lineColor="black" lineType="none" mx="0.782393" my="-2.98592" name="B12" secondPoint="228" type="alongLine"/>
+            <point angle="0" firstPoint="227" id="238" length="2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B13" secondPoint="232" type="normal"/>
+            <point firstPoint="238" id="239" length="CurrentLength*2" lineColor="black" lineType="none" mx="-3.52754" my="-0.720755" name="B14" secondPoint="227" type="alongLine"/>
+            <point firstPoint="227" id="240" length="#Ktl/4-1.5" lineColor="black" lineType="none" mx="1.45616" my="-3.0288" name="B15" secondPoint="225" type="alongLine"/>
+            <point angle="0" firstPoint="225" id="241" length="sqrt(((SplPath_A84_A38+Spl_A36_A49+SplPath_A31_A15_Seg_4)/2)^2-Line_B15_B^2)" lineColor="black" lineType="dotLine" mx="0.830289" my="-1.36408" name="B16" secondPoint="240" type="normal"/>
+            <point firstPoint="225" id="242" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B17" secondPoint="241" type="alongLine"/>
+            <point firstPoint="225" id="243" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B18" secondPoint="242" type="alongLine"/>
+            <point firstPoint="242" id="244" length="CurrentLength/3" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B19" secondPoint="241" type="alongLine"/>
+            <point firstPoint="240" id="245" length="CurrentLength/2" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B20" secondPoint="243" type="alongLine"/>
+            <point firstPoint="242" id="246" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="B21" secondPoint="227" type="intersectXY"/>
+            <point firstPoint="246" id="247" length="1.5" lineColor="black" lineType="none" mx="-1.97915" my="0.686871" name="B22" secondPoint="227" type="alongLine"/>
+            <line firstPoint="247" id="248" lineColor="black" lineType="dotLine" secondPoint="241"/>
+            <point angle="0" firstPoint="241" id="249" length="#Ktl/4+1" lineColor="black" lineType="dotLine" mx="-3.40559" my="-0.598426" name="B23" secondPoint="225" type="normal"/>
+            <point angle="180" basePoint="249" id="250" lineColor="black" lineType="none" mx="-2.97375" my="-1.03562" name="B24" p1Line="247" p2Line="241" type="lineIntersectAxis"/>
+            <point firstPoint="250" id="251" length="2" lineColor="black" lineType="none" mx="-3.55162" my="-1.32455" name="B25" secondPoint="247" type="alongLine"/>
+            <point firstPoint="249" id="252" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="-2.75705" my="0.264583" name="B26" secondPoint="251" type="intersectXY"/>
+            <point firstPoint="251" id="253" length="CurrentLength*2-Line_B23_B24" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B27" secondPoint="252" type="alongLine"/>
+            <point firstPoint="233" id="254" length="5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B28" secondPoint="231" type="alongLine"/>
+            <point firstPoint="235" id="255" length="CurrentLength+0.5" lineColor="black" lineType="dotLine" mx="1.25532" my="-1.84236" name="B29" secondPoint="238" type="alongLine"/>
+            <point firstPoint="231" id="256" length="#Hihahalkionkorkeus" lineColor="black" lineType="none" mx="-3.04598" my="-1.39679" name="B30" secondPoint="254" type="alongLine"/>
+            <point angle="0" firstPoint="256" id="257" length="#Hihahalkionleveys" lineColor="black" lineType="none" mx="1.21579" my="-1.68572" name="B31" secondPoint="231" type="normal"/>
+            <point angle="0" firstPoint="257" id="258" length="1" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B32" secondPoint="256" type="normal"/>
+            <line firstPoint="237" id="259" lineColor="black" lineType="dotLine" secondPoint="231"/>
+            <line firstPoint="236" id="260" lineColor="black" lineType="dotLine" secondPoint="237"/>
+            <point angle="180" firstPoint="237" id="261" length="#Hihansuunkäänne" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="B33" secondPoint="231" type="normal"/>
+            <point angle="0" firstPoint="231" id="262" length="#Hihansuunkäänne" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B34" secondPoint="237" type="normal"/>
+            <point id="263" mx="0.132292" my="0.264583" name="B35" p1Line1="261" p1Line2="257" p2Line1="262" p2Line2="258" type="lineIntersect"/>
+            <line firstPoint="261" id="264" lineColor="black" lineType="dotLine" secondPoint="263"/>
+            <line firstPoint="263" id="265" lineColor="black" lineType="dotLine" secondPoint="258"/>
+            <line firstPoint="258" id="266" lineColor="black" lineType="dotLine" secondPoint="256"/>
+            <line firstPoint="231" id="267" lineColor="black" lineType="dotLine" secondPoint="254"/>
+            <point firstPoint="234" id="268" length="CurrentLength+#Hihansuunkäänne" lineColor="black" lineType="dotLine" mx="-3.33492" my="-1.83019" name="B36" secondPoint="236" type="alongLine"/>
+            <line firstPoint="268" id="269" lineColor="black" lineType="dotLine" secondPoint="261"/>
+            <point firstPoint="231" id="270" length="1" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B37" secondPoint="263" type="alongLine"/>
+            <point angle="AngleLine_B6_B37+90" basePoint="270" id="271" lineColor="black" lineType="none" mx="0.637926" my="-0.457752" name="B38" p1Line="258" p2Line="263" type="lineIntersectAxis"/>
+            <point id="272" mx="-2.46811" my="0.336817" name="B39" p1Line1="261" p1Line2="271" p2Line1="263" p2Line2="270" type="lineIntersect"/>
+            <line firstPoint="237" id="273" lineColor="black" lineType="dotLine" secondPoint="235"/>
+            <point firstPoint="234" id="274" length="CurrentLength+0.5" lineColor="black" lineType="dotLine" mx="-3.87248" my="-2.07882" name="B40" secondPoint="239" type="alongLine"/>
+            <spline angle1="345.819" angle2="233.92" color="black" id="275" length1="7.14584" length2="11.2164" point1="255" point4="251" type="simpleInteractive"/>
+            <line firstPoint="238" id="276" lineColor="black" lineType="dotLine" secondPoint="246"/>
+            <spline color="black" id="277" type="pathInteractive">
+                <pathPoint angle1="184.577" angle2="4.57725" length1="0" length2="1.06141" pSpline="274"/>
+                <pathPoint angle1="258.382" angle2="78.3817" length1="1.63864" length2="0.753658" pSpline="240"/>
+                <pathPoint angle1="243.71" angle2="63.7095" length1="3.08851" length2="3.93136" pSpline="245"/>
+                <pathPoint angle1="184.668" angle2="4.668" length1="2.52568" length2="1.33529" pSpline="242"/>
+                <pathPoint angle1="169.799" angle2="349.799" length1="1.74002" length2="3.21924" pSpline="244"/>
+                <pathPoint angle1="128.235" angle2="308.235" length1="1.67015" length2="1.31077" pSpline="249"/>
+                <pathPoint angle1="122.444" angle2="302.444" length1="1.26173" length2="1.26173" pSpline="253"/>
+            </spline>
+            <spline angle1="280.369" angle2="81.1362" color="black" id="278" length1="17.8985" length2="7.9764" point1="251" point4="254" type="simpleInteractive"/>
+            <line firstPoint="251" id="279" lineColor="black" lineType="dotLine" secondPoint="233"/>
+            <line firstPoint="253" id="280" lineColor="black" lineType="dotLine" secondPoint="233"/>
+            <spline angle1="268.912" angle2="75.1139" color="black" id="281" length1="6.19449" length2="18.8429" point1="253" point4="254" type="simpleInteractive"/>
+            <point firstPoint="234" id="309" length="CurrentLength+2.5" lineColor="black" lineType="none" mx="-3.35769" my="-2.29474" name="B41" secondPoint="274" type="alongLine"/>
+            <point firstPoint="233" id="310" length="CurrentLength+1" lineColor="black" lineType="none" mx="2.10995" my="-2.06207" name="B42" secondPoint="253" type="alongLine"/>
+            <spline angle1="76.2364" angle2="121.194" color="black" id="311" length1="13.8889" length2="17.4106" point1="309" point4="310" type="simpleInteractive"/>
+            <point firstPoint="235" id="312" length="CurrentLength+2.5" lineColor="black" lineType="none" mx="2.45895" my="-1.59674" name="B43" secondPoint="255" type="alongLine"/>
+            <point firstPoint="233" id="313" length="CurrentLength+1" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B44" secondPoint="251" type="alongLine"/>
+            <spline angle1="351.63" angle2="229.537" color="black" id="314" length1="5.07504" length2="9.76093" point1="312" point4="313" type="simpleInteractive"/>
+            <point firstPoint="274" id="345" length="5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B45" secondPoint="234" type="alongLine"/>
+            <point id="346" length="5" mx="0.132292" my="0.264583" name="B46" spline="281" type="cutSpline"/>
+            <point id="347" length="5" mx="0.132292" my="0.264583" name="B47" spline="278" type="cutSpline"/>
+            <point firstPoint="255" id="348" length="5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B48" secondPoint="235" type="alongLine"/>
+            <point firstPoint="236" id="349" length="5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B49" secondPoint="234" type="alongLine"/>
+            <point firstPoint="256" id="350" length="3" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B50" secondPoint="254" type="alongLine"/>
+            <spline angle1="13.1015" angle2="132.293" color="black" id="351" length1="10.0433" length2="21.9814" point1="345" point4="346" type="simpleInteractive"/>
+            <spline angle1="357.527" angle2="185.696" color="black" id="352" length1="8.29485" length2="7.34794" point1="349" point4="350" type="simpleInteractive"/>
+            <spline angle1="306.046" angle2="258.128" color="black" id="353" length1="0.985406" length2="14.2176" point1="348" point4="347" type="simpleInteractive"/>
+            <point firstPoint="237" id="355" length="5" lineColor="black" lineType="none" mx="0.132292" my="0.264583" name="B51" secondPoint="235" type="alongLine"/>
+            <spline angle1="357.928" angle2="182.903" color="black" id="356" length1="4.83491" length2="4.65843" point1="355" point4="350" type="simpleInteractive"/>
+        </calculation>
+        <modeling>
+            <point id="282" idObject="268" inUse="true" mx="-3.33492" my="-1.83019" type="modeling"/>
+            <point id="283" idObject="236" inUse="true" mx="-3.38677" my="-1.98762" type="modeling"/>
+            <point id="284" idObject="234" inUse="true" mx="-4.65364" my="-0.157705" type="modeling"/>
+            <point id="285" idObject="274" inUse="true" mx="-3.40715" my="-1.61349" type="modeling"/>
+            <spline id="286" idObject="277" inUse="true" type="modelingPath"/>
+            <point id="287" idObject="253" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="288" idObject="281" inUse="true" type="modelingSpline"/>
+            <point id="289" idObject="254" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="290" idObject="256" inUse="true" mx="-3.04598" my="-1.39679" type="modeling"/>
+            <point id="291" idObject="258" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="292" idObject="271" inUse="true" mx="0.637926" my="-0.457752" type="modeling"/>
+            <point id="293" idObject="272" inUse="true" mx="-2.46811" my="0.336817" type="modeling"/>
+            <point id="294" idObject="261" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="296" idObject="261" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="297" idObject="237" inUse="true" mx="0.782393" my="-2.98592" type="modeling"/>
+            <point id="298" idObject="235" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="299" idObject="255" inUse="true" mx="-0.373343" my="-2.19136" type="modeling"/>
+            <spline id="300" idObject="275" inUse="true" type="modelingSpline"/>
+            <point id="301" idObject="251" inUse="true" mx="-3.55162" my="-1.32455" type="modeling"/>
+            <spline id="302" idObject="278" inUse="true" type="modelingSpline"/>
+            <point id="303" idObject="254" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="304" idObject="256" inUse="true" mx="-3.04598" my="-1.39679" type="modeling"/>
+            <point id="305" idObject="258" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="306" idObject="263" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="315" idObject="236" inUse="true" mx="-3.38677" my="-1.98762" type="modeling"/>
+            <point id="316" idObject="234" inUse="true" mx="-4.65364" my="-0.157705" type="modeling"/>
+            <point id="317" idObject="309" inUse="true" mx="-3.35769" my="-2.29474" type="modeling"/>
+            <spline id="318" idObject="311" inUse="true" type="modelingSpline"/>
+            <point id="319" idObject="310" inUse="true" mx="2.10995" my="-2.06207" type="modeling"/>
+            <point id="320" idObject="253" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="321" idObject="281" inUse="true" type="modelingSpline"/>
+            <point id="322" idObject="256" inUse="true" mx="-3.04598" my="-1.39679" type="modeling"/>
+            <point id="323" idObject="231" inUse="true" mx="-2.17918" my="-3.27486" type="modeling"/>
+            <point id="324" idObject="237" inUse="true" mx="0.782393" my="-2.98592" type="modeling"/>
+            <point id="334" idObject="237" inUse="true" mx="0.782393" my="-2.98592" type="modeling"/>
+            <point id="335" idObject="235" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="336" idObject="312" inUse="true" mx="2.45895" my="-1.59674" type="modeling"/>
+            <spline id="337" idObject="314" inUse="true" type="modelingSpline"/>
+            <point id="338" idObject="313" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="339" idObject="251" inUse="true" mx="-3.55162" my="-1.32455" type="modeling"/>
+            <spline id="340" idObject="278" inUse="true" type="modelingSpline"/>
+            <point id="341" idObject="254" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="342" idObject="231" inUse="true" mx="-2.17918" my="-3.27486" type="modeling"/>
+            <point id="365" idObject="348" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="366" idObject="255" inUse="true" mx="1.25532" my="-1.84236" type="modeling"/>
+            <spline id="367" idObject="275" inUse="true" type="modelingSpline"/>
+            <spline id="368" idObject="278" inUse="true" type="modelingSpline"/>
+            <point id="369" idObject="347" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="370" idObject="353" inUse="true" type="modelingSpline"/>
+            <point id="372" idObject="345" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="373" idObject="274" inUse="true" mx="-3.87248" my="-2.07882" type="modeling"/>
+            <spline id="374" idObject="277" inUse="true" type="modelingPath"/>
+            <point id="375" idObject="253" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="376" idObject="281" inUse="true" type="modelingSpline"/>
+            <point id="377" idObject="346" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="378" idObject="351" inUse="true" type="modelingSpline"/>
+            <point id="380" idObject="268" inUse="true" mx="-3.33492" my="-1.83019" type="modeling"/>
+            <point id="381" idObject="236" inUse="true" mx="-3.38677" my="-1.98762" type="modeling"/>
+            <point id="382" idObject="349" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="383" idObject="352" inUse="true" type="modelingSpline"/>
+            <point id="384" idObject="350" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="385" idObject="256" inUse="true" mx="-3.04598" my="-1.39679" type="modeling"/>
+            <point id="386" idObject="258" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="387" idObject="271" inUse="true" mx="0.637926" my="-0.457752" type="modeling"/>
+            <point id="388" idObject="272" inUse="true" mx="-2.46811" my="0.336817" type="modeling"/>
+            <point id="389" idObject="261" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="391" idObject="261" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="392" idObject="237" inUse="true" mx="0.782393" my="-2.98592" type="modeling"/>
+            <point id="393" idObject="355" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="394" idObject="356" inUse="true" type="modelingSpline"/>
+            <point id="395" idObject="350" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="396" idObject="256" inUse="true" mx="-3.04598" my="-1.39679" type="modeling"/>
+            <point id="397" idObject="258" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="398" idObject="263" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" forbidFlipping="1" id="295" mx="189.528" my="4.60448" name="Hihayläosa" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="71" height="3.09782" letter="" mx="1078.87" my="574.721" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.25169">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="18" height="3.85294" mx="1075.3" my="938.622" rotation="0" visible="true" width="5.91243"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="282" type="NodePoint"/>
+                    <node idObject="283" type="NodePoint"/>
+                    <node idObject="284" type="NodePoint"/>
+                    <node idObject="285" type="NodePoint"/>
+                    <node idObject="286" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="287" type="NodePoint"/>
+                    <node idObject="288" reverse="0" type="NodeSpline"/>
+                    <node idObject="289" type="NodePoint"/>
+                    <node idObject="290" type="NodePoint"/>
+                    <node idObject="291" type="NodePoint"/>
+                    <node idObject="292" type="NodePoint"/>
+                    <node idObject="293" type="NodePoint"/>
+                    <node idObject="294" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="307" mx="145.725" my="-2.04748" name="Hiha-alaosa" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="78" height="3.47538" letter="" mx="1058.71" my="887.524" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.72365">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mFabric%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="17" height="3.85297" mx="1097.95" my="1215.75" rotation="0" visible="true" width="5.15728"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="296" type="NodePoint"/>
+                    <node idObject="297" type="NodePoint"/>
+                    <node idObject="298" type="NodePoint"/>
+                    <node idObject="299" type="NodePoint"/>
+                    <node idObject="300" reverse="0" type="NodeSpline"/>
+                    <node idObject="301" type="NodePoint"/>
+                    <node idObject="302" reverse="0" type="NodeSpline"/>
+                    <node idObject="303" type="NodePoint"/>
+                    <node idObject="304" type="NodePoint"/>
+                    <node idObject="305" type="NodePoint"/>
+                    <node idObject="306" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="325" mx="187.349" my="99.5482" name="Hihaylävuori" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="79" height="3.381" letter="" mx="1087.36" my="364.243" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.81803">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="19" height="4.13615" mx="1094.5" my="778.092" rotation="0" visible="true" width="5.81803"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="315" type="NodePoint"/>
+                    <node idObject="316" type="NodePoint"/>
+                    <node idObject="317" type="NodePoint"/>
+                    <node idObject="318" reverse="0" type="NodeSpline"/>
+                    <node idObject="319" type="NodePoint"/>
+                    <node idObject="320" type="NodePoint"/>
+                    <node idObject="321" reverse="0" type="NodeSpline"/>
+                    <node idObject="322" type="NodePoint"/>
+                    <node idObject="323" type="NodePoint"/>
+                    <node idObject="324" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="343" mx="143.764" my="93.8389" name="Hiha-alavuori" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="84" height="3.1922" letter="" mx="1070.59" my="803.456" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.19562">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mLining%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="18" height="4.13615" mx="1109.83" my="1174.49" rotation="0" visible="true" width="5.25169"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="334" type="NodePoint"/>
+                    <node idObject="335" type="NodePoint"/>
+                    <node idObject="336" type="NodePoint"/>
+                    <node idObject="337" reverse="0" type="NodeSpline"/>
+                    <node idObject="338" type="NodePoint"/>
+                    <node idObject="339" type="NodePoint"/>
+                    <node idObject="340" reverse="0" type="NodeSpline"/>
+                    <node idObject="341" type="NodePoint"/>
+                    <node idObject="342" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="371" mx="141.025" my="-18.288" name="Hiha-alakainalo" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="29" height="2.53144" letter="" mx="1198.73" my="728.467" onFold="false" orientation="" quantity="1" rotation="-45.3979" rotationWay="" tilt="" visible="true" width="6.00684">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="14" height="3.75856" mx="901.86" my="891.25" rotation="0" visible="true" width="4.40214"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="365" type="NodePoint"/>
+                    <node idObject="366" type="NodePoint"/>
+                    <node idObject="367" reverse="0" type="NodeSpline"/>
+                    <node idObject="368" reverse="0" type="NodeSpline"/>
+                    <node idObject="369" type="NodePoint"/>
+                    <node idObject="370" reverse="1" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="0" id="379" mx="187.444" my="-14.4312" name="Hihayläkainalo" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="35" height="3.00342" letter="" mx="1244.31" my="150.689" onFold="false" orientation="" quantity="1" rotation="0.71013" rotationWay="" tilt="" visible="true" width="7.23397">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="16" height="3.47538" mx="942.976" my="443.917" rotation="-50.1204" visible="true" width="5.15728"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="372" type="NodePoint"/>
+                    <node idObject="373" type="NodePoint"/>
+                    <node idObject="374" reverse="0" type="NodeSplinePath"/>
+                    <node idObject="375" type="NodePoint"/>
+                    <node idObject="376" reverse="0" type="NodeSpline"/>
+                    <node idObject="377" type="NodePoint"/>
+                    <node idObject="378" reverse="1" type="NodeSpline"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="390" mx="189.757" my="21.9308" name="Hihayläsuu" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="29" height="2.9605" letter="" mx="1019.71" my="2306.27" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="5.921">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="20" height="4.3335" mx="991.104" my="2453.96" rotation="0" visible="true" width="6.95076"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="380" type="NodePoint"/>
+                    <node idObject="381" type="NodePoint"/>
+                    <node idObject="382" type="NodePoint"/>
+                    <node idObject="383" reverse="0" type="NodeSpline"/>
+                    <node idObject="384" type="NodePoint"/>
+                    <node idObject="385" type="NodePoint"/>
+                    <node idObject="386" type="NodePoint"/>
+                    <node idObject="387" type="NodePoint"/>
+                    <node idObject="388" type="NodePoint"/>
+                    <node idObject="389" type="NodePoint"/>
+                </nodes>
+            </piece>
+            <piece closed="1" forbidFlipping="1" id="399" mx="143.816" my="16.7157" name="HIha-alasuu" seamAllowance="1" version="2" width="0.5">
+                <data annotation="" foldPosition="" fontSize="33" height="3.13214" letter="" mx="1068.76" my="2299.78" onFold="false" orientation="" quantity="1" rotation="0" rotationWay="" tilt="" visible="true" width="6.77915">
+                    <line alignment="4" bold="true" italic="false" sfIncrement="2" text="%pName%"/>
+                    <line alignment="4" bold="false" italic="false" sfIncrement="0" text="%mInterfacing%, %wCut% %pQuantity%"/>
+                </data>
+                <patternInfo fontSize="19" height="4.07606" mx="1091.28" my="2481.88" rotation="0" visible="true" width="5.7494"/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="391" type="NodePoint"/>
+                    <node idObject="392" type="NodePoint"/>
+                    <node idObject="393" type="NodePoint"/>
+                    <node idObject="394" reverse="0" type="NodeSpline"/>
+                    <node idObject="395" type="NodePoint"/>
+                    <node idObject="396" type="NodePoint"/>
+                    <node idObject="397" type="NodePoint"/>
+                    <node idObject="398" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+        <groups>
+            <group id="308" name="Hiha" visible="true">
+                <item object="225" tool="225"/>
+                <item object="226" tool="226"/>
+                <item object="227" tool="227"/>
+                <item object="228" tool="228"/>
+                <item object="229" tool="229"/>
+                <item object="230" tool="230"/>
+                <item object="231" tool="231"/>
+                <item object="232" tool="232"/>
+                <item object="233" tool="233"/>
+                <item object="234" tool="234"/>
+                <item object="235" tool="235"/>
+                <item object="236" tool="236"/>
+                <item object="237" tool="237"/>
+                <item object="238" tool="238"/>
+                <item object="239" tool="239"/>
+                <item object="240" tool="240"/>
+                <item object="241" tool="241"/>
+                <item object="242" tool="242"/>
+                <item object="243" tool="243"/>
+                <item object="244" tool="244"/>
+                <item object="245" tool="245"/>
+                <item object="246" tool="246"/>
+                <item object="247" tool="247"/>
+                <item object="248" tool="248"/>
+                <item object="249" tool="249"/>
+                <item object="250" tool="250"/>
+                <item object="251" tool="251"/>
+                <item object="252" tool="252"/>
+                <item object="253" tool="253"/>
+                <item object="254" tool="254"/>
+                <item object="255" tool="255"/>
+                <item object="256" tool="256"/>
+                <item object="257" tool="257"/>
+                <item object="258" tool="258"/>
+                <item object="259" tool="259"/>
+                <item object="260" tool="260"/>
+                <item object="261" tool="261"/>
+                <item object="262" tool="262"/>
+                <item object="263" tool="263"/>
+                <item object="264" tool="264"/>
+                <item object="265" tool="265"/>
+                <item object="266" tool="266"/>
+                <item object="267" tool="267"/>
+                <item object="268" tool="268"/>
+                <item object="269" tool="269"/>
+                <item object="270" tool="270"/>
+                <item object="271" tool="271"/>
+                <item object="272" tool="272"/>
+                <item object="273" tool="273"/>
+                <item object="274" tool="274"/>
+                <item object="275" tool="275"/>
+                <item object="276" tool="276"/>
+                <item object="277" tool="277"/>
+                <item object="278" tool="278"/>
+                <item object="279" tool="279"/>
+                <item object="280" tool="280"/>
+                <item object="281" tool="281"/>
+            </group>
+            <group id="344" name="Hihanvuori" visible="false">
+                <item object="309" tool="309"/>
+                <item object="310" tool="310"/>
+                <item object="311" tool="311"/>
+                <item object="312" tool="312"/>
+                <item object="313" tool="313"/>
+                <item object="314" tool="314"/>
+            </group>
+            <group id="357" name="Liimakangas" visible="false">
+                <item object="345" tool="345"/>
+                <item object="346" tool="346"/>
+                <item object="347" tool="347"/>
+                <item object="348" tool="348"/>
+                <item object="349" tool="349"/>
+                <item object="350" tool="350"/>
+                <item object="351" tool="351"/>
+                <item object="352" tool="352"/>
+                <item object="353" tool="353"/>
+                <item object="355" tool="355"/>
+                <item object="356" tool="356"/>
+            </group>
+        </groups>
+    </draftBlock>
+</pattern>

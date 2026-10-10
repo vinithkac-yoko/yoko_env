@@ -43,6 +43,12 @@ def _is_name_char(ch: str) -> bool:
     return ch.isalnum() or ch in _EXTRA_NAME_CHARS
 
 
+def is_valid_name(name: str) -> bool:
+    """Can `name` be used as a measurement or variable name in a formula? (No blanks or operators,
+    and it does not start with a digit.)"""
+    return bool(name) and not name[0].isdigit() and all(_is_name_char(c) for c in name)
+
+
 @dataclass(frozen=True, slots=True)
 class Token:
     kind: str  # num name func op ( ) ; ? : end

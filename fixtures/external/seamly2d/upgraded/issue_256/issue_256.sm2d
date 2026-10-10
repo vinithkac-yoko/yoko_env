@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements>issue_256_correct.smis</measurements>
+    <variables/>
+    <draftBlock name="Pattern piece 1">
+        <calculation>
+            <point id="1" mx="0.132292" my="0.264583" name="A" type="single" x="1.34938" y="1.24354"/>
+            <point angle="0" basePoint="1" id="2" length="height_scapula/10" lineColor="black" lineType="solidLine" mx="0.175422" my="0.27896" name="A1" type="endLine"/>
+            <point angle="269.719" basePoint="1" id="3" length="Line_A_A1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A2" type="endLine"/>
+            <point firstPoint="2" id="4" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A3" secondPoint="3" type="intersectXY"/>
+            <line firstPoint="3" id="5" lineColor="black" lineType="solidLine" secondPoint="4"/>
+            <line firstPoint="2" id="6" lineColor="black" lineType="solidLine" secondPoint="4"/>
+        </calculation>
+        <modeling>
+            <point id="7" idObject="1" inUse="true" mx="0.0264587" my="0.291041" type="modeling"/>
+            <point id="8" idObject="2" inUse="true" mx="-1.85208" my="0.264583" type="modeling"/>
+            <point id="9" idObject="4" inUse="true" mx="-2.03729" my="-1.71979" type="modeling"/>
+            <point id="10" idObject="3" inUse="true" mx="0.47625" my="-1.95792" type="modeling"/>
+            <point id="11" idObject="1" inUse="true" mx="0.0264587" my="0.291041" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" id="12" mx="0.185208" my="-0.079375" name="Detail" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="0" height="" letter="" mx="0" my="0" onFold="false" orientation="" quantity="1" rotation="" rotationWay="" tilt="" visible="false" width=""/>
+                <patternInfo fontSize="0" height="" mx="0" my="0" rotation="" visible="false" width=""/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="7" type="NodePoint"/>
+                    <node idObject="8" type="NodePoint"/>
+                    <node idObject="9" type="NodePoint"/>
+                    <node idObject="10" type="NodePoint"/>
+                    <node idObject="11" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+        <groups/>
+    </draftBlock>
+</pattern>

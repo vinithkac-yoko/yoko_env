@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements>my_calculated_measurements.smis</measurements>
+    <variables>
+        <variable description="Description" formula="0.95" name="#AShoulderDart"/>
+        <variable description="Description" formula="1.27" name="#BShoulderDart"/>
+        <variable description="Description" formula="1.59" name="#CShoulderDart"/>
+        <variable description="Description" formula="1.91" name="#DShoulderDart"/>
+        <variable description="Description" formula="1.91" name="#ASideDart"/>
+        <variable description="Description" formula="2.54" name="#BSideDart"/>
+        <variable description="Description" formula="3.18" name="#CSideDart"/>
+        <variable description="Description" formula="3.81" name="#DSideDart"/>
+        <variable description="Description" formula="0.95" name="#AarmholeDart"/>
+        <variable description="Description" formula="1.27" name="#BarmholeDart"/>
+        <variable description="Description" formula="1.59" name="#CarmholeDart"/>
+        <variable description="Description" formula="1.91" name="#DarmholeDart"/>
+        <variable description="Description" formula="0.95" name="#AcenterFrontDart"/>
+        <variable description="Description" formula="1.27" name="#BcenterFrontDart"/>
+        <variable description="Description" formula="1.59" name="#CcenterFrontDart"/>
+        <variable description="Description" formula="1.91" name="#DcenterFrontDart"/>
+        <variable description="Description" formula="0" name="#WaistDartzeroOne"/>
+        <variable description="IMP - This is changed. original is 3/8(0.95). making it 5/8&quot;(1.59)" formula="1.59" name="#WaistDartTwoSeven"/>
+        <variable description="Description" formula="1.91" name="#WaistDartEihtNine"/>
+        <variable description="Description" formula="2.54" name="#WaistDartTenThirteen"/>
+        <variable description="Description" formula="3.18" name="#WaistdartfourteenSixteen"/>
+        <variable description="1= Odd, 0 = even" formula="0" name="#odd"/>
+        <variable description="1&quot;" formula="2.54" name="#inch"/>
+        <variable description="1/4&quot;" formula="0.64" name="#oneFour"/>
+        <variable description="3/8&quot;" formula="0.95" name="#threeEight"/>
+        <variable description="1/8&quot;" formula="0.32" name="#oneEight"/>
+        <variable description="5/8&quot;" formula="1.59" name="#fiveEight"/>
+        <variable description="3/4&quot;" formula="1.91" name="#threeFour"/>
+        <variable description="4 1/2 inches from waist" formula="11.43" name="#HighhipGuideline"/>
+        <variable description="8 1/2 inches from waist" formula="21.59" name="#LowHipGuideline"/>
+        <variable description="9&quot; - Back Neck length guideline industry standard" formula="22.86" name="#backNeckLengthGuide"/>
+        <variable description="3/8&quot; - 0.95 cm" formula="0.95" name="#BackContouring"/>
+        <variable description="4&quot; front neck guideline" formula="10.16" name="#frontNeckLengthGuide"/>
+        <variable description="8&quot; Cross front guideline" formula="20.32" name="#crossFrontGuideline"/>
+        <variable description="3&quot; from neck guideline vertical" formula="7.62" name="#crossFrontGuidelineVertical"/>
+        <variable description="6&quot;" formula="15.24" name="#FrontShoulderLengthGuide"/>
+        <variable description="3&quot; from low hip towards high hip" formula="7.62" name="#WaistdartVanisfromLH"/>
+        <variable description="High figure to low figure point" formula="1.91" name="#HighFiguretoLowfigurePOint"/>
+        <variable description="3 inches from waist" formula="7.62" name="#FrontSideShapingVertical"/>
+        <variable description="1/8&quot;" formula="0.32" name="#FrontSideshapinghorizontal"/>
+        <variable description="Quarter inch" formula="0.64" name="#FrontwaistBump"/>
+        <variable description="to cater for chest hollow below collar bone" formula="0.32" name="#Chesthollow"/>
+    </variables>
+    <draftBlock name="Pattern piece 1">
+        <calculation>
+            <point id="1" mx="-1.21064" my="-2.1527" name="A" type="single" x="0.926042" y="1.05833"/>
+            <point angle="270" basePoint="1" id="36" length="neck_back_to_waist_b" lineColor="black" lineType="solidLine" mx="0.409758" my="-1.67768" name="G" type="endLine"/>
+            <point angle="180" basePoint="36" id="37" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)-#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)-#oneFour:(leg_thigh_mid_circ/4)-#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A2" type="endLine"/>
+            <point angle="270" basePoint="36" id="38" length="#HighhipGuideline" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A3" type="endLine"/>
+            <point angle="270" basePoint="36" id="39" length="#LowHipGuideline" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="U" type="endLine"/>
+            <point angle="0" firstPoint="38" id="40" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)-#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)-#oneFour:(leg_thigh_mid_circ/4)-#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A5" secondPoint="36" type="normal"/>
+            <point angle="0" firstPoint="39" id="41" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)-#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)-#oneFour:(leg_thigh_mid_circ/4)-#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="V" secondPoint="38" type="normal"/>
+            <line firstPoint="37" id="42" lineColor="black" lineType="solidLine" secondPoint="40"/>
+            <line firstPoint="40" id="43" lineColor="black" lineType="solidLine" secondPoint="41"/>
+            <point angle="180" basePoint="1" id="44" length="#backNeckLengthGuide" lineColor="black" lineType="solidLine" mx="-2.83879" my="1.1794" name="A7" type="endLine"/>
+            <point firstPoint="1" id="45" length="neck_back_to_waist_b/2" lineColor="black" lineType="solidLine" mx="-2.58928" my="2.44614" name="A8" secondPoint="36" type="alongLine"/>
+            <point angle="180" basePoint="45" id="46" length="(bust_circ/4)-#oneFour" lineColor="black" lineType="solidLine" mx="1.09081" my="0.371085" name="A9" type="endLine"/>
+            <point firstPoint="1" id="47" length="neck_back_to_waist_b/4" lineColor="black" lineType="solidLine" mx="-1.0092" my="-1.54838" name="J" secondPoint="36" type="alongLine"/>
+            <point angle="0" firstPoint="47" id="48" length="#backNeckLengthGuide" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A11" secondPoint="1" type="normal"/>
+            <point firstPoint="1" id="49" length="(neck_circ/6)+#threeEight" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="B" secondPoint="44" type="alongLine"/>
+            <point angle="90" basePoint="49" id="50" length="(Line_A_B/3)+#oneEight" lineColor="black" lineType="solidLine" mx="0.374342" my="-2.25274" name="C" type="endLine"/>
+            <point firstPoint="49" id="52" length="1" lineColor="black" lineType="solidLine" mx="-4.40335" my="1.17632" name="tmp1" secondPoint="44" type="alongLine"/>
+            <point id="53" length="shoulder_length+(rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#AShoulderDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BShoulderDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CShoulderDart:#DShoulderDart)" lineColor="black" lineType="solidLine" mx="1.17984" my="-0.474922" name="DShdr1Back" p1Line="49" p2Line="52" pShoulder="50" type="shoulder"/>
+            <line firstPoint="50" id="55" lineColor="black" lineType="solidLine" secondPoint="53"/>
+            <point firstPoint="50" id="56" length="shoulder_length/2" lineColor="black" lineType="solidLine" mx="2.04665" my="0.351462" name="E" secondPoint="53" type="alongLine"/>
+            <point firstPoint="53" id="57" length="shoulder_length/2" lineColor="black" lineType="solidLine" mx="-1.41412" my="-2.95711" name="F" secondPoint="50" type="alongLine"/>
+            <point angle="180.08" basePoint="36" id="58" length="#BackContouring" lineColor="black" lineType="solidLine" mx="-0.905098" my="-1.44776" name="H" type="endLine"/>
+            <point firstPoint="36" id="59" length="7*#inch" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="I" secondPoint="39" type="alongLine"/>
+            <point angle="270" basePoint="58" id="60" length="#inch/2" lineColor="black" lineType="solidLine" mx="-3.43553" my="0.10483" name="R" type="endLine"/>
+            <line firstPoint="60" id="61" lineColor="black" lineType="solidLine" secondPoint="59"/>
+            <line firstPoint="47" id="62" lineColor="black" lineType="solidLine" secondPoint="58"/>
+            <point firstPoint="58" id="64" length="((waist_circ/4)-#oneFour)/2" lineColor="black" lineType="solidLine" mx="1.72598" my="-2.84195" name="K" secondPoint="37" type="alongLine"/>
+            <point firstPoint="64" id="65" length="((rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=0 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=1)?#WaistDartzeroOne:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=2 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=7)?#WaistDartTwoSeven:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=8 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=9)?#WaistDartEihtNine:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=10 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=13)?#WaistDartTenThirteen:#WaistdartfourteenSixteen)-#BackContouring " lineColor="black" lineType="solidLine" mx="-2.8093" my="-2.94486" name="L" secondPoint="37" type="alongLine"/>
+            <point firstPoint="65" id="66" length="((waist_circ/4)-#oneFour)/2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="M" secondPoint="37" type="alongLine"/>
+            <point firstPoint="64" id="67" length="Line_K_L/2" lineColor="black" lineType="solidLine" mx="-1.03796" my="-3.1435" name="A1" secondPoint="65" type="alongLine"/>
+            <point angle="180" firstPoint="67" id="68" length="Line_G_U" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="N" secondPoint="36" type="normal"/>
+            <point firstPoint="68" id="69" length="#WaistdartVanisfromLH" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="O" secondPoint="67" type="alongLine"/>
+            <point angle="270" basePoint="65" id="70" length="#inch/2" lineColor="black" lineType="solidLine" mx="-3.80829" my="-0.321179" name="Q" type="endLine"/>
+            <point angle="270" basePoint="64" id="71" length="#inch/2" lineColor="black" lineType="solidLine" mx="1.14406" my="-0.747183" name="P" type="endLine"/>
+            <line firstPoint="66" id="72" lineColor="black" lineType="solidLine" secondPoint="70"/>
+            <line firstPoint="71" id="73" lineColor="black" lineType="solidLine" secondPoint="60"/>
+            <line firstPoint="70" id="74" lineColor="black" lineType="solidLine" secondPoint="69"/>
+            <line firstPoint="71" id="75" lineColor="black" lineType="solidLine" secondPoint="69"/>
+            <point id="76" mx="-4.0852" my="-3.48429" name="S" p1Line1="60" p1Line2="38" p2Line1="59" p2Line2="40" type="lineIntersect"/>
+            <point id="77" mx="0.323576" my="-2.55002" name="A12" p1Line1="71" p1Line2="38" p2Line1="69" p2Line2="40" type="lineIntersect"/>
+            <point id="78" mx="-3.85734" my="-2.7413" name="A13" p1Line1="70" p1Line2="40" p2Line1="69" p2Line2="38" type="lineIntersect"/>
+            <line firstPoint="78" id="79" lineColor="black" lineType="solidLine" secondPoint="77"/>
+            <line firstPoint="38" id="80" lineColor="black" lineType="solidLine" secondPoint="76"/>
+            <point firstPoint="38" id="81" length="((highhip_circ/4)-#oneFour)-Line_A13_A12-Line_A3_S" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="T" secondPoint="40" type="alongLine"/>
+            <line firstPoint="66" id="82" lineColor="black" lineType="solidLine" secondPoint="81"/>
+            <line firstPoint="81" id="83" lineColor="black" lineType="solidLine" secondPoint="41"/>
+            <point firstPoint="47" id="84" length="armfold_to_armfold_b/2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="W" secondPoint="48" type="alongLine"/>
+            <point id="85" mx="-1.55044" my="-0.278582" name="X" p1Line1="47" p1Line2="45" p2Line1="58" p2Line2="46" type="lineIntersect"/>
+            <point angle="180" basePoint="85" id="86" length="(bust_circ/4)-#oneFour" lineColor="black" lineType="solidLine" mx="-4.50055" my="-4.52802" name="Y" type="endLine"/>
+            <point angle="90" basePoint="86" id="87" length="2*#inch" lineColor="black" lineType="dashLine" mx="-4.91688" my="-2.06394" name="tmp2" type="endLine"/>
+            <point angle="270" basePoint="86" id="88" length="2*#inch" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A4" type="endLine"/>
+            <point firstPoint="88" id="89" length="0.5" lineColor="black" lineType="solidLine" mx="0.877807" my="-1.91871" name="A6" secondPoint="86" type="alongLine"/>
+            <point id="90" length="armpit_to_waist_side" lineColor="black" lineType="solidLine" mx="1.22483" my="-2.67448" name="Z" p1Line="88" p2Line="89" pShoulder="66" type="shoulder"/>
+            <line firstPoint="66" id="91" lineColor="black" lineType="solidLine" secondPoint="90"/>
+            <line firstPoint="86" id="92" lineColor="black" lineType="solidLine" secondPoint="45"/>
+            <point angle="180" firstPoint="90" id="93" length="Line_Y_A8" lineColor="black" lineType="solidLine" mx="-7.03413" my="-3.99897" name="NewBustline" secondPoint="87" type="normal"/>
+            <point id="94" mx="-1.27354" my="-3.13284" name="a" p1Line1="47" p1Line2="93" p2Line1="58" p2Line2="90" type="lineIntersect"/>
+            <point firstPoint="66" id="95" length="3*#inch" lineColor="black" lineType="solidLine" mx="-5.5496" my="1.31895" name="A14" secondPoint="90" type="alongLine"/>
+            <point angle="180" firstPoint="95" id="96" length="#oneEight" lineColor="black" lineType="solidLine" mx="1.47955" my="-0.848369" name="b" secondPoint="90" type="normal"/>
+            <line firstPoint="66" id="97" lineColor="black" lineType="solidLine" secondPoint="96"/>
+            <line firstPoint="96" id="98" lineColor="black" lineType="solidLine" secondPoint="90"/>
+            <line firstPoint="56" id="99" lineColor="black" lineType="solidLine" secondPoint="64"/>
+            <point id="100" mx="0.374342" my="-2.78525" name="A10" p1Line1="90" p1Line2="56" p2Line1="93" p2Line2="64" type="lineIntersect"/>
+            <point firstPoint="100" id="101" length="#inch" lineColor="black" lineType="solidLine" mx="1.34254" my="0.361404" name="c" secondPoint="64" type="alongLine"/>
+            <line firstPoint="101" id="102" lineColor="black" lineType="solidLine" secondPoint="65"/>
+            <point firstPoint="56" id="103" length="3.5*#inch" lineColor="black" lineType="solidLine" mx="0.567982" my="-1.42977" name="d" secondPoint="64" type="alongLine"/>
+            <line firstPoint="93" id="104" lineColor="black" lineType="solidLine" secondPoint="47"/>
+            <point angle="180" firstPoint="84" id="105" length="Line_NewBustline_J" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="e" secondPoint="47" type="normal"/>
+            <point angle="135" basePoint="105" id="106" length="#inch" lineColor="black" lineType="solidLine" mx="-2.04616" my="-3.07571" name="f" type="endLine"/>
+            <spline angle1="359.772" angle2="265.156" color="black" id="107" kAsm1="1.12718" kAsm2="0.876291" kCurve="1" point1="90" point4="84" type="simple"/>
+            <spline angle1="90.6985" angle2="280.723" color="black" id="108" kAsm1="1.32308" kAsm2="1.01019" kCurve="1" point1="84" point4="53" type="simple"/>
+            <point angle="45" basePoint="49" id="109" length="#inch/2" lineColor="black" lineType="solidLine" mx="1.10049" my="-2.68843" name="g" type="endLine"/>
+            <spline angle1="277.383" angle2="175.887" color="black" id="110" kAsm1="1.09554" kAsm2="0.935991" kCurve="1" point1="50" point4="1" type="simple"/>
+            <line firstPoint="57" id="111" lineColor="black" lineType="solidLine" secondPoint="103"/>
+            <point angle="0" basePoint="36" id="114" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)+#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)+#oneFour:(leg_thigh_mid_circ/4)+#oneFour" lineColor="black" lineType="solidLine" mx="2.64008" my="-0.725335" name="A16" type="endLine"/>
+            <point angle="0" basePoint="38" id="115" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)+#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)+#oneFour:(leg_thigh_mid_circ/4)+#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A17" type="endLine"/>
+            <point angle="0" basePoint="39" id="116" length="(waist_circ&gt;highhip_circ &amp;&amp; waist_circ&gt;leg_thigh_mid_circ)?(waist_circ/4)+#oneFour:((highhip_circ&gt;waist_circ &amp;&amp; highhip_circ&gt;leg_thigh_mid_circ))?(highhip_circ/4)+#oneFour:(leg_thigh_mid_circ/4)+#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="ZZ" type="endLine"/>
+            <line firstPoint="114" id="117" lineColor="black" lineType="solidLine" secondPoint="116"/>
+            <point firstPoint="36" id="118" length="neck_side_to_waist_f" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="AA" secondPoint="1" type="alongLine"/>
+            <point angle="0" basePoint="118" id="120" length="#frontNeckLengthGuide" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A20" type="endLine"/>
+            <point firstPoint="36" id="121" length="neck_side_to_waist_f/2" lineColor="black" lineType="solidLine" mx="0.723182" my="-1.80353" name="II" secondPoint="118" type="alongLine"/>
+            <point angle="0" basePoint="121" id="122" length="(bust_circ/4)+#oneFour" lineColor="black" lineType="solidLine" mx="1.74664" my="-2.81276" name="JJFirstBust" type="endLine"/>
+            <point firstPoint="118" id="125" length="#crossFrontGuidelineVertical" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A23" secondPoint="121" type="alongLine"/>
+            <point angle="0" basePoint="125" id="126" length="#crossFrontGuideline" lineColor="black" lineType="solidLine" mx="1.28025" my="-2.62511" name="A24" type="endLine"/>
+            <point firstPoint="118" id="151" length="(neck_circ/6)+#oneFour" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="BB" secondPoint="120" type="alongLine"/>
+            <point angle="90" basePoint="151" id="152" length="Line_AA_BB+#oneEight" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="CC" type="endLine"/>
+            <point firstPoint="151" id="153" length="Line_BB_CC/2" lineColor="black" lineType="solidLine" mx="-2.37899" my="0.11686" name="DD" secondPoint="152" type="alongLine"/>
+            <point angle="0" basePoint="153" id="155" length="#FrontShoulderLengthGuide" lineColor="black" lineType="solidLine" mx="1.73818" my="-0.252175" name="EE" type="endLine"/>
+            <point firstPoint="153" id="156" length="1" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="tmp4" secondPoint="155" type="alongLine"/>
+            <point id="157" length="shoulder_length+(rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#AShoulderDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BShoulderDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CShoulderDart:#DShoulderDart)" lineColor="black" lineType="solidLine" mx="2.92013" my="0.614333" name="FFArmhole" p1Line="153" p2Line="156" pShoulder="152" type="shoulder"/>
+            <line firstPoint="152" id="159" lineColor="black" lineType="solidLine" secondPoint="157"/>
+            <point firstPoint="152" id="160" length="shoulder_length/2" lineColor="black" lineType="solidLine" mx="-1.86196" my="-2.68987" name="GG" secondPoint="157" type="alongLine"/>
+            <point firstPoint="157" id="161" length="shoulder_length/2" lineColor="black" lineType="solidLine" mx="1.68338" my="-2.2467" name="HH" secondPoint="152" type="alongLine"/>
+            <line firstPoint="121" id="162" lineColor="black" lineType="solidLine" secondPoint="122"/>
+            <point firstPoint="121" id="163" length="bustpoint_to_bustpoint/2" lineColor="black" lineType="solidLine" mx="0.501599" my="-1.8774" name="KK" secondPoint="122" type="alongLine"/>
+            <point angle="90" basePoint="163" id="164" length="2*#inch" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A22" type="endLine"/>
+            <point angle="270" basePoint="163" id="165" length="2*#inch" lineColor="black" lineType="dashLine" mx="-3.04375" my="-0.769481" name="A26" type="endLine"/>
+            <point angle="90" basePoint="164" id="167" length="2" lineColor="black" lineType="solidLine" mx="-2.67558" my="-1.66851" name="tmp5" type="endLine"/>
+            <point id="168" length="neck_front_to_bust_f" lineColor="black" lineType="solidLine" mx="3.82536" my="0.190722" name="LBust" p1Line="167" p2Line="164" pShoulder="118" type="shoulder"/>
+            <line firstPoint="118" id="169" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <point angle="180" firstPoint="168" id="170" length="Line_II_KK" lineColor="black" lineType="solidLine" mx="0.206153" my="0.560024" name="MM" secondPoint="165" type="normal"/>
+            <point basePoint="168" id="171" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="OO" p1Line="39" p2Line="116" type="height"/>
+            <point id="172" mx="-2.43857" my="-3.57796" name="NN" p1Line1="168" p1Line2="114" p2Line1="171" p2Line2="36" type="lineIntersect"/>
+            <point firstPoint="172" id="173" length="((rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=0 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=1)?#WaistDartzeroOne:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=2 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=7)?#WaistDartTwoSeven:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=8 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=9)?#WaistDartEihtNine:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=10 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=13)?#WaistDartTenThirteen:#WaistdartfourteenSixteen)/2" lineColor="black" lineType="solidLine" mx="-3.58575" my="-3.61994" name="PP" secondPoint="36" type="alongLine"/>
+            <point firstPoint="172" id="174" length="((rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=0 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=1)?#WaistDartzeroOne:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=2 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=7)?#WaistDartTwoSeven:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=8 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=9)?#WaistDartEihtNine:(rint((leg_thigh_mid_circ-waist_circ)/#inch)&gt;=10 &amp;&amp; rint((leg_thigh_mid_circ-waist_circ)/#inch)&lt;=13)?#WaistDartTenThirteen:#WaistdartfourteenSixteen)/2" lineColor="black" lineType="solidLine" mx="1.63061" my="-3.78642" name="QQ" secondPoint="114" type="alongLine"/>
+            <point firstPoint="36" id="175" length="#inch/2" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="RR" secondPoint="38" type="alongLine"/>
+            <point firstPoint="171" id="177" length="#WaistdartVanisfromLH" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="SS" secondPoint="172" type="alongLine"/>
+            <point angle="270" basePoint="173" id="178" length="#inch/2" lineColor="black" lineType="solidLine" mx="-2.94047" my="-0.148176" name="TT" type="endLine"/>
+            <point angle="270" basePoint="174" id="179" length="#inch/2" lineColor="black" lineType="solidLine" mx="1.92091" my="-0.331624" name="UU" type="endLine"/>
+            <line firstPoint="178" id="180" lineColor="black" lineType="solidLine" secondPoint="177"/>
+            <line firstPoint="179" id="181" lineColor="black" lineType="solidLine" secondPoint="177"/>
+            <point firstPoint="168" id="183" length="#HighFiguretoLowfigurePOint" lineColor="black" lineType="solidLine" mx="1.00367" my="-0.881969" name="VV" secondPoint="172" type="alongLine"/>
+            <line firstPoint="183" id="184" lineColor="black" lineType="solidLine" secondPoint="174"/>
+            <line firstPoint="183" id="185" lineColor="black" lineType="solidLine" secondPoint="173"/>
+            <line firstPoint="160" id="186" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <line firstPoint="161" id="187" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <point angle="180" firstPoint="170" id="188" length="(bust_circ/4)+#oneFour" lineColor="black" lineType="solidLine" mx="1.14126" my="-1.45066" name="WW2ndBust" secondPoint="121" type="normal"/>
+            <point angle="180" firstPoint="188" id="189" length="4*#inch" lineColor="black" lineType="dashDotLine" mx="1.64574" my="-2.15694" name="A18" secondPoint="168" type="normal"/>
+            <line firstPoint="173" id="190" lineColor="black" lineType="solidLine" secondPoint="174"/>
+            <point firstPoint="36" id="191" length="(waist_circ/4)+#oneFour+Line_PP_QQ" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="XX" secondPoint="114" type="alongLine"/>
+            <point id="192" mx="2.12553" my="-3.81901" name="Tmp7" p1Line1="177" p1Line2="115" p2Line1="179" p2Line2="38" type="lineIntersect"/>
+            <point id="193" mx="-5.59099" my="-3.71518" name="Tmp6" p1Line1="177" p1Line2="38" p2Line1="178" p2Line2="115" type="lineIntersect"/>
+            <line firstPoint="193" id="194" lineColor="black" lineType="solidLine" secondPoint="192"/>
+            <point firstPoint="38" id="195" length="(highhip_circ/4)+#oneFour+Line_Tmp6_Tmp7" lineColor="black" lineType="solidLine" mx="-2.55879" my="-3.9047" name="YY" secondPoint="115" type="alongLine"/>
+            <line firstPoint="195" id="196" lineColor="black" lineType="solidLine" secondPoint="116"/>
+            <line firstPoint="191" id="197" lineColor="black" lineType="solidLine" secondPoint="195"/>
+            <line firstPoint="175" id="198" lineColor="black" lineType="solidLine" secondPoint="178"/>
+            <line firstPoint="179" id="199" lineColor="black" lineType="solidLine" secondPoint="191"/>
+            <point angle="270" basePoint="188" id="201" length="1" lineColor="black" lineType="solidLine" mx="1.37545" my="0.166439" name="tmp8" type="endLine"/>
+            <point id="202" length="armpit_to_waist_side+(rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#ASideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BSideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CSideDart:#DSideDart)" lineColor="black" lineType="solidLine" mx="3.76457" my="-1.24887" name="a3rdBust" p1Line="201" p2Line="188" pShoulder="191" type="shoulder"/>
+            <line firstPoint="202" id="203" lineColor="black" lineType="solidLine" secondPoint="191"/>
+            <point firstPoint="118" id="204" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="bb" secondPoint="202" type="intersectXY"/>
+            <line firstPoint="204" id="205" lineColor="black" lineType="solidLine" secondPoint="202"/>
+            <point firstPoint="191" id="208" length="#FrontSideShapingVertical" lineColor="black" lineType="solidLine" mx="0.567683" my="0.547178" name="A19" secondPoint="202" type="alongLine"/>
+            <point angle="180" firstPoint="208" id="209" length="#FrontSideshapinghorizontal" lineColor="black" lineType="solidLine" mx="-3.69281" my="-1.4741" name="A21" secondPoint="191" type="normal"/>
+            <line firstPoint="209" id="210" lineColor="black" lineType="solidLine" secondPoint="191"/>
+            <point firstPoint="188" id="211" length="((rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#ASideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BSideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CSideDart:#DSideDart))/2" lineColor="black" lineType="solidLine" mx="0.655727" my="-4.83891" name="A25" secondPoint="202" type="alongLine"/>
+            <point firstPoint="188" id="212" length="((rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#ASideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BSideDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CSideDart:#DSideDart))/2" lineColor="black" lineType="solidLine" mx="0.139569" my="1.1253" name="A27" secondPoint="201" type="alongLine"/>
+            <line firstPoint="168" id="213" lineColor="black" lineType="solidLine" secondPoint="211"/>
+            <line firstPoint="168" id="214" lineColor="black" lineType="solidLine" secondPoint="212"/>
+            <point id="215" mx="-2.79698" my="0.660431" name="A28" p1Line1="202" p1Line2="212" p2Line1="208" p2Line2="168" type="lineIntersect"/>
+            <point id="216" mx="-2.28238" my="-2.15009" name="A29" p1Line1="202" p1Line2="211" p2Line1="208" p2Line2="168" type="lineIntersect"/>
+            <line firstPoint="209" id="217" lineColor="black" lineType="solidLine" secondPoint="215"/>
+            <point firstPoint="183" id="218" length="Line_VV_PP/3" lineColor="black" lineType="solidLine" mx="-2.08446" my="-2.42718" name="A30" secondPoint="173" type="alongLine"/>
+            <point firstPoint="183" id="219" length="Line_VV_PP/3" lineColor="black" lineType="solidLine" mx="1.87402" my="-2.70428" name="A31" secondPoint="174" type="alongLine"/>
+            <point angle="0" basePoint="219" id="220" length="#FrontwaistBump" lineColor="black" lineType="solidLine" mx="5.61272" my="-2.49002" name="A32" type="endLine"/>
+            <point angle="180" basePoint="218" id="221" length="#FrontwaistBump" lineColor="black" lineType="solidLine" mx="-3.94494" my="-0.566697" name="A33" type="endLine"/>
+            <spline angle1="253.054" angle2="99.8213" color="black" id="222" kAsm1="0.298854" kAsm2="1.2878" kCurve="1" point1="183" point4="173" type="simple"/>
+            <spline angle1="279.47" angle2="80.3781" color="black" id="223" kAsm1="0.128689" kAsm2="1.44195" kCurve="1" point1="183" point4="174" type="simple"/>
+            <point id="225" mx="4.29938" my="1.60572" name="del4" p1Line1="191" p1Line2="221" p2Line1="202" p2Line2="220" type="lineIntersect"/>
+            <point id="226" mx="0.132292" my="0.264583" name="del3" p1Line1="225" p1Line2="170" p2Line1="221" p2Line2="36" type="lineIntersect"/>
+            <line firstPoint="226" id="227" lineColor="yellow" lineType="solidLine" secondPoint="225"/>
+            <point id="228" mx="0.132292" my="0.264583" name="del1" p1Line1="46" p1Line2="221" p2Line1="96" p2Line2="226" type="lineIntersect"/>
+            <point id="229" mx="-2.78946" my="-2.46558" name="del2" p1Line1="85" p1Line2="221" p2Line1="58" p2Line2="226" type="lineIntersect"/>
+            <line firstPoint="228" id="230" lineColor="yellow" lineType="solidLine" secondPoint="229"/>
+            <point id="232" mx="-4.73602" my="-2.45935" name="A34" p1Line1="161" p1Line2="126" p2Line1="168" p2Line2="125" type="lineIntersect"/>
+            <point firstPoint="232" id="233" length="#Chesthollow" lineColor="black" lineType="solidLine" mx="4.59491" my="-3.38665" name="A35" secondPoint="126" type="alongLine"/>
+            <spline angle1="263.104" angle2="75.7068" color="black" id="234" kAsm1="0.638151" kAsm2="1.34708" kCurve="1" point1="161" point4="168" type="simple"/>
+            <point id="235" mx="-3.63485" my="-4.60373" name="A36" p1Line1="160" p1Line2="126" p2Line1="168" p2Line2="125" type="lineIntersect"/>
+            <line firstPoint="235" id="236" lineColor="black" lineType="solidLine" secondPoint="233"/>
+            <point firstPoint="125" id="237" length="(across_chest_f/2)+Line_A36_A35" lineColor="black" lineType="solidLine" mx="-1.54493" my="0.301518" name="gg" secondPoint="126" type="alongLine"/>
+            <point firstPoint="237" id="238" lineColor="black" lineType="dashLine" lineWeight="0.35" mx="0.132292" my="0.264583" name="A37" secondPoint="204" type="intersectXY"/>
+            <point angle="45" basePoint="238" id="239" length="#inch" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="ii" type="endLine"/>
+            <point angle="0" firstPoint="239" id="241" length="((rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#AarmholeDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BarmholeDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CarmholeDart:#DarmholeDart))/2" lineColor="black" lineType="solidLine" mx="1.59693" my="-1.71466" name="kk" secondPoint="238" type="normal"/>
+            <point angle="180" firstPoint="239" id="242" length="((rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==1?#AarmholeDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*#inch):(lowbust_circ+4*#inch)))/#inch)==2?#BarmholeDart:rint((bust_circ-((#odd==1)?(lowbust_circ+5*2.54):(lowbust_circ+4*#inch)))/#inch)==3?#CarmholeDart:#DarmholeDart))/2" lineColor="black" lineType="solidLine" mx="0.0927072" my="-1.79383" name="jj" secondPoint="238" type="normal"/>
+            <line firstPoint="242" id="243" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <line firstPoint="241" id="244" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <point angle="135" basePoint="151" id="246" length="#inch" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A38" type="endLine"/>
+            <spline angle1="0.468534" angle2="269.739" color="black" id="247" kAsm1="0.752352" kAsm2="1.42917" kCurve="1" point1="118" point4="152" type="simple"/>
+            <spline angle1="243.992" angle2="178.111" color="black" id="248" kAsm1="2.70163" kAsm2="0.323775" kCurve="1" point1="157" point4="202" type="simple"/>
+            <point id="251" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2-#oneFour:armscye_circ/2+#oneFour)-Spl_FFArmhole_a3rdBust)==-1)?(-((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2-#oneFour:armscye_circ/2+#oneFour)-Spl_FFArmhole_a3rdBust)):0" mx="-1.40413" my="3.50303" name="ShdrLBelowFrnt" spline="248" type="cutSpline"/>
+            <point angle="180" firstPoint="157" id="254" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2-#oneFour:armscye_circ/2+#oneFour)-Spl_FFArmhole_a3rdBust)==-1)?0:(neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2-#oneFour:armscye_circ/2+#oneFour)-Spl_FFArmhole_a3rdBust" lineColor="black" lineType="solidLine" mx="4.20273" my="-3.3843" name="ShdrLAboveFrnt" secondPoint="153" type="normal"/>
+            <line firstPoint="152" id="255" lineColor="yellow" lineType="solidLine" secondPoint="251"/>
+            <spline angle1="282.994" angle2="1.23972" color="black" id="259" kAsm1="0.793018" kAsm2="1.04324" kCurve="1" point1="53" point4="90" type="simple"/>
+            <point id="260" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?(-((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)):0" mx="-8.88108" my="2.08081" name="ShdrLBelowBack" spline="259" type="cutSpline"/>
+            <point angle="0" firstPoint="53" id="263" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?0:((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)" lineColor="black" lineType="solidLine" mx="-11.3935" my="-7.68168" name="ShdrLAboveBack" secondPoint="1" type="normal"/>
+            <point firstPoint="50" id="264" length="Line_C_DShdr1Back" lineColor="yellow" lineType="solidLine" mx="7.58963" my="-8.02658" name="ShdrPt2AboveBack" secondPoint="263" type="alongLine"/>
+            <point firstPoint="50" id="265" length="Line_C_DShdr1Back" lineColor="yellow" lineType="solidLine" mx="1.93939" my="2.21069" name="ShdrPt2Belowback" secondPoint="260" type="alongLine"/>
+            <point angle="180" basePoint="50" id="267" length="Line_C_DShdr1Back" lineColor="black" lineType="solidLine" mx="-1.64986" my="-8.05937" name="starightguide" type="endLine"/>
+            <point angle="0" basePoint="152" id="268" length="Line_CC_FFArmhole" lineColor="black" lineType="solidLine" mx="-4.65784" my="-2.53657" name="starightguidefront" type="endLine"/>
+            <line firstPoint="264" id="269" lineColor="black" lineType="solidLine" secondPoint="267"/>
+            <point angle="270" basePoint="267" id="272" length="0" lineColor="black" lineType="solidLine" mx="-17.4407" my="-4.38382" name="tmp" type="endLine"/>
+            <point firstPoint="50" id="273" length="Line_C_DShdr1Back" lineColor="darkBlue" lineType="solidLine" mx="-17.5847" my="-1.80496" name="tmp9" secondPoint="272" type="alongLine"/>
+            <spline angle1="11.4116" angle2="282.346" color="black" id="274" kAsm1="0.372374" kAsm2="2.3618" kCurve="1" point1="90" point4="273" type="simple"/>
+            <line firstPoint="264" id="275" lineColor="black" lineType="solidLine" secondPoint="267"/>
+            <line firstPoint="265" id="276" lineColor="black" lineType="solidLine" secondPoint="267"/>
+            <point firstPoint="152" id="277" length="Line_CC_FFArmhole" lineColor="yellow" lineType="solidLine" mx="3.95499" my="1.79366" name="ShdrPt2BelowFrnt" secondPoint="251" type="alongLine"/>
+            <point firstPoint="152" id="278" length="Line_CC_FFArmhole" lineColor="yellow" lineType="solidLine" mx="7.78015" my="0.373629" name="ShdrPt2AboveFrnt" secondPoint="254" type="alongLine"/>
+            <line firstPoint="278" id="280" lineColor="black" lineType="solidLine" secondPoint="268"/>
+            <line firstPoint="277" id="281" lineColor="black" lineType="solidLine" secondPoint="268"/>
+            <point angle="64.9833" basePoint="152" id="282" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_FFArmhole_a3rdBust)==-1)?Line_ShdrPt2BelowFrnt_starightguidefront:Line_ShdrPt2AboveFrnt_starightguidefront" lineColor="black" lineType="solidLine" mx="1.62662" my="-2.37656" name="A39" type="endLine"/>
+            <line firstPoint="278" id="286" lineColor="black" lineType="solidLine" secondPoint="268"/>
+            <line firstPoint="277" id="287" lineColor="black" lineType="solidLine" secondPoint="268"/>
+            <point angle="270" basePoint="268" id="288" length="(((sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2Belowback_starightguide:Line_ShdrPt2AboveBack_starightguide)+(((sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2BelowFrnt_starightguidefront:Line_ShdrPt2AboveFrnt_starightguidefront)))/2" lineColor="black" lineType="solidLine" mx="7.78384" my="-0.770626" name="AngleShdrFront" type="endLine"/>
+            <point firstPoint="152" id="289" length="Line_CC_FFArmhole" lineColor="blue" lineType="solidLine" mx="11.5805" my="-8.42123" name="finalShdrFront" secondPoint="288" type="alongLine"/>
+            <line firstPoint="264" id="292" lineColor="black" lineType="solidLine" secondPoint="267"/>
+            <point angle="270" basePoint="267" id="293" length="(((sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2Belowback_starightguide:Line_ShdrPt2AboveBack_starightguide)+(((sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2BelowFrnt_starightguidefront:Line_ShdrPt2AboveFrnt_starightguidefront)))/2" lineColor="black" lineType="solidLine" mx="-16.5211" my="-0.676519" name="AngleShdrBack" type="endLine"/>
+            <point firstPoint="50" id="294" length="Line_C_DShdr1Back" lineColor="blue" lineType="solidLine" mx="-18.4033" my="2.92421" name="FinalBackShdr" secondPoint="293" type="alongLine"/>
+            <point angle="102.347" basePoint="1" id="295" length="((sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2Belowback_starightguide:Line_ShdrPt2AboveBack_starightguide)" lineColor="black" lineType="solidLine" mx="-1.31711" my="-5.63864" name="Angleback" type="endLine"/>
+            <point angle="64.2553" basePoint="1" id="296" length="(sign((neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_DShdr1Back_Z)==-1)?Line_ShdrPt2BelowFrnt_starightguidefront:Line_ShdrPt2AboveFrnt_starightguidefront" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="Anglefront" type="endLine"/>
+            <point angle="78.5738" basePoint="1" id="297" length="Line_ShdrPt2AboveBack_starightguide" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="A15" type="endLine"/>
+            <point firstPoint="50" id="298" length="shoulder_length/2" lineColor="blue" lineType="solidLine" mx="3.44288" my="-3.82715" name="i" secondPoint="294" type="alongLine"/>
+            <point firstPoint="294" id="299" length="shoulder_length/2" lineColor="blue" lineType="solidLine" mx="0.281082" my="-4.34792" name="j" secondPoint="50" type="alongLine"/>
+            <line firstPoint="298" id="300" lineColor="blue" lineType="solidLine" secondPoint="64"/>
+            <point firstPoint="298" id="301" length="3.5*#inch" lineColor="blue" lineType="solidLine" mx="1.6202" my="-2.78562" name="d1" secondPoint="64" type="alongLine"/>
+            <line firstPoint="299" id="302" lineColor="blue" lineType="solidLine" secondPoint="301"/>
+            <point firstPoint="100" id="303" length="#inch" lineColor="black" lineType="solidLine" mx="-3.2884" my="0.93972" name="c1" secondPoint="64" type="alongLine"/>
+            <line firstPoint="65" id="304" lineColor="blue" lineType="solidLine" secondPoint="303"/>
+            <point firstPoint="152" id="305" length="shoulder_length/2" lineColor="blue" lineType="solidLine" mx="-1.71308" my="-4.5964" name="GG1" secondPoint="289" type="alongLine"/>
+            <point firstPoint="289" id="306" length="shoulder_length/2" lineColor="blue" lineType="solidLine" mx="-0.992936" my="-4.32635" name="HH1" secondPoint="152" type="alongLine"/>
+            <line firstPoint="306" id="307" lineColor="black" lineType="solidLine" secondPoint="168"/>
+            <point id="308" mx="-0.00273567" my="1.56985" name="A34a" p1Line1="168" p1Line2="126" p2Line1="306" p2Line2="125" type="lineIntersect"/>
+            <point firstPoint="308" id="309" length="#oneEight" lineColor="black" lineType="solidLine" mx="1.6176" my="-3.74123" name="A35a" secondPoint="126" type="alongLine"/>
+            <line firstPoint="305" id="310" lineColor="blue" lineType="solidLine" secondPoint="168"/>
+            <spline angle1="260.081" angle2="74.4134" color="blue" id="311" kAsm1="0.950771" kAsm2="1.11268" kCurve="1" point1="306" point4="309" type="simple"/>
+            <spline angle1="260.739" angle2="73.9907" color="blue" id="312" kAsm1="0.834025" kAsm2="1.10807" kCurve="1" point1="309" point4="168" type="simple"/>
+            <point angle="148.847" basePoint="90" id="313" length="(neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2-#oneFour:armscye_circ/2+#oneFour)-Spl_FFArmhole_ShdrLBelowFrnt" lineColor="black" lineType="solidLine" mx="-1.44341" my="5.59417" name="frontarm" type="endLine"/>
+            <point angle="160" basePoint="90" id="314" length="neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour" lineColor="black" lineType="solidLine" mx="-7.42182" my="2.90621" name="backarm" type="endLine"/>
+            <point angle="189.907" basePoint="90" id="315" length="(neck_back_to_waist_b&gt;neck_side_to_waist_f?armscye_circ/2+#oneFour:armscye_circ/2-#oneFour)-Spl_FFArmhole_a3rdBust" lineColor="black" lineType="solidLine" mx="-2.83374" my="0.44996" name="A40" type="endLine"/>
+            <spline angle1="0.279933" angle2="279.664" color="blue" id="316" kAsm1="1.11479" kAsm2="0.741008" kCurve="1" point1="90" point4="294" type="simple"/>
+            <spline angle1="178.404" angle2="247.458" color="blue" id="317" kAsm1="1.67562" kAsm2="1.21788" kCurve="1" point1="202" point4="289" type="simple"/>
+        </calculation>
+        <modeling>
+            <point id="655" idObject="306" inUse="true" mx="-0.992936" my="-4.32635" type="modeling"/>
+            <point id="656" idObject="289" inUse="true" mx="-1.45603" my="1.77097" type="modeling"/>
+            <point id="657" idObject="237" inUse="true" mx="-1.54493" my="0.301518" type="modeling"/>
+            <point id="658" idObject="242" inUse="true" mx="0.0927072" my="-1.79383" type="modeling"/>
+            <point id="659" idObject="168" inUse="true" mx="-5.40068" my="6.61327" type="modeling"/>
+            <point id="660" idObject="241" inUse="true" mx="1.59693" my="-1.71466" type="modeling"/>
+            <point id="661" idObject="202" inUse="true" mx="3.76457" my="-1.24887" type="modeling"/>
+            <point id="662" idObject="216" inUse="true" mx="-2.28238" my="-2.15009" type="modeling"/>
+            <point id="663" idObject="168" inUse="true" mx="-6.06332" my="-1.23651" type="modeling"/>
+            <point id="664" idObject="215" inUse="true" mx="-2.79698" my="0.660431" type="modeling"/>
+            <point id="665" idObject="209" inUse="true" mx="-3.69281" my="-1.4741" type="modeling"/>
+            <point id="666" idObject="191" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="667" idObject="174" inUse="true" mx="1.63061" my="-3.78642" type="modeling"/>
+            <point id="668" idObject="220" inUse="true" mx="5.61272" my="-2.49002" type="modeling"/>
+            <point id="669" idObject="183" inUse="true" mx="1.00367" my="-0.881969" type="modeling"/>
+            <point id="670" idObject="168" inUse="true" mx="-5.45165" my="2.17865" type="modeling"/>
+            <point id="671" idObject="309" inUse="true" mx="1.6176" my="-3.74123" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" id="673" mx="0.560698" my="0.917506" name="Detail" seamAllowance="0" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="0" height="" letter="" mx="0" my="0" onFold="false" orientation="" quantity="1" rotation="" rotationWay="" tilt="" visible="false" width=""/>
+                <patternInfo fontSize="0" height="" mx="0" my="0" rotation="" visible="false" width=""/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="655" type="NodePoint"/>
+                    <node idObject="656" type="NodePoint"/>
+                    <node idObject="657" type="NodePoint"/>
+                    <node idObject="658" type="NodePoint"/>
+                    <node idObject="659" type="NodePoint"/>
+                    <node idObject="660" type="NodePoint"/>
+                    <node idObject="661" type="NodePoint"/>
+                    <node idObject="662" type="NodePoint"/>
+                    <node idObject="663" type="NodePoint"/>
+                    <node idObject="664" type="NodePoint"/>
+                    <node idObject="665" type="NodePoint"/>
+                    <node idObject="666" type="NodePoint"/>
+                    <node idObject="667" type="NodePoint"/>
+                    <node idObject="668" type="NodePoint"/>
+                    <node idObject="669" type="NodePoint"/>
+                    <node idObject="670" type="NodePoint"/>
+                    <node idObject="671" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+        <groups/>
+    </draftBlock>
+</pattern>

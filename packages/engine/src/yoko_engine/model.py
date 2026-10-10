@@ -23,9 +23,17 @@ from dataclasses import dataclass, field
 Attrs = tuple[tuple[str, str], ...]
 
 
+COMMENT = "#comment"  # RawNode.tag of an XML comment; the comment text is `RawNode.text`
+TEXT = "#text"  # RawNode.tag of character data between elements (rare; kept for the round trip)
+
+
 @dataclass(frozen=True, slots=True)
 class RawNode:
-    """An XML element we carry through unchanged."""
+    """An XML element, comment or text we carry through unchanged.
+
+    An element that holds only text keeps it in `text`. In an element with child elements, comments
+    and any non-blank text are children with the tags `COMMENT` and `TEXT`.
+    """
 
     tag: str
     attrs: Attrs = ()
@@ -91,6 +99,10 @@ class DraftBlock:
     objects: tuple[Obj, ...]
     # Sections we do not interpret yet (modeling, pieces, groups, ...), kept for the round trip.
     sections: tuple[RawNode, ...] = ()
+    # Attributes of <draftBlock> other than `name`.
+    extra_attrs: Attrs = ()
+    # Where <calculation> sits among the block's children (-1: the block has none).
+    calculation_index: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -102,9 +114,25 @@ class Pattern:
     blocks: tuple[DraftBlock, ...]
     # Everything else from the file (name, number, gradation, labels, ...), in order.
     header: tuple[RawNode, ...] = field(default=())
+    # Order of the file's top-level children: ("raw", i) is header[i], ("variables", 0) the variable
+    # section, ("block", i) blocks[i]. Blocks missing from it are written last.
+    layout: tuple[tuple[str, int], ...] = ()
+    line_ending: str = "\n"  # "\r\n" for files saved on Windows
+    root_attrs: Attrs = ()  # attributes of <pattern> itself (readOnly)
 
     def objects(self) -> tuple[Obj, ...]:
         return tuple(o for b in self.blocks for o in b.objects)
+
+
+@dataclass(frozen=True, slots=True)
+class RawDocument:
+    """A whole XML file carried through unchanged: the lossless side of a measurement file."""
+
+    root_tag: str
+    root_attrs: Attrs
+    children: tuple[RawNode, ...]
+    line_ending: str = "\n"
+    declaration: str = '<?xml version="1.0" encoding="UTF-8"?>'
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,6 +141,9 @@ class Measurement:
     base: float
     size_increase: float = 0.0
     height_increase: float = 0.0
+    # Individual files may give a formula over other measurements, e.g.
+    # "(height_neck_back - height_knee)"; `base` is then unused.
+    formula: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -129,8 +160,13 @@ class MeasurementSet:
     measurements: tuple[Measurement, ...]
     size_step_cm: float = 2.0
     height_step_cm: float = 6.0
+    kind: str = "multisize"  # "multisize" (.smms) or "individual" (.smis): one person's values
+    version: str = ""  # file format version read, e.g. "0.4.4"
+    document: RawDocument | None = None  # the file as read, for writing it back unchanged
 
     def values(self, size: float | None = None, height: float | None = None) -> dict[str, float]:
+        if self.kind == "individual":
+            return self._individual_values()
         size = self.base_size if size is None else size
         height = self.base_height if height is None else height
         k_size = (size - self.base_size) / self.size_step_cm
@@ -139,3 +175,30 @@ class MeasurementSet:
             m.name: m.base + k_size * m.size_increase + k_height * m.height_increase
             for m in self.measurements
         }
+
+    def _individual_values(self) -> dict[str, float]:
+        """Individual values, resolving formulas that mention other measurements."""
+        from yoko_engine.formula import (
+            FormulaError,
+            FormulaErrorCode,
+            parse,
+        )
+
+        values = {m.name: m.base for m in self.measurements if not m.formula}
+        pending = {m.name: parse(m.formula) for m in self.measurements if m.formula}
+        while pending:
+            progressed = False
+            for name, f in list(pending.items()):
+                if all(n in values for n in f.names):
+                    values[name] = f.evaluate(values)
+                    del pending[name]
+                    progressed = True
+            if not progressed:
+                missing = sorted({n for f in pending.values() for n in f.names if n not in values})
+                raise FormulaError(
+                    FormulaErrorCode.UNDEFINED_NAME,
+                    f"measurements {sorted(pending)} depend on {missing}, which are not defined "
+                    "(or depend on each other in a loop)",
+                    "; ".join(f"{n} = {f.text}" for n, f in pending.items()),
+                )
+        return values

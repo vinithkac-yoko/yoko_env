@@ -12,7 +12,7 @@ on:
       - "fixtures/**"
       - "docker/oracle/**"
       - "tools/oracle/**"
-      - "scripts/oracle_dump.sh"
+      - "scripts/oracle_*.sh"
       - "tests/**"
       - ".github/workflows/oracle.yml"
   pull_request:
@@ -60,28 +60,18 @@ jobs:
         with: { version: "0.8.17" }
       - run: uv sync --all-packages --frozen
 
-      - name: Seamly2D computes the basic set
+      - name: Seamly2D opens and saves the basic set and Seamly2D's own test patterns
         run: |
-          scripts/oracle_dump.sh \
-            fixtures/patterns/base/Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d \
-            "$RUNNER_TEMP/base_set.seamly2d.json" \
-            seamly2d-build/src/app/seamly2d/bin/seamly2d
+          scripts/oracle_base.sh seamly2d-build/src/app/seamly2d/bin/seamly2d
+          scripts/oracle_upgrade.sh seamly2d-build/src/app/seamly2d/bin/seamly2d
 
-      - name: the engine equals Seamly2D, exactly
-        env:
-          YOKO_ORACLE_BASE_SET: ${{ runner.temp }}/base_set.seamly2d.json
-        run: uv run pytest tests/test_oracle_basic_set.py -q
-
-      - name: the committed oracle file equals what Seamly2D just produced
+      - name: the committed oracle files are what Seamly2D just produced
         run: |
-          python3 - <<PY
-          import json, os, sys
-          new = json.load(open(os.environ["RUNNER_TEMP"] + "/base_set.seamly2d.json"))
-          old = json.load(open("fixtures/oracle/base_set.seamly2d.json"))
-          if new != old:
-              sys.exit("fixtures/oracle/base_set.seamly2d.json differs from the fresh Seamly2D output")
-          print("committed oracle file is current")
-          PY
+          git status --short fixtures
+          git diff --exit-code -- fixtures
+
+      - name: the engine and the writers agree with Seamly2D, exactly
+        run: uv run pytest tests/test_oracle_basic_set.py tests/test_roundtrip.py tests/test_external_seamly2d.py -q
 
       - name: real-Qt vectors are unchanged under Qt ${{ env.QT_VERSION }}
         run: |
@@ -101,5 +91,5 @@ jobs:
         if: always()
         with:
           name: oracle-output
-          path: ${{ runner.temp }}/base_set.seamly2d.json
+          path: fixtures/
           if-no-files-found: ignore

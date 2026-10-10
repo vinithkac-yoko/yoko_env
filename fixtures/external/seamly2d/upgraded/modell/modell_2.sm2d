@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel>
+        <line alignment="0" bold="true" italic="false" sfIncrement="4" text="Robin"/>
+    </patternLabel>
+    <measurements>lara_jil.smis</measurements>
+    <variables>
+        <variable description="Die gewünschte Binderlänge, gemessen vom Ansatz des Halses an." formula="32.5" name="#laenge_binder"/>
+        <variable description="von der Seite des Nackens zur Schulter gemessen." formula="0" name="#necktoshoulder"/>
+        <variable description="Vom Halsanfang bis zur breitesten Stelle der Brust." formula="0" name="#neck_to_bust"/>
+        <variable description="Beschreibung" formula="81" name="#binderende_umfang"/>
+    </variables>
+    <draftBlock name="BrustALT">
+        <calculation>
+            <point id="1" mx="0.959984" my="0.111643" name="A" type="single" x="-46.3438" y="2.38008"/>
+            <point angle="270" basePoint="1" id="3" length="#laenge_binder" lineColor="blue" lineType="dashLine" mx="0.132292" my="0.264583" name="A1" type="endLine"/>
+            <point angle="160" basePoint="1" id="4" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="-0.615046" my="0.264583" name="A2" type="endLine"/>
+            <point angle="20" basePoint="1" id="5" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A3" type="endLine"/>
+            <point angle="180" basePoint="4" id="9" length="15" lineColor="black" lineType="dashLine" mx="-2.85706" my="-2.55869" name="Sr" type="endLine"/>
+            <point angle="360" basePoint="5" id="10" length="15" lineColor="black" lineType="dashLine" mx="-3.43832" my="-2.47566" name="Sr2" type="endLine"/>
+            <point angle="270" basePoint="1" id="14" length="18" lineColor="black" lineType="dotLine" mx="0.132292" my="0.264583" name="A8" type="endLine"/>
+            <point angle="0" basePoint="14" id="15" length="bust_circ/4*0.72" lineColor="blue" lineType="dashLine" mx="-1.86061" my="-2.39262" name="Obw2" type="endLine"/>
+            <point angle="180" basePoint="14" id="16" length="bust_circ/4*0.72" lineColor="blue" lineType="dashLine" mx="-1.19631" my="-2.22654" name="Obw" type="endLine"/>
+            <point angle="270" basePoint="1" id="18" length="14" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A11" type="endLine"/>
+            <point angle="180" basePoint="18" id="19" length="(highbust_circ/4)*0.72" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A12" type="endLine"/>
+            <point angle="360" basePoint="18" id="20" length="(highbust_circ/4)*0.72" lineColor="black" lineType="dashLine" mx="-0.0297409" my="0.439946" name="A13" type="endLine"/>
+            <point angle="270" basePoint="10" id="21" length="10" lineColor="yellow" lineType="solidLine" mx="0.219789" my="-1.62173" name="x3" type="endLine"/>
+            <point angle="270" basePoint="9" id="22" length="10" lineColor="yellow" lineType="solidLine" mx="0.406796" my="-2.0687" name="x5" type="endLine"/>
+            <point angle="360" basePoint="3" id="24" length="#binderende_umfang/4*0.8" lineColor="black" lineType="dashLine" mx="-0.79016" my="0.747772" name="A7" type="endLine"/>
+            <point angle="180" basePoint="24" id="26" length="#binderende_umfang/2*0.8" lineColor="blue" lineType="dashLine" mx="-1.80455" my="0.156981" name="A16" type="endLine"/>
+            <point angle="270" basePoint="1" id="27" length="21" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A15" type="endLine"/>
+            <point angle="0" basePoint="27" id="28" length="lowbust_circ/4*0.75" lineColor="blue" lineType="dashLine" mx="-3.26064" my="0.420102" name="Ubw2" type="endLine"/>
+            <point angle="180" basePoint="27" id="29" length="lowbust_circ/4*0.75" lineColor="blue" lineType="dashLine" mx="-3.3581" my="0.109064" name="Ubw" type="endLine"/>
+            <point firstPoint="5" id="30" length="(15/5)*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A4" secondPoint="10" type="alongLine"/>
+            <point firstPoint="4" id="31" length="(15/5)*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="A5" secondPoint="9" type="alongLine"/>
+            <spline angle1="270" angle2="270" color="darkRed" id="32" kAsm1="1.2" kAsm2="1.2" kCurve="1" point1="30" point4="31" type="simple"/>
+            <point angle="270" basePoint="21" id="33" length="1" lineColor="yellow" lineType="solidLine" mx="0.703334" my="-0.877501" name="x4" type="endLine"/>
+            <point angle="270" basePoint="22" id="34" length="1" lineColor="yellow" lineType="solidLine" mx="-2.07963" my="-0.45563" name="x6" type="endLine"/>
+            <point angle="360" basePoint="30" id="35" length="4" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="A17" type="endLine"/>
+            <point angle="180" basePoint="31" id="36" length="4" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="A18" type="endLine"/>
+            <spline angle1="290" angle2="17" color="darkRed" id="37" kAsm1="1.44" kAsm2="0.55" kCurve="1" point1="36" point4="19" type="simple"/>
+            <spline angle1="250" angle2="163" color="darkRed" id="38" kAsm1="1.22" kAsm2="0.55" kCurve="1" point1="35" point4="20" type="simple"/>
+            <line firstPoint="19" id="167" lineColor="black" lineType="solidLine" secondPoint="26"/>
+            <line firstPoint="20" id="168" lineColor="black" lineType="solidLine" secondPoint="24"/>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+    <draftBlock name="Rücken (Teil)">
+        <calculation>
+            <point id="62" mx="-0.8852" my="0.297405" name="B" type="single" x="37.8614" y="39.7224"/>
+            <point angle="270" basePoint="62" id="63" length="#laenge_binder" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="B1" type="endLine"/>
+            <point angle="180" basePoint="63" id="64" length="#binderende_umfang/4*0.8" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="B2" type="endLine"/>
+            <point angle="0" basePoint="63" id="65" length="#binderende_umfang/4*0.8" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="B3" type="endLine"/>
+            <point angle="270" basePoint="62" id="66" length="14" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="B4" type="endLine"/>
+            <point angle="0" basePoint="66" id="67" length="highbust_circ/4*0.72" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="B5" type="endLine"/>
+            <point angle="180" basePoint="66" id="68" length="highbust_circ/4*0.72" lineColor="darkRed" lineType="solidLine" mx="0.132292" my="0.264583" name="B6" type="endLine"/>
+            <line firstPoint="68" id="69" lineColor="darkRed" lineType="solidLine" secondPoint="64"/>
+            <line firstPoint="67" id="70" lineColor="darkRed" lineType="solidLine" secondPoint="65"/>
+        </calculation>
+        <modeling>
+            <point id="171" idObject="68" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="172" idObject="67" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="173" idObject="65" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="174" idObject="64" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="175" idObject="68" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" id="176" mx="-0.418365" my="-8.76876" name="Detail" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="0" height="" letter="" mx="0" my="0" onFold="false" orientation="" quantity="1" rotation="" rotationWay="" tilt="" visible="false" width=""/>
+                <patternInfo fontSize="0" height="" mx="0" my="0" rotation="" visible="false" width=""/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="171" type="NodePoint"/>
+                    <node idObject="172" type="NodePoint"/>
+                    <node idObject="173" type="NodePoint"/>
+                    <node idObject="174" type="NodePoint"/>
+                    <node idObject="175" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+    </draftBlock>
+    <draftBlock name="Brust">
+        <calculation>
+            <point id="202" mx="-0.754223" my="0.264583" name="C" type="single" x="16.172" y="2.87569"/>
+            <point angle="270" basePoint="202" id="203" length="#laenge_binder" lineColor="black" lineType="dashLine" mx="-2.51422" my="-0.020426" name="Länge" type="endLine"/>
+            <point firstPoint="202" id="204" length="14" lineColor="black" lineType="dashLine" mx="-4.26499" my="-0.0204255" name="Oberbrust" secondPoint="203" type="alongLine"/>
+            <point firstPoint="202" id="205" length="18" lineColor="black" lineType="dashLine" mx="-4.34642" my="0.0202891" name="Oberweite" secondPoint="203" type="alongLine"/>
+            <point firstPoint="202" id="206" length="21" lineColor="black" lineType="dashLine" mx="-4.55" my="-0.0204259" name="Unterbrust" secondPoint="203" type="alongLine"/>
+            <point angle="180" basePoint="204" id="207" length="highbust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="-1.29275" my="0.0610053" name="C1" type="endLine"/>
+            <point angle="360" basePoint="204" id="208" length="highbust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C2" type="endLine"/>
+            <point angle="180" basePoint="205" id="209" length="bust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C3" type="endLine"/>
+            <point angle="0" basePoint="205" id="210" length="bust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="0.0101453" my="0.183152" name="C4" type="endLine"/>
+            <point angle="180" basePoint="206" id="211" length="lowbust_circ/4*0.75" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C5" type="endLine"/>
+            <point angle="0" basePoint="206" id="212" length="lowbust_circ/4*0.75" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C6" type="endLine"/>
+            <point angle="180" basePoint="203" id="213" length="#binderende_umfang/4*0.8" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="C7" type="endLine"/>
+            <point angle="0" basePoint="203" id="214" length="#binderende_umfang/4*0.8" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="C8" type="endLine"/>
+            <line firstPoint="207" id="215" lineColor="black" lineType="solidLine" secondPoint="213"/>
+            <line firstPoint="208" id="216" lineColor="black" lineType="solidLine" secondPoint="214"/>
+            <point angle="20" basePoint="202" id="217" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C9" type="endLine"/>
+            <point angle="160" basePoint="202" id="218" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C10" type="endLine"/>
+            <point angle="180" basePoint="218" id="219" length="(15/5)*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C11" type="endLine"/>
+            <point angle="360" basePoint="217" id="220" length="(15/5)*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="C12" type="endLine"/>
+            <point angle="180" basePoint="219" id="221" length="4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="C13" type="endLine"/>
+            <point angle="0" basePoint="220" id="222" length="4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="C14" type="endLine"/>
+            <spline angle1="270" angle2="270" color="black" id="223" kAsm1="1.2" kAsm2="1.2" kCurve="1" point1="220" point4="219" type="simple"/>
+            <spline angle1="290" angle2="17" color="black" id="224" kAsm1="1.44" kAsm2="0.55" kCurve="1" point1="221" point4="207" type="simple"/>
+            <spline angle1="250" angle2="163" color="black" id="225" kAsm1="1.22" kAsm2="0.55" kCurve="1" point1="222" point4="208" type="simple"/>
+        </calculation>
+        <modeling>
+            <point id="226" idObject="221" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="227" idObject="219" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="228" idObject="223" inUse="true" type="modelingSpline"/>
+            <point id="229" idObject="220" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="230" idObject="222" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="231" idObject="225" inUse="true" type="modelingSpline"/>
+            <point id="232" idObject="208" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="233" idObject="214" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="234" idObject="213" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="235" idObject="207" inUse="true" mx="-0.498068" my="0.183152" type="modeling"/>
+            <spline id="236" idObject="224" inUse="true" type="modelingSpline"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" id="238" mx="0.392615" my="-0.490769" name="Detail" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="0" height="" letter="" mx="0" my="0" onFold="false" orientation="" quantity="1" rotation="" rotationWay="" tilt="" visible="false" width=""/>
+                <patternInfo fontSize="0" height="" mx="0" my="0" rotation="" visible="false" width=""/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="226" type="NodePoint"/>
+                    <node idObject="227" type="NodePoint"/>
+                    <node idObject="228" reverse="1" type="NodeSpline"/>
+                    <node idObject="229" type="NodePoint"/>
+                    <node idObject="230" type="NodePoint"/>
+                    <node idObject="231" reverse="0" type="NodeSpline"/>
+                    <node idObject="232" type="NodePoint"/>
+                    <node idObject="233" type="NodePoint"/>
+                    <node idObject="234" type="NodePoint"/>
+                    <node idObject="235" type="NodePoint"/>
+                    <node idObject="236" reverse="1" type="NodeSpline"/>
+                </nodes>
+            </piece>
+        </pieces>
+    </draftBlock>
+    <draftBlock name="Rücken">
+        <calculation>
+            <point id="239" mx="0.132292" my="0.264583" name="D" type="single" x="55.97" y="2.78"/>
+            <point angle="270" basePoint="239" id="240" length="#laenge_binder" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="Binderlänge" type="endLine"/>
+            <point angle="180" basePoint="240" id="241" length="#binderende_umfang/4*0.8" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="D2" type="endLine"/>
+            <point angle="0" basePoint="240" id="242" length="#binderende_umfang/4*0.8" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="D1" type="endLine"/>
+            <point firstPoint="239" id="243" length="14" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="Oberbrust2" secondPoint="240" type="alongLine"/>
+            <point angle="180" basePoint="243" id="244" length="highbust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D3" type="endLine"/>
+            <point angle="360" basePoint="243" id="245" length="highbust_circ/4*0.72" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D4" type="endLine"/>
+            <line firstPoint="244" id="246" lineColor="black" lineType="solidLine" secondPoint="241"/>
+            <line firstPoint="245" id="247" lineColor="black" lineType="solidLine" secondPoint="242"/>
+            <point angle="20" basePoint="239" id="248" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D5" type="endLine"/>
+            <point angle="160" basePoint="239" id="249" length="9.25*0.8" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D6" type="endLine"/>
+            <point angle="180" basePoint="249" id="250" length="2.4" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D7" type="endLine"/>
+            <point angle="0" basePoint="248" id="251" length="2.4" lineColor="black" lineType="dashLine" mx="0.132292" my="0.264583" name="D8" type="endLine"/>
+            <point angle="180" basePoint="250" id="252" length="4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="D9" type="endLine"/>
+            <point angle="360" basePoint="251" id="253" length="4" lineColor="black" lineType="solidLine" mx="0.132292" my="0.264583" name="D10" type="endLine"/>
+            <spline angle1="265" angle2="275" color="black" id="254" kAsm1="1.6" kAsm2="1.6" kCurve="1" point1="251" point4="250" type="simple"/>
+            <spline angle1="284" angle2="5" color="black" id="255" kAsm1="1.4" kAsm2="0.4" kCurve="1" point1="252" point4="244" type="simple"/>
+            <spline angle1="256" angle2="175" color="black" id="256" kAsm1="1.4" kAsm2="0.4" kCurve="1" point1="253" point4="245" type="simple"/>
+        </calculation>
+        <modeling>
+            <spline id="257" idObject="255" inUse="true" type="modelingSpline"/>
+            <point id="258" idObject="252" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="259" idObject="250" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="260" idObject="254" inUse="true" type="modelingSpline"/>
+            <point id="261" idObject="251" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="262" idObject="253" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <spline id="263" idObject="256" inUse="true" type="modelingSpline"/>
+            <point id="264" idObject="245" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="265" idObject="242" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="266" idObject="241" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+            <point id="267" idObject="244" inUse="true" mx="0.132292" my="0.264583" type="modeling"/>
+        </modeling>
+        <pieces>
+            <piece closed="1" id="268" mx="-0.278863" my="-0.557727" name="Detail" seamAllowance="1" version="2" width="1">
+                <data annotation="" foldPosition="" fontSize="0" height="" letter="" mx="0" my="0" onFold="false" orientation="" quantity="1" rotation="" rotationWay="" tilt="" visible="false" width=""/>
+                <patternInfo fontSize="0" height="" mx="0" my="0" rotation="" visible="false" width=""/>
+                <grainline arrowLength="" arrows="0" length="" mx="0" my="0" rotation="" visible="false"/>
+                <nodes>
+                    <node idObject="257" reverse="1" type="NodeSpline"/>
+                    <node idObject="258" type="NodePoint"/>
+                    <node idObject="259" type="NodePoint"/>
+                    <node idObject="260" reverse="1" type="NodeSpline"/>
+                    <node idObject="261" type="NodePoint"/>
+                    <node idObject="262" type="NodePoint"/>
+                    <node idObject="263" reverse="0" type="NodeSpline"/>
+                    <node idObject="264" type="NodePoint"/>
+                    <node idObject="265" type="NodePoint"/>
+                    <node idObject="266" type="NodePoint"/>
+                    <node idObject="267" type="NodePoint"/>
+                </nodes>
+            </piece>
+        </pieces>
+        <groups/>
+    </draftBlock>
+</pattern>
