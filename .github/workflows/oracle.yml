@@ -68,7 +68,8 @@ jobs:
       - name: the committed oracle files are what Seamly2D just produced
         run: |
           git status --short fixtures
-          git diff --exit-code -- fixtures
+          git diff --stat -- fixtures
+          git diff --exit-code -- fixtures > /dev/null
 
       - name: the engine and the writers agree with Seamly2D, exactly
         run: uv run pytest tests/test_oracle_basic_set.py tests/test_roundtrip.py tests/test_external_seamly2d.py -q

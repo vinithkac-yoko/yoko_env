@@ -1,21 +1,20 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <smis>
     <!--Measurements created with Seamly2D v2023.11.20.149 (https://seamly.io/).-->
     <version>0.3.4</version>
     <read-only>false</read-only>
-    <notes/>
+    <notes></notes>
     <unit>cm</unit>
     <pm_system>998</pm_system>
     <personal>
-        <family-name/>
-        <given-name/>
+        <family-name></family-name>
+        <given-name></given-name>
         <birth-date>1800-01-01</birth-date>
         <gender>unknown</gender>
-        <email/>
+        <email></email>
     </personal>
     <body-measurements>
-        <m value="22" name="height_waist_side_to_hip"/>
-        <m value="79" name="waist_circ"/>
-        <m value="100" name="hip_circ"/>
+        <m name="height_waist_side_to_hip" value="22"></m>
+        <m name="waist_circ" value="79"></m>
+        <m name="hip_circ" value="100"></m>
     </body-measurements>
 </smis>

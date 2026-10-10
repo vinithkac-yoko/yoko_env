@@ -1,19 +1,18 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <smis>
     <!--Measurements created with Seamly2D (https://seamly.io/).-->
     <version>0.3.4</version>
     <read-only>false</read-only>
-    <notes/>
+    <notes></notes>
     <unit>cm</unit>
     <pm_system>998</pm_system>
     <personal>
-        <family-name/>
-        <given-name/>
+        <family-name></family-name>
+        <given-name></given-name>
         <birth-date>1800-01-01</birth-date>
         <gender>unknown</gender>
-        <email/>
+        <email></email>
     </personal>
     <body-measurements>
-        <m value="0" name="@M_1"/>
+        <m name="@M_1" value="0"></m>
     </body-measurements>
 </smis>

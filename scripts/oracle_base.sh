@@ -30,4 +30,6 @@ open(committed, "w").write(json.dumps(data, indent=1))
 PY
 sed -i "s/Seamly2D v0\.6\.0\.1 /Seamly2D v$PIN_VERSION /" "$ROOT/fixtures/oracle/base_set.upgraded.sm2d"
 cp "$CONV/Aldrich-Womens-MultiSize-06-14.smms" "$ROOT/fixtures/oracle/base_set.measurements.converted.smms"
+# QDomDocument::save orders attributes by Qt version: keep the copy in canonical form
+python3 "$ROOT/scripts/canon_xml.py" "$ROOT/fixtures/oracle/base_set.measurements.converted.smms"
 echo "refreshed fixtures/oracle/base_set.*"

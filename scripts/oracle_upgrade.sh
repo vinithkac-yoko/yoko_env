@@ -47,7 +47,10 @@ find . -name '*.sm2d' | sort | while read -r f; do
   fi
   # keep the measurement files Seamly2D's converter upgraded (not the pattern's own temporary copy)
   for m in "$conv"/*.smis "$conv"/*.smms; do
-    [ -f "$m" ] && mkdir -p "$CV/$(dirname "$rel")" && cp "$m" "$CV/$(dirname "$rel")/"
+    [ -f "$m" ] || continue
+    mkdir -p "$CV/$(dirname "$rel")" && cp "$m" "$CV/$(dirname "$rel")/"
+    # QDomDocument::save orders attributes by Qt version: keep the copy in canonical form
+    python3 "$ROOT/scripts/canon_xml.py" "$CV/$(dirname "$rel")/$(basename "$m")"
   done
   rm -rf "$home" "$conv"
 done

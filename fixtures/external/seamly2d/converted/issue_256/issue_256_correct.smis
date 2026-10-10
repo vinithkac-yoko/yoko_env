@@ -1,9 +1,8 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <smis>
     <!--Measurements created with Seamly2D (https://seamly.io/).-->
     <version>0.3.4</version>
     <read-only>false</read-only>
-    <notes/>
+    <notes></notes>
     <unit>cm</unit>
     <pm_system>998</pm_system>
     <personal>
@@ -11,28 +10,28 @@
         <given-name>Susan</given-name>
         <birth-date>1900-01-01</birth-date>
         <gender>female</gender>
-        <email/>
+        <email></email>
     </personal>
     <body-measurements>
-        <m description="Vertical distance from top of Head to Floor" full_name="Height->Total" name="height" value="167.64"/>
-        <m description="Vertical distance from Neck Back (Nape) to Floor" full_name="Height->Neck Back (Nape)" name="height_neck_back" value="141.5"/>
-        <m description="Vertical distance from Scapula (Shoulder Blade Tip) to Floor" full_name="Height->Scapula" name="height_scapula" value="120"/>
-        <m description="Vertical distance from Highbust Side (Armpit) to Floor" full_name="Height->Highbust Side (Armpit)" name="height_armpit" value="0"/>
-        <m description="Vertical distance from Waist Side to Floor" full_name="Height->Waist Side" name="height_waist_side" value="101"/>
-        <m description="Vertical distance from Hip to Floor" full_name="Height->Hip" name="height_hip" value="82"/>
-        <m description="Vertical distance from Gluteal Fold to Floor" full_name="Height->Gluteal Fold" name="height_gluteal_fold" value="0"/>
-        <m description="Vertical distance from Knee to Floor" full_name="Height->Knee" name="height_knee" value="42"/>
-        <m description="Vertical distance from Calf to Floor" full_name="Height->Calf" name="height_calf" value="30.3"/>
-        <m description="Vertical distance from High Ankle to Floor" full_name="Height->High Ankle" name="height_ankle_high" value="11.5"/>
-        <m description="Vertical distance from Ankle to Floor" full_name="Height->Ankle" name="height_ankle" value="9"/>
-        <m description="Vertical distance from HighHip to Floor" full_name="Height->HighHip" name="height_highhip" value="0"/>
-        <m description="Vertical distance from Waist Front to Floor" full_name="Height->Waist Front" name="height_waist_front" value="101.2"/>
-        <m description="Vertical distance from Bustpoint to Floor" full_name="Height->Bustpoint" name="height_bustpoint" value="0"/>
-        <m description="Vertical distance from Shoulder Tip to Floor" full_name="Height->Shoulder Tip" name="height_shoulder_tip" value="0"/>
-        <m description="Vertical distance from Neck Front to Floor" full_name="Height->Neck Front" name="height_neck_front" value="133"/>
-        <m description="Vertical distance from Neck Side to Floor" full_name="Height->Neck Side" name="height_neck_side" value="0"/>
-        <m description="Vertical distance from Neck Back (Nape) to Knee" full_name="Height->Neck Back to Knee" name="height_neck_back_to_knee" value="(height_neck_back - height_knee)"/>
-        <m description="Vertical distance from Waist Side to Knee" full_name="Height->Waist Side to Knee" name="height_waist_side_to_knee" value="(height_waist_side - height_knee)"/>
-        <m description="Vertical distance from Waist Side to Hip" full_name="Height->Waist Side to Hip" name="height_waist_side_to_hip" value="(height_waist_side - height_hip)"/>
+        <m description="Vertical distance from top of Head to Floor" full_name="Height->Total" name="height" value="167.64"></m>
+        <m description="Vertical distance from Neck Back (Nape) to Floor" full_name="Height->Neck Back (Nape)" name="height_neck_back" value="141.5"></m>
+        <m description="Vertical distance from Scapula (Shoulder Blade Tip) to Floor" full_name="Height->Scapula" name="height_scapula" value="120"></m>
+        <m description="Vertical distance from Highbust Side (Armpit) to Floor" full_name="Height->Highbust Side (Armpit)" name="height_armpit" value="0"></m>
+        <m description="Vertical distance from Waist Side to Floor" full_name="Height->Waist Side" name="height_waist_side" value="101"></m>
+        <m description="Vertical distance from Hip to Floor" full_name="Height->Hip" name="height_hip" value="82"></m>
+        <m description="Vertical distance from Gluteal Fold to Floor" full_name="Height->Gluteal Fold" name="height_gluteal_fold" value="0"></m>
+        <m description="Vertical distance from Knee to Floor" full_name="Height->Knee" name="height_knee" value="42"></m>
+        <m description="Vertical distance from Calf to Floor" full_name="Height->Calf" name="height_calf" value="30.3"></m>
+        <m description="Vertical distance from High Ankle to Floor" full_name="Height->High Ankle" name="height_ankle_high" value="11.5"></m>
+        <m description="Vertical distance from Ankle to Floor" full_name="Height->Ankle" name="height_ankle" value="9"></m>
+        <m description="Vertical distance from HighHip to Floor" full_name="Height->HighHip" name="height_highhip" value="0"></m>
+        <m description="Vertical distance from Waist Front to Floor" full_name="Height->Waist Front" name="height_waist_front" value="101.2"></m>
+        <m description="Vertical distance from Bustpoint to Floor" full_name="Height->Bustpoint" name="height_bustpoint" value="0"></m>
+        <m description="Vertical distance from Shoulder Tip to Floor" full_name="Height->Shoulder Tip" name="height_shoulder_tip" value="0"></m>
+        <m description="Vertical distance from Neck Front to Floor" full_name="Height->Neck Front" name="height_neck_front" value="133"></m>
+        <m description="Vertical distance from Neck Side to Floor" full_name="Height->Neck Side" name="height_neck_side" value="0"></m>
+        <m description="Vertical distance from Neck Back (Nape) to Knee" full_name="Height->Neck Back to Knee" name="height_neck_back_to_knee" value="(height_neck_back - height_knee)"></m>
+        <m description="Vertical distance from Waist Side to Knee" full_name="Height->Waist Side to Knee" name="height_waist_side_to_knee" value="(height_waist_side - height_knee)"></m>
+        <m description="Vertical distance from Waist Side to Hip" full_name="Height->Waist Side to Hip" name="height_waist_side_to_hip" value="(height_waist_side - height_hip)"></m>
     </body-measurements>
 </smis>
