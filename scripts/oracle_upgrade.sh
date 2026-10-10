@@ -43,8 +43,16 @@ find . -name '*.sm2d' | sort | while read -r f; do
     echo "ok      $rel"
   else
     rm -f "$UP/$rel" "$OR/$rel.seamly2d.json"
-    # the temporary directory's name and some Qt-version-specific warnings change: keep the notes stable
-    grep -v -E "propagateSizeHints|pdftops|Checked locale|QStandardPaths" "$home/err" | tail -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
+    # Keep the notes stable: the temporary directory's name and some warnings change from run to run
+    # and between Qt versions. When Seamly2D says CRITICAL, that line is the reason.
+    if grep -q '^CRITICAL:File exception' "$home/err"; then
+      # the detail follows on the next lines
+      sed -n '/^CRITICAL:File exception/,$p' "$home/err" | grep -v '^$' | head -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
+    elif grep -q '^CRITICAL:' "$home/err"; then
+      grep -m1 '^CRITICAL:' "$home/err" | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
+    else
+      grep -v -E "propagateSizeHints|pdftops|Checked locale|QStandardPaths" "$home/err" | tail -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
+    fi
     echo "FAILED  $rel"; sed 's/^/          /' "$OR/$rel.failed"
   fi
   # keep the measurement files Seamly2D's converter upgraded (not the pattern's own temporary copy)
