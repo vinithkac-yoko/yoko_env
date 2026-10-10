@@ -83,10 +83,20 @@ jobs:
           "$RUNNER_TEMP/qt/qt_vectors" 4000 > "$RUNNER_TEMP/qt/lines.jsonl"
           "$RUNNER_TEMP/qt/qt_flip" > "$RUNNER_TEMP/qt/flip.jsonl"
           "$RUNNER_TEMP/qt/qt_polyline_length" > "$RUNNER_TEMP/qt/poly.jsonl"
-          cmp <(zcat fixtures/oracle/qt_lines.jsonl.gz) "$RUNNER_TEMP/qt/lines.jsonl"
+          # report every difference before failing: a changed last bit is a finding, not noise
+          status=0
+          zcat fixtures/oracle/qt_lines.jsonl.gz > "$RUNNER_TEMP/qt/lines.committed"
           # the committed flip and polyline files are the first 2000 and 400 lines of the generators
-          head -2000 "$RUNNER_TEMP/qt/flip.jsonl" | cmp - <(zcat fixtures/oracle/qt_flip.jsonl.gz)
-          head -400 "$RUNNER_TEMP/qt/poly.jsonl" | cmp - <(zcat fixtures/oracle/qt_polyline_length.jsonl.gz)
+          zcat fixtures/oracle/qt_flip.jsonl.gz > "$RUNNER_TEMP/qt/flip.committed"
+          zcat fixtures/oracle/qt_polyline_length.jsonl.gz > "$RUNNER_TEMP/qt/poly.committed"
+          head -2000 "$RUNNER_TEMP/qt/flip.jsonl" > "$RUNNER_TEMP/qt/flip.fresh"
+          head -400 "$RUNNER_TEMP/qt/poly.jsonl" > "$RUNNER_TEMP/qt/poly.fresh"
+          for n in lines flip poly; do
+            fresh="$RUNNER_TEMP/qt/$n.jsonl"; [ -f "$RUNNER_TEMP/qt/$n.fresh" ] && fresh="$RUNNER_TEMP/qt/$n.fresh"
+            echo "== $n"
+            python3 scripts/jsonl_diff.py "$RUNNER_TEMP/qt/$n.committed" "$fresh" || status=1
+          done
+          exit $status
 
       - uses: actions/upload-artifact@v4
         if: always()
