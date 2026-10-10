@@ -27,6 +27,10 @@ Not done, on purpose:
 - Phase 1 plan: approved.
 - `alltools_pattern.sm2d` as the parity fixture: approved. Also run Seamly2D's other test patterns through the pinned Seamly2D, upgrade them and test them (Phase 2, in CI; see below).
 
+## CI oracle workflow: added (Kasi said yes, 2026-10-10)
+
+`.github/workflows/oracle.yml` builds the pinned Seamly2D with Qt 6.11.1, dumps the basic set, and checks the engine, the committed oracle file and the real-Qt vectors against it. It was written without being able to run it here (no Qt 6.11 download from the session), so its first run on GitHub is its test; fixing it is my job if it fails.
+
 ## Seamly2D's own test patterns (Phase 2)
 
 Source: `src/test/CollectionTest/share` in the Seamly2D repo (about 40 files, mostly old formats; Addendum 1 §17). No link needed: the repo is cloned read-only in the session.
@@ -49,7 +53,7 @@ Plan: a GitHub Actions job builds the pinned Seamly2D (Qt 6.11, as its own CI do
   - `yoko_io.render.render_svg`: draws everything Seamly2D draws, one style, all groups on (ADR 0003). `lineType="none"` draws no line.
   - Studio and server: `/api/library/base` and `/api/library/base/render.svg` (token-protected); the studio shows the locked "Aldrich 6th Ed Basic Pattern" with its summary and drawing.
 - **Phase 1 checkpoint reached:** the basic set evaluates (302 points, 37 curves, 17 variables from 425 objects, 0 issues, identical to Seamly2D) and renders with all lines visible.
-- Not done on purpose: CI oracle workflow (waiting for Kasi's yes); rotate / move / mirror-by-axis operation tools (Phase 3); Playwright smoke test (Phase 10).
+- Not done on purpose: rotate / move / mirror-by-axis operation tools (Phase 3); Playwright smoke test (Phase 10).
 
 ## Environment variables by phase
 

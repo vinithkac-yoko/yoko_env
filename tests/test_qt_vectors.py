@@ -4,7 +4,8 @@
 `tools/oracle/qt_vectors.cpp` (Qt 6.4.2 on Linux/glibc). The QTransform flip and QPainterPath length
 vectors come from `qt_flip.cpp` and `qt_polyline_length.cpp`. Every comparison is exact equality:
 Seamly2D truncates angles to 5 decimals, which magnifies last-bit differences, so near enough is not
-enough. The CI oracle job regenerates the files with Qt 6.11.1.
+enough. The CI oracle job (.github/workflows/oracle.yml) regenerates the files with Qt 6.11.1 and
+fails if they differ.
 """
 
 from __future__ import annotations

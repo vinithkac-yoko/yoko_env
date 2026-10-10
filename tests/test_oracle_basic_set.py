@@ -9,6 +9,7 @@ how much of the pattern language the engine covers.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -16,7 +17,11 @@ from yoko_engine.evaluator import Evaluation, evaluate
 from yoko_io.seamly import read_measurements, read_pattern
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
-ORACLE = json.loads((FIXTURES / "oracle/base_set.seamly2d.json").read_text())
+# The CI oracle job points this at a dump it just made with a freshly built Seamly2D.
+ORACLE_FILE = Path(
+    os.environ.get("YOKO_ORACLE_BASE_SET", FIXTURES / "oracle/base_set.seamly2d.json")
+)
+ORACLE = json.loads(ORACLE_FILE.read_text())
 
 # 302 = all 447 points Seamly2D holds minus the 145 piece nodes in the <modeling> section
 # (Phase 3). 1573 = every variable.

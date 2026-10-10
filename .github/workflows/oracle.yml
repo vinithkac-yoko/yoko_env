@@ -1,0 +1,105 @@
+# The oracle: build the real, pinned Seamly2D with Qt 6.11.1 (what Seamly2D itself builds with),
+# make it compute the basic pattern set, and check that the engine still agrees bit for bit.
+# Also regenerates the real-Qt vectors and fails if they differ from the committed ones.
+# See docker/oracle/README.md and docs/adr/0002.
+name: oracle
+on:
+  push:
+    branches: [main, "claude/**"]
+    paths:
+      - "packages/engine/**"
+      - "packages/io/**"
+      - "fixtures/**"
+      - "docker/oracle/**"
+      - "tools/oracle/**"
+      - "scripts/oracle_dump.sh"
+      - "tests/**"
+      - ".github/workflows/oracle.yml"
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1" # weekly: Qt and runner images move under us
+
+env:
+  QT_VERSION: "6.11.1" # same as Seamly2D's own CI
+  SEAMLY2D_PIN: v2026.10.5.154
+
+jobs:
+  oracle:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          cache: true
+          modules: qtmultimedia
+
+      - name: build dependencies
+        run: sudo apt-get update && sudo apt-get install -y libxerces-c-dev xvfb
+
+      - name: cache the Seamly2D build
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: seamly2d-build
+          key: seamly2d-${{ env.SEAMLY2D_PIN }}-qt${{ env.QT_VERSION }}-${{ hashFiles('docker/oracle/yoko-oracle-dump.patch') }}
+
+      - name: build Seamly2D with the dump hook
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch "$SEAMLY2D_PIN" https://github.com/FashionFreedom/seamly2d seamly2d-src
+          git -C seamly2d-src apply "$GITHUB_WORKSPACE/docker/oracle/yoko-oracle-dump.patch"
+          mkdir seamly2d-build && cd seamly2d-build
+          qmake ../seamly2d-src/Seamly2D.pro CONFIG+=release CONFIG+=noTests
+          make -j"$(nproc)"
+
+      - uses: astral-sh/setup-uv@v5
+        with: { version: "0.8.17" }
+      - run: uv sync --all-packages --frozen
+
+      - name: Seamly2D computes the basic set
+        run: |
+          scripts/oracle_dump.sh \
+            fixtures/patterns/base/Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d \
+            "$RUNNER_TEMP/base_set.seamly2d.json" \
+            seamly2d-build/src/app/seamly2d/bin/seamly2d
+
+      - name: the engine equals Seamly2D, exactly
+        env:
+          YOKO_ORACLE_BASE_SET: ${{ runner.temp }}/base_set.seamly2d.json
+        run: uv run pytest tests/test_oracle_basic_set.py -q
+
+      - name: the committed oracle file equals what Seamly2D just produced
+        run: |
+          python3 - <<PY
+          import json, os, sys
+          new = json.load(open(os.environ["RUNNER_TEMP"] + "/base_set.seamly2d.json"))
+          old = json.load(open("fixtures/oracle/base_set.seamly2d.json"))
+          if new != old:
+              sys.exit("fixtures/oracle/base_set.seamly2d.json differs from the fresh Seamly2D output")
+          print("committed oracle file is current")
+          PY
+
+      - name: real-Qt vectors are unchanged under Qt ${{ env.QT_VERSION }}
+        run: |
+          export PKG_CONFIG_PATH="$QT_ROOT_DIR/lib/pkgconfig:$PKG_CONFIG_PATH"
+          mkdir -p "$RUNNER_TEMP/qt"
+          build() { g++ -std=c++17 -O2 -fPIC "tools/oracle/$1.cpp" -o "$RUNNER_TEMP/qt/$1" $(pkg-config --cflags --libs Qt6Core Qt6Gui); }
+          build qt_vectors; build qt_flip; build qt_polyline_length
+          "$RUNNER_TEMP/qt/qt_vectors" 4000 > "$RUNNER_TEMP/qt/lines.jsonl"
+          "$RUNNER_TEMP/qt/qt_flip" > "$RUNNER_TEMP/qt/flip.jsonl"
+          "$RUNNER_TEMP/qt/qt_polyline_length" > "$RUNNER_TEMP/qt/poly.jsonl"
+          cmp <(zcat fixtures/oracle/qt_lines.jsonl.gz) "$RUNNER_TEMP/qt/lines.jsonl"
+          # the committed flip and polyline files are the first 2000 and 400 lines of the generators
+          head -2000 "$RUNNER_TEMP/qt/flip.jsonl" | cmp - <(zcat fixtures/oracle/qt_flip.jsonl.gz)
+          head -400 "$RUNNER_TEMP/qt/poly.jsonl" | cmp - <(zcat fixtures/oracle/qt_polyline_length.jsonl.gz)
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: oracle-output
+          path: ${{ runner.temp }}/base_set.seamly2d.json
+          if-no-files-found: ignore
