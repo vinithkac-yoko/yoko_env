@@ -74,7 +74,9 @@ jobs:
       - name: the engine and the writers agree with Seamly2D, exactly
         run: uv run pytest tests/test_oracle_basic_set.py tests/test_roundtrip.py tests/test_external_seamly2d.py -q
 
-      - name: real-Qt vectors are unchanged under Qt ${{ env.QT_VERSION }}
+      # Qt 6.11.1 on the runner's libm gives a result one ulp away from Qt 6.4.2 on glibc 2.39 in about
+      # 1 of 4000 random cases (setAngle, flip). The pattern results above are exact; here we allow 2 ulp.
+      - name: real-Qt vectors agree under Qt ${{ env.QT_VERSION }} (within 2 ulp)
         run: |
           export PKG_CONFIG_PATH="$QT_ROOT_DIR/lib/pkgconfig:$PKG_CONFIG_PATH"
           mkdir -p "$RUNNER_TEMP/qt"
@@ -94,7 +96,7 @@ jobs:
           for n in lines flip poly; do
             fresh="$RUNNER_TEMP/qt/$n.jsonl"; [ -f "$RUNNER_TEMP/qt/$n.fresh" ] && fresh="$RUNNER_TEMP/qt/$n.fresh"
             echo "== $n"
-            python3 scripts/jsonl_diff.py "$RUNNER_TEMP/qt/$n.committed" "$fresh" || status=1
+            python3 scripts/jsonl_diff.py "$RUNNER_TEMP/qt/$n.committed" "$fresh" --max-ulps 2 || status=1
           done
           exit $status
 
