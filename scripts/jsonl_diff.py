@@ -1,4 +1,4 @@
-"""Show which fields differ between two JSON-lines files (the committed real-Qt vectors and a fresh run).
+"""Show which fields differ between two JSON-lines files (committed real-Qt vectors vs a fresh run).
 
     python3 scripts/jsonl_diff.py committed.jsonl fresh.jsonl [max_lines]
 
