@@ -43,8 +43,8 @@ find . -name '*.sm2d' | sort | while read -r f; do
     echo "ok      $rel"
   else
     rm -f "$UP/$rel" "$OR/$rel.seamly2d.json"
-    # the temporary directory's name changes every run: keep the notes stable
-    grep -v "propagateSizeHints" "$home/err" | tail -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
+    # the temporary directory's name and some Qt-version-specific warnings change: keep the notes stable
+    grep -v -E "propagateSizeHints|pdftops|Checked locale|QStandardPaths" "$home/err" | tail -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
     echo "FAILED  $rel"; sed 's/^/          /' "$OR/$rel.failed"
   fi
   # keep the measurement files Seamly2D's converter upgraded (not the pattern's own temporary copy)
