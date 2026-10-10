@@ -17,6 +17,7 @@ UP="$ROOT/fixtures/external/seamly2d/upgraded"
 OR="$ROOT/fixtures/external/seamly2d/oracle"
 CV="$ROOT/fixtures/external/seamly2d/converted"
 PIN_VERSION="2026.10.5.154"
+BIN="$(realpath "$BIN")" || { echo "no Seamly2D binary at $BIN" >&2; exit 2; }   # the script changes directory
 rm -rf "$UP" "$OR" "$CV"; mkdir -p "$UP" "$OR" "$CV"
 # Seamly2D writes a .lck lock file next to every pattern it opens: work on a copy
 WORK="$(mktemp -d)"; trap 'rm -rf "$WORK"' EXIT
@@ -42,7 +43,8 @@ find . -name '*.sm2d' | sort | while read -r f; do
     echo "ok      $rel"
   else
     rm -f "$UP/$rel" "$OR/$rel.seamly2d.json"
-    grep -v "propagateSizeHints" "$home/err" | tail -3 > "$OR/$rel.failed"
+    # the temporary directory's name changes every run: keep the notes stable
+    grep -v "propagateSizeHints" "$home/err" | tail -3 | sed "s#$WORK#<work>#g" > "$OR/$rel.failed"
     echo "FAILED  $rel"; sed 's/^/          /' "$OR/$rel.failed"
   fi
   # keep the measurement files Seamly2D's converter upgraded (not the pattern's own temporary copy)

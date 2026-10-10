@@ -9,6 +9,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BIN="${1:-${SEAMLY2D_BIN:-/home/user/seamly2d-build/src/app/seamly2d/bin/seamly2d}}"
 PIN_VERSION="2026.10.5.154"
+BIN="$(realpath "$BIN")"
 WORK="$(mktemp -d)"; HOME_DIR="$(mktemp -d)"; CONV="$(mktemp -d)"
 trap 'rm -rf "$WORK" "$HOME_DIR" "$CONV"' EXIT
 cp "$ROOT"/fixtures/patterns/base/*.sm2d "$ROOT"/fixtures/measurements/*.smms "$WORK/"   # Seamly2D writes a .lck file
