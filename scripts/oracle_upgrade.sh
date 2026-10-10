@@ -43,7 +43,7 @@ find . -name '*.sm2d' | sort | while read -r f; do
   else
     rm -f "$UP/$rel" "$OR/$rel.seamly2d.json"
     grep -v "propagateSizeHints" "$home/err" | tail -3 > "$OR/$rel.failed"
-    echo "FAILED  $rel"
+    echo "FAILED  $rel"; sed 's/^/          /' "$OR/$rel.failed"
   fi
   # keep the measurement files Seamly2D's converter upgraded (not the pattern's own temporary copy)
   for m in "$conv"/*.smis "$conv"/*.smms; do
