@@ -1,19 +1,19 @@
 {
   "all_tools_pattern/alltools_pattern.sm2d": {
-    "points": 32,
-    "variables": 157
+    "points": 37,
+    "variables": 169
   },
   "basic_block_women-2016.sm2d": {
-    "points": 85,
-    "variables": 500
+    "points": 91,
+    "variables": 534
   },
   "bra/bra.sm2d": {
     "points": 27,
     "variables": 264
   },
   "gent_jacket_with_tummy.sm2d": {
-    "points": 146,
-    "variables": 880
+    "points": 147,
+    "variables": 887
   },
   "glimited/glimited_no_m.sm2d": {
     "points": 2,
@@ -28,8 +28,8 @@
     "variables": 7
   },
   "imk_zhaketa/imk_zhaketa_poluprilegayuschego_silueta.sm2d": {
-    "points": 74,
-    "variables": 365
+    "points": 81,
+    "variables": 422
   },
   "issue_256/issue_256.sm2d": {
     "points": 4,
@@ -88,7 +88,7 @@
     "variables": 96
   },
   "zigzag/zigzag.sm2d": {
-    "points": 205,
+    "points": 206,
     "variables": 1290
   }
 }

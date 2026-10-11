@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from yoko_engine.evalcore import Handler
-from yoko_engine.handlers import curves, cuts, operations, points
+from yoko_engine.handlers import curves, cuts, intersections, operations, points
 
 HANDLERS: dict[str, Handler] = {
     "single": points.single,
@@ -24,7 +24,13 @@ HANDLERS: dict[str, Handler] = {
     "cutSpline": cuts.cut_spline_point,
     "cutSplinePath": cuts.cut_spline_path_point,
     "cutArc": cuts.cut_arc_point,
+    "pointOfIntersectionCircles": intersections.circles,
+    "pointFromCircleAndTangent": intersections.circle_tangent,
+    "pointOfIntersectionArcs": intersections.arcs,
+    "pointFromArcAndTangent": intersections.arc_tangent,
+    "pointOfIntersectionCurves": intersections.curves,
     "arc:simple": curves.arc,
+    "arc:arcWithLength": curves.arc_with_length,
     "spline:cubicBezier": curves.cubic_bezier,
     "spline:cubicBezierPath": curves.cubic_bezier_path,
     "spline:simpleInteractive": curves.spline_interactive,

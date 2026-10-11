@@ -64,6 +64,37 @@ def arc(c: Ctx, o: Obj) -> None:
     c.set_symbol(f"Radius{name}", from_pixel(radius, c.unit), o.id)
 
 
+def arc_with_length(c: Ctx, o: Obj) -> None:
+    """`VToolArcWithLength`: an arc from a start angle and an arc length (`VArc::FindF2`).
+
+    A negative length makes Seamly2D draw the arc the other way round ("flipped"); that is not
+    evaluated yet."""
+    radius = to_pixel(c.check(o, "radius", "10"), c.unit)
+    length = to_pixel(c.check(o, "length", "10"), c.unit)
+    f1 = c.check(o, "angle1", "180")
+    center = c.point(o, "center")
+    if length < 0:
+        raise ObjectError(
+            Issue(
+                "not_implemented",
+                "an arc with a negative length (a flipped arc) is not evaluated yet",
+                o.id,
+                "length",
+                "use a positive length",
+            )
+        )
+    length = min(length, math.tau * radius)
+    arc_angle = abs(math.degrees(length / radius))
+    f2 = Line(Pt(0.0, 0.0), Pt(100.0, 0.0)).set_angle(f1 + arc_angle).angle()
+    arc_geom = Arc(center.p, radius, f1, f2)
+    name = f"Arc_{center.label}_{o.id}{_duplicate_suffix(o)}"
+    c.add_curve(o.id, CurveGeom(o.id, name, arc_geom, (center.label,)))
+    c.add_curve_variables(
+        o.id, name, arc_geom.length(), arc_geom.start_angle(), arc_geom.end_angle()
+    )
+    c.set_symbol(f"Radius{name}", from_pixel(radius, c.unit), o.id)
+
+
 def cubic_bezier(c: Ctx, o: Obj) -> None:
     _reject_length_options(o)
     pts = [c.point(o, f"point{i}") for i in (1, 2, 3, 4)]

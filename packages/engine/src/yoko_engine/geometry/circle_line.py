@@ -100,3 +100,55 @@ def find_circle_line_point(radius: float, center: Pt, first: Pt, second: Pt) -> 
             return p1
         return p2
     return p1 if flag1 else p2
+
+
+def intersection_circles(c1: Pt, r1: float, c2: Pt, r2: float) -> tuple[int, Pt, Pt]:
+    """VGObject::IntersectionCircles. Returns (code, p1, p2): 0 no common point, 1 one (in p1),
+    2 two, 3 the circles are the same."""
+    zero = Pt(0.0, 0.0)
+    if (
+        fuzzy_compare_possible_nulls(c1.x, c2.x)
+        and fuzzy_compare_possible_nulls(c1.y, c2.y)
+        and fuzzy_compare_possible_nulls(r1, r2)
+    ):
+        return 3, zero, zero
+    a = -2.0 * (c2.x - c1.x)
+    b = -2.0 * (c2.y - c1.y)
+    c = (c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y) + r1 * r1 - r2 * r2
+    x0 = -a * c / (a * a + b * b)
+    y0 = -b * c / (a * a + b * b)
+    if c * c > r1 * r1 * (a * a + b * b):
+        return 0, zero, zero
+    if fuzzy_compare_possible_nulls(c * c, r1 * r1 * (a * a + b * b)):
+        return 1, Pt(x0 + c1.x, y0 + c1.y), zero
+    d = r1 * r1 - c * c / (a * a + b * b)
+    mult = math.sqrt(d / (a * a + b * b))
+    ax = x0 + b * mult
+    bx = x0 - b * mult
+    ay = y0 - a * mult
+    by = y0 + a * mult
+    return 2, Pt(ax + c1.x, ay + c1.y), Pt(bx + c1.x, by + c1.y)
+
+
+def point_in_circle(p: Pt, center: Pt, radius: float) -> int:
+    """VGObject::PointInCircle (the comments in Seamly2D say the opposite of what it returns for 0
+    and 2; the values are what matter): 1 on the circle, 0 when radius > distance, 2 otherwise."""
+    d = Line(p, center).length()
+    if fuzzy_compare_possible_nulls(radius, d):
+        return 1
+    if radius > d:
+        return 0
+    return 2
+
+
+def contact_points(p: Pt, center: Pt, radius: float) -> tuple[int, Pt, Pt]:
+    """VGObject::ContactPoints: the points where the tangents from `p` touch the circle."""
+    flag = point_in_circle(p, center, radius)
+    zero = Pt(0.0, 0.0)
+    if flag == 0:
+        return 0, zero, zero
+    if flag == 1:
+        return 1, p, zero
+    d = Line(p, center).length()
+    k = math.sqrt(d * d - radius * radius)
+    return intersection_circles(p, k, center, radius)

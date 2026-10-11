@@ -277,3 +277,201 @@ def test_options_that_change_handles_are_refused_on_every_cubic() -> None:
         ),
     )
     assert [i.code for i in evaluate(p, {}).issues] == ["not_implemented"]
+
+
+# ---- circles, arcs, tangents, curve crossings, arc with length ----------------------
+
+
+def two_points() -> list[Obj]:
+    return [single(1, "A", 1, 1), single(2, "B", 11, 1)]
+
+
+def circles(cross: str, r1: str = "6", r2: str = "6") -> Obj:
+    return obj(
+        3,
+        "pointOfIntersectionCircles",
+        name="X",
+        c1Center="1",
+        c1Radius=r1,
+        c2Center="2",
+        c2Radius=r2,
+        crossPoint=cross,
+    )
+
+
+def test_circle_intersection_picks_the_first_or_second_point() -> None:
+    root = math.sqrt(11)
+    first = evaluate(pattern(*two_points(), circles("1")), {})
+    assert first.issues == []
+    close(first.point_mm("X"), 60.0, 10.0 + 10 * root, 1e-6)
+    second = evaluate(pattern(*two_points(), circles("2")), {})
+    close(second.point_mm("X"), 60.0, 10.0 - 10 * root, 1e-6)
+
+
+def test_circles_that_do_not_meet_use_the_origin_and_report() -> None:
+    ev = evaluate(pattern(*two_points(), circles("1", "1", "1")), {})
+    assert [i.code for i in ev.issues] == ["no_intersection"]
+    close(ev.point_mm("X"), 0.0, 0.0)
+
+
+def test_circle_tangent_point() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            obj(
+                3,
+                "pointFromCircleAndTangent",
+                name="T",
+                cCenter="1",
+                cRadius="3",
+                tangent="2",
+                crossPoint="1",
+            ),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    sin = math.sqrt(1 - 0.09)  # cos(phi) = radius / distance = 3 / 10
+    close(ev.point_mm("T"), 10 + 30 * 0.3, 10 - 30 * sin, 1e-6)
+
+
+def test_a_tangent_from_inside_the_circle_does_not_exist() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            obj(
+                3,
+                "pointFromCircleAndTangent",
+                name="T",
+                cCenter="1",
+                cRadius="30",
+                tangent="2",
+                crossPoint="1",
+            ),
+        ),
+        {},
+    )
+    assert [i.code for i in ev.issues] == ["no_intersection"]
+
+
+def arc(id_: int, center: int, radius: str, a1: str, a2: str) -> Obj:
+    return obj(id_, "simple", tag="arc", center=str(center), radius=radius, angle1=a1, angle2=a2)
+
+
+def test_arc_intersection_only_counts_points_both_arcs_reach() -> None:
+    root = math.sqrt(11)
+    full = evaluate(
+        pattern(
+            *two_points(),
+            arc(3, 1, "6", "0", "360"),
+            arc(4, 2, "6", "0", "360"),
+            obj(
+                5, "pointOfIntersectionArcs", name="X", firstArc="3", secondArc="4", crossPoint="2"
+            ),
+        ),
+        {},
+    )
+    assert full.issues == []
+    close(full.point_mm("X"), 60.0, 10.0 - 10 * root, 1e-6)
+    # the first arc is only the half above its centre (angles 0 to 180 run through "up"): only
+    # the upper crossing is on it, so it is chosen whatever crossPoint says
+    upper = evaluate(
+        pattern(
+            *two_points(),
+            arc(3, 1, "6", "0", "180"),
+            arc(4, 2, "6", "0", "360"),
+            obj(
+                5, "pointOfIntersectionArcs", name="X", firstArc="3", secondArc="4", crossPoint="1"
+            ),
+        ),
+        {},
+    )
+    close(upper.point_mm("X"), 60.0, 10.0 - 10 * root, 1e-6)
+
+
+def test_arc_tangent_point() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            arc(3, 1, "3", "0", "360"),
+            obj(4, "pointFromArcAndTangent", name="T", arc="3", tangent="2", crossPoint="1"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    sin = math.sqrt(1 - 0.09)
+    close(ev.point_mm("T"), 10 + 30 * 0.3, 10 - 30 * sin, 1e-6)
+
+
+def test_intersection_of_two_curves() -> None:
+    def straight(id_: int, p1: int, p4: int, a1: str, a2: str) -> Obj:
+        return obj(
+            id_,
+            "simpleInteractive",
+            tag="spline",
+            point1=str(p1),
+            point4=str(p4),
+            angle1=a1,
+            angle2=a2,
+            length1="4.7140452",
+            length2="4.7140452",
+        )
+
+    ev = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            single(2, "B", 11, 11),
+            single(3, "C", 1, 11),
+            single(4, "D", 11, 1),
+            straight(5, 1, 2, "315", "135"),
+            straight(6, 3, 4, "45", "225"),
+            obj(7, "pointOfIntersectionCurves", name="X", curve1="5", curve2="6"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    close(ev.point_mm("X"), 60.0, 60.0, 0.01)
+
+
+def test_arc_with_length_finds_its_end_angle() -> None:
+    ev = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            obj(
+                2,
+                "arcWithLength",
+                tag="arc",
+                center="1",
+                radius="10",
+                angle1="0",
+                length=str(5 * math.pi),
+            ),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.symbols["Arc_A_2"] == pytest.approx(5 * math.pi)
+    assert ev.symbols["Angle2Arc_A_2"] == pytest.approx(90.0)
+    assert ev.symbols["RadiusArc_A_2"] == pytest.approx(10.0)
+
+
+def test_arc_with_length_cannot_be_longer_than_the_circle() -> None:
+    ev = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            obj(2, "arcWithLength", tag="arc", center="1", radius="10", angle1="0", length="1000"),
+        ),
+        {},
+    )
+    assert ev.symbols["Arc_A_2"] == pytest.approx(20 * math.pi)
+
+
+def test_arc_with_negative_length_is_reported() -> None:
+    ev = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            obj(2, "arcWithLength", tag="arc", center="1", radius="10", angle1="0", length="-3"),
+        ),
+        {},
+    )
+    assert [i.code for i in ev.issues] == ["not_implemented"]
