@@ -212,3 +212,43 @@ def render_png(
     buf = BytesIO()
     img.save(buf, format="PNG", optimize=False)
     return buf.getvalue()
+
+
+def render_outline_png(
+    outline: list[tuple[float, float]],
+    marks: list[tuple[str, tuple[float, float]]],
+    *,
+    width_px: int = 900,
+) -> bytes:
+    """A piece outline (points in pixels, Seamly2D's scale) with numbered marks, as PNG bytes.
+
+    Used for the landmark sheet: the pattern maker sees where each numbered row sits on the piece.
+    """
+    mm = [_mm(p) for p in outline]
+    mark_mm = [(text, _mm(p)) for text, p in marks]
+    xs = [p[0] for p in mm]
+    ys = [p[1] for p in mm]
+    margin = 14.0
+    min_x, min_y = min(xs) - margin, min(ys) - margin
+    w, h = max(xs) + margin - min_x, max(ys) + margin - min_y
+    scale = width_px * _SUPERSAMPLE / w
+    big_w, big_h = round(w * scale), round(h * scale)
+    img = Image.new("RGB", (big_w, big_h), (255, 255, 255))
+    draw = ImageDraw.Draw(img)
+
+    def px(p: tuple[float, float]) -> tuple[float, float]:
+        return (p[0] - min_x) * scale, (p[1] - min_y) * scale
+
+    draw.line([px(p) for p in [*mm, mm[0]]], fill=(31, 41, 51), width=2 * _SUPERSAMPLE)
+    font = ImageFont.load_default(size=max(10, round(3.4 * scale)))
+    for text, p in mark_mm:
+        x, y = px(p)
+        r = 2.1 * scale
+        draw.ellipse(
+            [x - r, y - r, x + r, y + r], fill=(255, 255, 255), outline=(178, 34, 34), width=2
+        )
+        draw.text((x, y), text, fill=(178, 34, 34), font=font, anchor="mm")
+    img = img.resize((big_w // _SUPERSAMPLE, big_h // _SUPERSAMPLE), Image.Resampling.LANCZOS)
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()

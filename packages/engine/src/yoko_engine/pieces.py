@@ -169,26 +169,40 @@ class _Outline:
                 end = self._curve_end(end, self.nodes[index], points)
         return end
 
-    def path_points(self) -> list[Pt]:
-        out: list[Pt] = []
+    def contributions(self) -> list[tuple[int, list[Pt]]]:
+        """For each node that is not excluded, its index and the points it adds to the path."""
+        out: list[tuple[int, list[Pt]]] = []
         for i, node in enumerate(self.nodes):
             if node.excluded:
                 continue
             if node.type == NODE_POINT:
-                out.append(self.m.points[node.id][1])
+                out.append((i, [self.m.points[node.id][1]]))
             elif node.type in CURVE_NODES:
                 begin = self.start_segment(i, node.reverse)
                 end = self.end_segment(i, node.reverse)
                 if begin is None or end is None:
                     continue
-                out.extend(segment_points(self._curve_points(node), begin, end, node.reverse))
+                out.append((i, segment_points(self._curve_points(node), begin, end, node.reverse)))
         return out
+
+    def path_points(self) -> list[Pt]:
+        return [p for _, pts in self.contributions() for p in pts]
 
 
 def piece_outline(nodes: tuple[PieceNode, ...], modeling: Modeling) -> tuple[Pt, ...]:
     """The cleaned main path of a piece (`VPiece::mainPathPoints`)."""
     points = _Outline(nodes, modeling).path_points()
     return tuple(check_loops(correct_equidistant_points(points)))
+
+
+def node_marks(nodes: tuple[PieceNode, ...], modeling: Modeling) -> list[tuple[int, Pt]]:
+    """One spot per node, in outline order: the point itself, or the middle of a curve's part of
+    the outline. For labelling a drawing of the piece."""
+    marks: list[tuple[int, Pt]] = []
+    for index, pts in _Outline(nodes, modeling).contributions():
+        if pts:
+            marks.append((index, pts[len(pts) // 2]))
+    return marks
 
 
 def evaluate_pieces(pattern: Pattern, ev: Evaluation) -> Mapping[int, PieceGeom]:

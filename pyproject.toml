@@ -17,6 +17,7 @@ dev = [
   "ruff>=0.6",
   "pyright>=1.1.380",
   "import-linter>=2.0",
+  "openpyxl>=3.1.5",
 ]
 
 [tool.uv]
@@ -42,6 +43,11 @@ extend-exclude = ["fixtures", "studio"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# long lines of prose meant for pattern makers
+"scripts/make_landmark_sheet.py" = ["E501"]
+"scripts/landmark_rows.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "packages"]

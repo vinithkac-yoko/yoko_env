@@ -1,0 +1,112 @@
+# Proposed landmark names for the basic pattern set. NOTHING HERE IS VERIFIED.
+# Each entry is a best guess from how the point was drawn and where it sits on the piece; the
+# pattern makers confirm, correct or reject every row (docs/landmarks/README.md).
+# Key: the Seamly2D label (or curve name) as shown in the sheet, plus its row number on the piece.
+# confidence: high = the formula names the thing (e.g. uses hip_circ for a hip point); medium = shape
+# and position make it likely; low = a guess from shape alone.
+version: 1
+status: proposed
+pieces:
+  "A - Skirt Back":
+    1: {label: A1, name: skirt_back.CB_waist, confidence: medium, reason: "left edge, top: where the centre-back line meets the waist"}
+    2: {label: Spl_A1_A13a, name: skirt_back.waist_curve, confidence: low, reason: "curve along the waist between centre back and the first dart"}
+    3: {label: A13a, name: skirt_back.dart1_leg_a, confidence: low, reason: "first of three points that form a bump in the waist line, which looks like a dart"}
+    4: {label: A11b, name: skirt_back.dart1_fold, confidence: low, reason: "middle of the bump, 0.25 cm above the waist line"}
+    5: {label: A13b, name: skirt_back.dart1_leg_b, confidence: low, reason: "third point of the bump"}
+    7: {label: A14a, name: skirt_back.dart2_leg_a, confidence: low, reason: "same shape as the first dart, nearer the side"}
+    8: {label: A12a, name: skirt_back.dart2_fold, confidence: low, reason: "middle of the second bump"}
+    9: {label: A14b, name: skirt_back.dart2_leg_b, confidence: low, reason: "third point of the second bump"}
+    10: {label: Spl_A14b_A10, name: skirt_back.waist_curve_side, confidence: low, reason: "curve between the second dart and the side"}
+    11: {label: A10, name: skirt_back.side_waist, confidence: medium, reason: "highest point on the right, where the side seam begins"}
+    12: {label: SplPath_A10_A7, name: skirt_back.side_seam_upper, confidence: medium, reason: "hip curve from the waist to the hip point"}
+    13: {label: A7, name: skirt_back.side_hip, confidence: high, reason: "length is hip_circ/4 plus ease, drawn at the hip line"}
+    14: {label: A8a, name: skirt_back.side_hem, confidence: medium, reason: "bottom right corner of the side seam"}
+    15: {label: Spl_A3_A8a, name: skirt_back.hem_curve, confidence: medium, reason: "curved bottom edge"}
+    16: {label: A3, name: skirt_back.CB_hem, confidence: medium, reason: "bottom left, on the centre-back line; its length is height_waist_side_to_knee"}
+  "A - Skirt Front":
+    1: {label: A16, name: skirt_front.side_waist, confidence: medium, reason: "highest point on the left, mirror of the back's side waist"}
+    2: {label: Spl_A16_A17a, name: skirt_front.waist_curve_side, confidence: low, reason: "curve between the side and the dart"}
+    3: {label: A17a, name: skirt_front.dart_leg_a, confidence: low, reason: "first point of the bump in the waist line"}
+    4: {label: A17e, name: skirt_front.dart_fold, confidence: low, reason: "middle of the bump"}
+    5: {label: A17b, name: skirt_front.dart_leg_b, confidence: low, reason: "third point of the bump"}
+    6: {label: Spl_A17b_A2, name: skirt_front.waist_curve_cf, confidence: low, reason: "curve between the dart and the centre front"}
+    7: {label: A2, name: skirt_front.CF_waist, confidence: medium, reason: "right edge, top; length is hip_circ/2 plus ease"}
+    8: {label: A6, name: skirt_front.CF_hip, confidence: medium, reason: "right edge at the same height as the hip point"}
+    9: {label: A4, name: skirt_front.CF_hem, confidence: medium, reason: "bottom right, on the centre-front line"}
+    10: {label: Spl_A4_A8c, name: skirt_front.hem_curve, confidence: medium, reason: "curved bottom edge"}
+    11: {label: A8c, name: skirt_front.side_hem, confidence: medium, reason: "bottom left corner of the side seam"}
+    12: {label: A7, name: skirt_front.side_hip, confidence: high, reason: "length is hip_circ/4 plus ease, drawn at the hip line"}
+    13: {label: SplPath_A16_A7, name: skirt_front.side_seam_upper, confidence: medium, reason: "hip curve from the waist to the hip point"}
+  "B - Trousers Front":
+    1: {label: B9, name: trouser_front.crotch_point, confidence: medium, reason: "leftmost point, drawn hip_circ/12 plus ease outside the centre-front line"}
+    2: {label: SplPath_B9_B10, name: trouser_front.crotch_curve, confidence: medium, reason: "curve from the crotch point up to the centre-front line"}
+    3: {label: B6, name: trouser_front.CF_hip, confidence: low, reason: "on the centre-front line at the same height as the hip point"}
+    4: {label: SplPath_B9_B10, name: trouser_front.CF_seam, confidence: low, reason: "curve from the hip height up to the waist"}
+    5: {label: B10, name: trouser_front.CF_waist, confidence: medium, reason: "top left, where the centre-front line meets the waist"}
+    6: {label: Bba, name: trouser_front.waist_dart_leg_a, confidence: low, reason: "first of three points at the waist that form a dart"}
+    7: {label: Bbd, name: trouser_front.waist_dart_tip, confidence: low, reason: "middle point of the three"}
+    8: {label: Bca, name: trouser_front.waist_dart_leg_b, confidence: low, reason: "third point of the dart"}
+    9: {label: B11, name: trouser_front.side_waist, confidence: medium, reason: "top right; length is waist_circ/4 plus ease"}
+    10: {label: SplPath_B11_B12, name: trouser_front.side_seam_upper, confidence: medium, reason: "hip curve from the waist to the hip"}
+    11: {label: B8, name: trouser_front.side_hip, confidence: high, reason: "length is hip_circ/4 plus ease, drawn at the hip line"}
+    13: {label: B13, name: trouser_front.side_knee, confidence: high, reason: "knee line; width uses #TrouserKneeWidth"}
+    15: {label: B12, name: trouser_front.side_hem, confidence: medium, reason: "bottom right corner; width uses #TrouserBottomWidth"}
+    16: {label: B14, name: trouser_front.inseam_hem, confidence: medium, reason: "bottom left corner"}
+    18: {label: B15, name: trouser_front.inseam_knee, confidence: high, reason: "knee line on the inside leg"}
+  "B - Trousers Back":
+    1: {label: B24, name: trouser_back.crotch_point, confidence: medium, reason: "leftmost point, at the crotch level"}
+    2: {label: SplPath_B24_B21, name: trouser_back.crotch_curve, confidence: medium, reason: "curve from the crotch point up to the centre back"}
+    3: {label: B19, name: trouser_back.CB_seam_mid, confidence: low, reason: "halfway along the curve (length CurrentLength/2)"}
+    5: {label: B21, name: trouser_back.CB_waist, confidence: medium, reason: "top left, 2 cm above the waist line"}
+    6: {label: B30d, name: trouser_back.waist_dart1_leg_a, confidence: low, reason: "first point of the first dart at the waist"}
+    7: {label: B30f, name: trouser_back.waist_dart1_tip, confidence: low, reason: "middle point of the first dart"}
+    8: {label: B30e, name: trouser_back.waist_dart1_leg_b, confidence: low, reason: "third point of the first dart"}
+    9: {label: B31d, name: trouser_back.waist_dart2_leg_a, confidence: low, reason: "first point of the second dart"}
+    10: {label: B31f, name: trouser_back.waist_dart2_tip, confidence: low, reason: "middle point of the second dart"}
+    11: {label: B31e, name: trouser_back.waist_dart2_leg_b, confidence: low, reason: "third point of the second dart"}
+    12: {label: B22, name: trouser_back.side_waist, confidence: medium, reason: "top right; length is waist_circ/4 plus ease"}
+    14: {label: B25, name: trouser_back.side_hip, confidence: high, reason: "length is hip_circ/4 plus ease, drawn at the hip line"}
+    16: {label: B27, name: trouser_back.side_knee, confidence: medium, reason: "on the knee line, right side"}
+    18: {label: B26, name: trouser_back.side_hem, confidence: medium, reason: "bottom right corner"}
+    20: {label: B28, name: trouser_back.inseam_hem, confidence: medium, reason: "bottom left corner"}
+    22: {label: B29, name: trouser_back.inseam_knee, confidence: medium, reason: "on the knee line, inside leg"}
+  "C - Bodice Back":
+    1: {label: C1, name: bodice_back.CB_neck, confidence: medium, reason: "left edge, 1.5 cm below the top: where the centre-back line meets the neckline"}
+    2: {label: Spl_C1_C9, name: bodice_back.neckline, confidence: high, reason: "curve between the centre back and the neck-shoulder point"}
+    3: {label: C9, name: bodice_back.SNP, confidence: medium, reason: "top, length neck_circ/5: the side neck point"}
+    4: {label: C12e, name: bodice_back.shoulder_dart_leg_a, confidence: low, reason: "first of three points that form a small dart on the shoulder"}
+    5: {label: C12g, name: bodice_back.shoulder_dart_tip, confidence: low, reason: "middle point of the three"}
+    6: {label: C12f, name: bodice_back.shoulder_dart_leg_b, confidence: low, reason: "third point of the dart"}
+    7: {label: C11, name: bodice_back.shoulder_tip, confidence: medium, reason: "end of the shoulder; radius is shoulder_length plus 1 cm"}
+    8: {label: SplPath_C11_C32, name: bodice_back.armhole_upper, confidence: medium, reason: "armhole curve below the shoulder tip"}
+    9: {label: C16, name: bodice_back.armhole_mid, confidence: low, reason: "halfway along the armhole"}
+    10: {label: SplPath_C11_C32, name: bodice_back.armhole_lower, confidence: medium, reason: "armhole curve above the underarm"}
+    11: {label: C32, name: bodice_back.underarm, confidence: medium, reason: "where the armhole meets the side seam"}
+    12: {label: C33a, name: bodice_back.side_waist, confidence: medium, reason: "on the side seam; its length uses waist_circ"}
+    13: {label: C34, name: bodice_back.side_bottom, confidence: medium, reason: "bottom right corner"}
+    14: {label: C7, name: bodice_back.CB_bottom, confidence: medium, reason: "bottom left corner; the centre back is height_waist_side_to_hip long"}
+  "C - Bodice Front":
+    1: {label: C32, name: bodice_front.underarm, confidence: medium, reason: "where the armhole meets the side seam (same point as on the back)"}
+    2: {label: SplPath_C32_C30, name: bodice_front.armhole_lower, confidence: medium, reason: "armhole curve above the underarm"}
+    3: {label: C31, name: bodice_front.armhole_mid, confidence: low, reason: "a third of the way along a guide line to the neck"}
+    4: {label: SplPath_C32_C30, name: bodice_front.armhole_upper, confidence: medium, reason: "armhole curve below the shoulder tip"}
+    5: {label: C30, name: bodice_front.shoulder_tip, confidence: medium, reason: "end of the shoulder; radius is shoulder_length"}
+    6: {label: C27a, name: bodice_front.shoulder_dart_leg_a, confidence: low, reason: "first of three points that form a small dart on the shoulder"}
+    7: {label: C20c_a1, name: bodice_front.shoulder_dart_tip, confidence: low, reason: "middle point of the three (a mirrored copy)"}
+    8: {label: C20, name: bodice_front.SNP, confidence: medium, reason: "top right, length neck_circ/5: the side neck point"}
+    9: {label: Spl_C20_C21, name: bodice_front.neckline, confidence: high, reason: "curve between the side neck point and the centre front"}
+    10: {label: C21, name: bodice_front.CF_neck, confidence: medium, reason: "right edge, where the centre-front line meets the neckline"}
+    11: {label: C8, name: bodice_front.CF_bottom, confidence: medium, reason: "bottom right corner on the centre-front line"}
+    12: {label: C25, name: bodice_front.bottom_mid, confidence: low, reason: "on the bottom edge between the centre front and the side"}
+    13: {label: C34, name: bodice_front.side_bottom, confidence: medium, reason: "bottom left corner"}
+    14: {label: C33b, name: bodice_front.side_waist, confidence: medium, reason: "on the side seam; its length uses waist_circ"}
+  "D - 1 Piece Sleeve":
+    1: {label: D12, name: sleeve.biceps_end_a, confidence: low, reason: "left end of the line across the sleeve cap; which side is front is not clear"}
+    2: {label: SplPath_D12_D11, name: sleeve.cap_curve_a, confidence: low, reason: "first part of the sleeve cap curve"}
+    3: {label: D9, name: sleeve.cap_notch_a, confidence: low, reason: "point on the cap curve found by a horizontal line"}
+    5: {label: D7, name: sleeve.cap_top, confidence: high, reason: "highest point, directly above the wrist centre; radius uses the armhole length and #ShoulderTip"}
+    7: {label: D5, name: sleeve.cap_notch_b, confidence: low, reason: "halfway along the second half of the cap"}
+    9: {label: D11, name: sleeve.biceps_end_b, confidence: low, reason: "right end of the line across the sleeve cap"}
+    10: {label: D15a, name: sleeve.wrist_corner_b, confidence: medium, reason: "bottom right corner"}
+    12: {label: D13, name: sleeve.wrist_center, confidence: medium, reason: "bottom centre, arm_shoulder_tip_to_wrist_bent below the cap top"}
+    14: {label: D14a, name: sleeve.wrist_corner_a, confidence: medium, reason: "bottom left corner"}
