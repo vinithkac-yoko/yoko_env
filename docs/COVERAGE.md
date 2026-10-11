@@ -19,7 +19,7 @@ Status words: **evaluates, exact** = the engine computes it like Seamly2D. **cre
 | Point on bisector | `bisector` | `point_bisector` | 9 | evaluates, exact |
 | Point from X of one point and Y of another | `intersectXY` | `point_from_xy` | 149 | evaluates, exact |
 | Intersection of line and axis | `lineIntersectAxis` | `point_line_axis` | 31 | evaluates, exact |
-| Intersection of curve (or arc) and axis | `curveIntersectAxis` | `point_curve_axis` | 31 | evaluates, exact (not for elliptical arcs, see below) |
+| Intersection of curve (or arc) and axis | `curveIntersectAxis` | `point_curve_axis` | 31 | evaluates, exact (not for elliptical arcs: the engine says `not_implemented`; see the note below) |
 | Intersection of arc and line | `pointOfContact` | `point_arc_line` | 8 | evaluates, exact |
 | Intersection of two lines | `lineIntersect` | `point_line_line` | 46 | evaluates, exact |
 | Intersection of two arcs | `pointOfIntersectionArcs` | `point_arc_arc` | 2 | evaluates, exact |
@@ -44,7 +44,7 @@ Status words: **evaluates, exact** = the engine computes it like Seamly2D. **cre
 | Line | tag `line` | `line` | 662 | evaluates, exact |
 | Arc (radius, angles) | `simple` | `arc_radius` | 18 | evaluates, exact |
 | Arc with length | `arcWithLength` | `arc_length` | 3 | evaluates, exact (including the flipped arc of a negative length) |
-| Elliptical arc | tag `elArc`, `simple` | `arc_elliptical` | 1 | evaluates, exact (20 arcs in `elliptical_arcs`: length and angles bit for bit; Qt's `arcTo` and path flattening are ported) |
+| Elliptical arc | tag `elArc`, `simple` | `arc_elliptical` | 1 | evaluates, exact (20 arcs in `elliptical_arcs`: length and angles bit for bit; Qt's `arcTo` and path flattening are ported); rotate, mirror and move: exact (56 copies in `elliptical_arc_operations`, also one operation after another) |
 | Simple curve (spline) | `simpleInteractive`, old `simple` | `curve_spline` | 66 + 90 | evaluates, exact, including `autoSmooth` and `lengthMode` (156 curves in `spline_length_modes`) |
 | Spline path | `pathInteractive`, old `path` | `curve_spline_path` | 38 + 10 | evaluates, exact |
 | Cubic Bezier | `cubicBezier` | `curve_bezier` | 22 | evaluates, exact, including `autoSmooth` and `lengthMode` |
@@ -54,13 +54,13 @@ Status words: **evaluates, exact** = the engine computes it like Seamly2D. **cre
 
 | Seamly2D action | XML | Proposed tool | In test patterns | Status |
 | --- | --- | --- | --- | --- |
-| Mirror by line | `flippingByLine` | `mirror_by_line` | 3 | evaluates, exact (points, arcs, curves) |
+| Mirror by line | `flippingByLine` | `mirror_by_line` | 3 | evaluates, exact (points, arcs, elliptical arcs, curves) |
 | Mirror by axis | `flippingByAxis` | `mirror_by_axis` | 1 | evaluates, exact |
 | Rotate | `rotation` | `rotate` | 10 | evaluates, exact |
 | Move | `moving` | `move` | 1 | evaluates, exact |
 | Group | tag `group` | `group` | 15 in the basic set | preserved; a deleted object leaves its groups; visibility ignored (ADR 0003) |
 
-**Not built yet:** mirror, rotate, move and cut of an **elliptical arc** (none of the 41 test patterns needs it; the engine says `not_implemented` instead of guessing). It needs `QTransform::inverted` and the arc cut by bisection, both portable.
+**Elliptical arcs cut at an axis:** not built. The pinned Seamly2D itself hangs (no answer in 10 s) in most of the configurations tried (about 90 of 96 axis and arc combinations), so there is no reliable oracle to check a port against. The unverified port is kept out of the repository until Seamly2D's behaviour is understood (question for Kasi).
 
 ## Pieces
 

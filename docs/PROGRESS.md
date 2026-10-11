@@ -93,7 +93,7 @@ Everything below is checked against the pinned Seamly2D, bit for bit, unless it 
 
 Not done, and why:
 
-- Mirror, rotate, move and cut of an **elliptical arc** (needs `QTransform::inverted` and the arc cut by bisection; none of the 41 test patterns uses it). The engine says `not_implemented`.
+- **Cutting an elliptical arc** at an axis (`curveIntersectAxis` on an `elArc`): the pinned Seamly2D hangs in most configurations I tried (its `FindF2` search never ends), so there is nothing reliable to check a port against. The engine says `not_implemented`. Rotate, mirror and move of elliptical arcs are done and exact.
 - **Seam length mismatches between matched edges** (spec, Validation): which edges match is a pattern-making rule, so this needs the pattern makers.
 - Union and internal paths cannot be created by an action yet; internal paths are kept, not computed (the depth decided with Kasi).
 - The landmark sheet's LibreOffice render could not be checked in this container (LibreOffice cannot open any file here); the workbook reads back correctly with openpyxl and has no formulas.

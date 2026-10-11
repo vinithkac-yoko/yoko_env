@@ -49,3 +49,32 @@ def test_a_full_ellipse_is_about_its_perimeter() -> None:
     assert arc.length() == pytest.approx(arc.max_length(), rel=1e-3)
     circle = ElArc(Pt(0.0, 0.0), 50.0, 50.0, 0.0, 180.0)
     assert circle.length() == pytest.approx(math.pi * 50.0, rel=1e-3)
+
+
+def test_rotated_mirrored_and_moved_elliptical_arcs_equal_seamly2d_exactly() -> None:
+    """56 copies: each operation on its own and one after another, so a copy's transform builds on
+    the transform of the copy before it."""
+    oracle = json.loads(
+        (FIXTURES / "oracle/cases/elliptical_arc_operations.seamly2d.json").read_text()
+    )
+    pattern = read_pattern(FIXTURES / "patterns/cases/elliptical_arc_operations.sm2d")
+    ev = evaluate(pattern, {})
+    assert not ev.issues
+    assert len(oracle["curves"]) == 56
+    wrong = []
+    for want in oracle["curves"]:
+        geom = ev.curves[want["id"]].geom
+        got = (geom.length(), geom.start_angle(), geom.end_angle())
+        if got != (want["length_px"], want["start_angle"], want["end_angle"]):
+            wrong.append((want["name"], got, want["length_px"]))
+    assert wrong == []
+
+
+def test_a_mirrored_elliptical_arc_has_a_negative_length() -> None:
+    arc = ElArc(Pt(0.0, 0.0), 100.0, 60.0, 0.0, 180.0)
+    from yoko_engine.geometry import Line
+
+    mirrored = arc.flip(Line(Pt(0.0, 0.0), Pt(0.0, 10.0)))
+    assert mirrored.length() == pytest.approx(-arc.length())
+    assert arc.rotate(Pt(5.0, 5.0), 90.0).length() == pytest.approx(arc.length())
+    assert arc.move(50.0, 30.0).length() == pytest.approx(arc.length())

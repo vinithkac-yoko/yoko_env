@@ -7,6 +7,8 @@ original's name plus the suffix, and registers the same variables as any curve o
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from yoko_engine.evalcore import Ctx, CurveGeom, Issue, ObjectError
 from yoko_engine.geometry import Line, Pt
 from yoko_engine.geometry.curves import Arc, Bezier, Spline
@@ -35,7 +37,12 @@ def _id(n: RawNode) -> int:
     return int(raw) if raw.lstrip("-").isdigit() else -1
 
 
-def _copy_all(c: Ctx, o: Obj, mappers: list[Mapper], *, mirror: bool) -> None:
+ElArcOp = Callable[[ElArc], ElArc]
+
+
+def _copy_all(
+    c: Ctx, o: Obj, mappers: list[Mapper], arc_ops: list[ElArcOp], *, mirror: bool
+) -> None:
     """Copy every source object through `mappers` (applied one after the other; a curve is rebuilt
     after each, as Seamly2D does when it moves and then rotates)."""
     suffix = o.get("suffix", "") or ""
@@ -68,14 +75,18 @@ def _copy_all(c: Ctx, o: Obj, mappers: list[Mapper], *, mirror: bool) -> None:
         c.deps.add(sid)
         geom = curve.geom
         if isinstance(geom, ElArc):
-            raise ObjectError(
-                Issue(
-                    "not_implemented",
-                    "mirror, rotate and move of an elliptical arc are not evaluated yet",
-                    o.id,
-                    "source",
-                )
+            # an elliptical arc keeps its numbers and gets a transform (VEllipticalArc::Rotate ...)
+            moved = geom
+            for op in arc_ops:
+                moved = op(moved)
+            name = curve.name + suffix
+            c.add_curve(did, CurveGeom(did, name, moved, curve.labels))
+            c.add_curve_variables(
+                o.id, name, moved.length(), moved.start_angle(), moved.end_angle()
             )
+            c.set_symbol(f"Radius1{name}", from_pixel(moved.radius1, c.unit), o.id)
+            c.set_symbol(f"Radius2{name}", from_pixel(moved.radius2, c.unit), o.id)
+            continue
         for f in mappers:
             geom = map_geom(geom, f, mirror=mirror)
         name = curve.name + suffix
@@ -94,7 +105,8 @@ def flip_by_line(c: Ctx, o: Obj) -> None:
     """`VToolMirrorByLine`: mirror across the line through two points."""
     first = c.point(o, "p1Line")
     second = c.point(o, "p2Line")
-    _copy_all(c, o, [flip_mapper(Line(first.p, second.p))], mirror=True)
+    axis = Line(first.p, second.p)
+    _copy_all(c, o, [flip_mapper(axis)], [lambda a: a.flip(axis)], mirror=True)
 
 
 def flip_by_axis(c: Ctx, o: Obj) -> None:
@@ -105,14 +117,17 @@ def flip_by_axis(c: Ctx, o: Obj) -> None:
         second = Pt(origin.p.x, origin.p.y + 100)
     else:
         second = Pt(origin.p.x + 100, origin.p.y)
-    _copy_all(c, o, [flip_mapper(Line(origin.p, second))], mirror=True)
+    axis = Line(origin.p, second)
+    _copy_all(c, o, [flip_mapper(axis)], [lambda a: a.flip(axis)], mirror=True)
 
 
 def rotation(c: Ctx, o: Obj) -> None:
     """`VToolRotation`: turn the objects by an angle around a point."""
     origin = c.point(o, "center")
     angle = c.check(o, "angle", "0")
-    _copy_all(c, o, [rotate_mapper(origin.p, angle)], mirror=False)
+    _copy_all(
+        c, o, [rotate_mapper(origin.p, angle)], [lambda a: a.rotate(origin.p, angle)], mirror=False
+    )
 
 
 def _bounding_center(points: list[Pt]) -> Pt:
@@ -160,6 +175,7 @@ def moving(c: Ctx, o: Obj) -> None:
         c,
         o,
         [move_mapper(length, angle), rotate_mapper(pivot, rotation_angle)],
+        [lambda a: a.move(length, angle), lambda a: a.rotate(pivot, rotation_angle)],
         mirror=False,
     )
 

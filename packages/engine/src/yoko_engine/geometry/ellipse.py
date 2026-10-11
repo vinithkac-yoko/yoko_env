@@ -10,12 +10,13 @@ checked against the pinned Seamly2D's own output by `tests/test_elliptical_arc.p
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from yoko_engine.fuzzy import fuzzy_compare, fuzzy_compare_possible_nulls, fuzzy_is_null
 from yoko_engine.geometry.curves import path_length
 from yoko_engine.geometry.qt import Line, Pt, points_equal
-from yoko_engine.geometry.transform import Transform
+from yoko_engine.geometry.transform import Transform, flip_transform
+from yoko_engine.units import to_pixel
 
 KAPPA = 0.5522847498  # QT_PATH_KAPPA
 
@@ -370,12 +371,7 @@ class ElArc:
         first = self.p1()
         curve_start, controls = curves_for_arc(box, self.f1, sweep)
 
-        t = Transform()
-        t.m11, t.m12, t.m13 = self.transform.m11, self.transform.m12, self.transform.m13
-        t.m21, t.m22, t.m23 = self.transform.m21, self.transform.m22, self.transform.m23
-        t.m_dx, t.m_dy, t.m33 = self.transform.m_dx, self.transform.m_dy, self.transform.m33
-        t._type = self.transform._type  # pyright: ignore[reportPrivateUsage]
-        t._dirty = self.transform._dirty  # pyright: ignore[reportPrivateUsage]
+        t = self.transform.copy()
         t.translate(c.x, c.y)
         t.rotate(-self.rotation)
         t.translate(-c.x, -c.y)
@@ -400,6 +396,82 @@ class ElArc:
     def length(self) -> float:
         length = path_length(self.points())
         return -length if self.flipped else length
+
+    # The operations (VEllipticalArc::Rotate, Flip, Move): the numbers stay, the transform changes.
+    def _inverse(self) -> Transform:
+        inv = self.transform.inverted()
+        if inv is None:
+            raise ValueError("the arc's transform cannot be inverted")
+        return inv
+
+    def rotate(self, origin: Pt, degrees: float) -> ElArc:
+        origin = self._inverse().map(origin)
+        t = self.transform.copy()
+        t.translate(origin.x, origin.y)
+        t.rotate(degrees if self.flipped else -degrees)
+        t.translate(-origin.x, -origin.y)
+        return replace(self, transform=t)
+
+    def flip(self, axis: Line) -> ElArc:
+        inv = self._inverse()
+        t = self.transform.copy().multiply(flip_transform(Line(inv.map(axis.p1), inv.map(axis.p2))))
+        return replace(self, flipped=not self.flipped, transform=t)
+
+    def move(self, length: float, angle: float) -> ElArc:
+        old = self.center  # VAbstractArc::GetCenter: the stored centre, before the transform
+        new = Line(old, Pt(old.x + length, old.y)).set_angle(angle).p2
+        inv = self._inverse()
+        a, b = inv.map(new), inv.map(old)
+        t = self.transform.copy()
+        t.translate(a.x - b.x, a.y - b.y)
+        return replace(self, transform=t)
+
+    @staticmethod
+    def from_length(
+        length: float, center: Pt, radius1: float, radius2: float, f1: float, rotation: float
+    ) -> ElArc:
+        """`VEllipticalArc(length, ...)` with `FindF2`: the arc that starts at `f1` and is `length`
+        long (a negative length runs the other way round), found by halving the angle step until
+        the flattened length is within 0.001 mm."""
+        gap = 180.0
+        flipped = length < 0
+        if flipped:
+            gap = -gap
+        arc = ElArc(center, radius1, radius2, f1, 0.0, rotation, flipped=flipped)
+        length = min(length, arc.max_length())
+        ray = Line(center, Pt(center.x + radius1, center.y)).set_angle(arc.start_angle())
+        ray = ray.set_angle(ray.angle() + gap)
+        end = ray.angle()
+        arc = replace(arc, f2=end)
+        found = arc.length()
+        eps = to_pixel(0.001, "mm")
+        while abs(found - length) > eps:
+            gap /= 2
+            if gap < 0.0001:
+                break
+            ray = ray.set_angle(end - abs(gap) if found > length else end + abs(gap))
+            end = ray.angle()
+            arc = replace(arc, f2=end)
+            found = arc.length()
+        return arc
+
+    def cut(self, length: float) -> tuple[Pt, ElArc, ElArc] | None:
+        """`VEllipticalArc::CutArc`: split at arc length `length` from the start. None when the arc
+        is not longer than 1 mm."""
+        min_length = to_pixel(1.0, "mm")
+        full = self.length()
+        if full <= min_length:
+            return None
+        max_length = full - min_length
+        length = min_length if length < min_length else min(length, max_length)
+        centre = self.real_center()
+        first = ElArc.from_length(
+            length, centre, self.radius1, self.radius2, self.start_angle(), self.rotation
+        )
+        second = ElArc(
+            centre, self.radius1, self.radius2, first.end_angle(), self.end_angle(), self.rotation
+        )
+        return first.p1(), first, second
 
     def max_length(self) -> float:
         """VEllipticalArc::MaxLength: Ramanujan's approximation of the whole ellipse."""

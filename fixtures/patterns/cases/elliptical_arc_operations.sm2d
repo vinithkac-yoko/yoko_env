@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements/>
+    <variables/>
+    <draftBlock name="Pattern piece 1">
+        <calculation>
+            <point id="1" mx="0.132292" my="0.264583" name="P1" type="single" x="10" y="10"/>
+            <point id="2" mx="0.132292" my="0.264583" name="P2" type="single" x="22" y="14"/>
+            <point id="3" mx="0.132292" my="0.264583" name="P3" type="single" x="27" y="31"/>
+            <point id="4" mx="0.132292" my="0.264583" name="P4" type="single" x="4" y="28"/>
+            <elArc angle1="0" angle2="360" center="1" color="black" id="10" lineWeight="1" penStyle="solidLine" radius1="3" radius2="2" rotationAngle="0" type="simple"/>
+            <elArc angle1="30" angle2="200" center="1" color="black" id="11" lineWeight="1" penStyle="solidLine" radius1="4" radius2="2.5" rotationAngle="0" type="simple"/>
+            <elArc angle1="45" angle2="135" center="1" color="black" id="12" lineWeight="1" penStyle="solidLine" radius1="3" radius2="5" rotationAngle="30" type="simple"/>
+            <elArc angle1="270" angle2="90" center="1" color="black" id="13" lineWeight="1" penStyle="solidLine" radius1="5" radius2="3" rotationAngle="77" type="simple"/>
+            <elArc angle1="10" angle2="350" center="1" color="black" id="14" lineWeight="1" penStyle="solidLine" radius1="2.5" radius2="6" rotationAngle="200" type="simple"/>
+            <operation id="100" angle="30" center="2" suffix="_r1" type="rotation">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="13" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="14" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="101"/>
+                    <item idObject="102"/>
+                    <item idObject="103"/>
+                    <item idObject="104"/>
+                    <item idObject="105"/>
+                </destination>
+            </operation>
+            <operation id="106" angle="123.4" center="3" suffix="_r2" type="rotation">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="107"/>
+                    <item idObject="108"/>
+                    <item idObject="109"/>
+                </destination>
+            </operation>
+            <operation id="110" p1Line="2" p2Line="3" suffix="_ml" type="flippingByLine">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="13" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="14" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="111"/>
+                    <item idObject="112"/>
+                    <item idObject="113"/>
+                    <item idObject="114"/>
+                    <item idObject="115"/>
+                </destination>
+            </operation>
+            <operation id="116" p1Line="4" p2Line="2" suffix="_ml2" type="flippingByLine">
+                <source>
+                    <item alias="" color="black" idObject="111" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="112" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="113" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="114" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="115" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="117"/>
+                    <item idObject="118"/>
+                    <item idObject="119"/>
+                    <item idObject="120"/>
+                    <item idObject="121"/>
+                </destination>
+            </operation>
+            <operation id="122" axisType="1" center="2" suffix="_ma1" type="flippingByAxis">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="13" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="14" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="123"/>
+                    <item idObject="124"/>
+                    <item idObject="125"/>
+                    <item idObject="126"/>
+                    <item idObject="127"/>
+                </destination>
+            </operation>
+            <operation id="128" axisType="2" center="3" suffix="_ma2" type="flippingByAxis">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="13" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="14" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="129"/>
+                    <item idObject="130"/>
+                    <item idObject="131"/>
+                    <item idObject="132"/>
+                    <item idObject="133"/>
+                </destination>
+            </operation>
+            <operation id="134" angle="343.68" center="0" length="17.8107" rotationAngle="90.0001" suffix="_m1" type="moving">
+                <source>
+                    <item alias="" color="black" idObject="10" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="11" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="12" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="13" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="14" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="135"/>
+                    <item idObject="136"/>
+                    <item idObject="137"/>
+                    <item idObject="138"/>
+                    <item idObject="139"/>
+                </destination>
+            </operation>
+            <operation id="140" angle="20" center="1" length="5" rotationAngle="45" suffix="_m2" type="moving">
+                <source>
+                    <item alias="" color="black" idObject="107" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="108" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="109" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="141"/>
+                    <item idObject="142"/>
+                    <item idObject="143"/>
+                </destination>
+            </operation>
+            <operation id="144" angle="100" center="0" length="3" rotationAngle="0" suffix="_m3" type="moving">
+                <source>
+                    <item alias="" color="black" idObject="135" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="136" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="137" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="138" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="139" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="145"/>
+                    <item idObject="146"/>
+                    <item idObject="147"/>
+                    <item idObject="148"/>
+                    <item idObject="149"/>
+                </destination>
+            </operation>
+            <operation id="150" angle="270" center="4" suffix="_r3" type="rotation">
+                <source>
+                    <item alias="" color="black" idObject="117" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="118" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="119" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="120" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="121" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="151"/>
+                    <item idObject="152"/>
+                    <item idObject="153"/>
+                    <item idObject="154"/>
+                    <item idObject="155"/>
+                </destination>
+            </operation>
+            <operation id="156" angle="15" center="1" suffix="_r4" type="rotation">
+                <source>
+                    <item alias="" color="black" idObject="101" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="102" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="103" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="104" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="105" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="157"/>
+                    <item idObject="158"/>
+                    <item idObject="159"/>
+                    <item idObject="160"/>
+                    <item idObject="161"/>
+                </destination>
+            </operation>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+</pattern>

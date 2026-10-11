@@ -202,6 +202,60 @@ class Transform:
         self._type = t
         return self
 
+    def copy(self) -> Transform:
+        other = Transform()
+        other.m11, other.m12, other.m13 = self.m11, self.m12, self.m13
+        other.m21, other.m22, other.m23 = self.m21, self.m22, self.m23
+        other.m_dx, other.m_dy, other.m33 = self.m_dx, self.m_dy, self.m33
+        other._type = self._type
+        other._dirty = self._dirty
+        return other
+
+    def determinant(self) -> float:
+        return (
+            self.m11 * (self.m33 * self.m22 - self.m_dy * self.m23)
+            - self.m21 * (self.m33 * self.m12 - self.m_dy * self.m13)
+            + self.m_dx * (self.m23 * self.m12 - self.m22 * self.m13)
+        )
+
+    def inverted(self) -> Transform | None:
+        """`QTransform::inverted`: None when the matrix cannot be inverted."""
+        inv = Transform()
+        t = self._inline_type()
+        if t == _NONE:
+            pass
+        elif t == _TRANSLATE:
+            inv.m_dx = -self.m_dx
+            inv.m_dy = -self.m_dy
+        elif t == _SCALE:
+            if fuzzy_is_null(self.m11) or fuzzy_is_null(self.m22):
+                return None
+            inv.m11 = 1.0 / self.m11
+            inv.m22 = 1.0 / self.m22
+            inv.m_dx = -self.m_dx * inv.m11
+            inv.m_dy = -self.m_dy * inv.m22
+        else:
+            det = self.determinant()
+            if fuzzy_is_null(det):
+                return None
+            m11, m12, m13 = self.m11, self.m12, self.m13
+            m21, m22, m23 = self.m21, self.m22, self.m23
+            m31, m32, m33 = self.m_dx, self.m_dy, self.m33
+            # adjoint, then divided by the determinant (multiplied by its reciprocal)
+            k = 1 / det
+            inv.m11 = (m22 * m33 - m23 * m32) * k
+            inv.m12 = (m13 * m32 - m12 * m33) * k
+            inv.m13 = (m12 * m23 - m13 * m22) * k
+            inv.m21 = (m23 * m31 - m21 * m33) * k
+            inv.m22 = (m11 * m33 - m13 * m31) * k
+            inv.m23 = (m13 * m21 - m11 * m23) * k
+            inv.m_dx = (m21 * m32 - m22 * m31) * k
+            inv.m_dy = (m12 * m31 - m11 * m32) * k
+            inv.m33 = (m11 * m22 - m12 * m21) * k
+        inv._type = self._type
+        inv._dirty = self._dirty
+        return inv
+
     def map(self, p: Pt) -> Pt:
         t = self._inline_type()
         x, y = p.x, p.y
