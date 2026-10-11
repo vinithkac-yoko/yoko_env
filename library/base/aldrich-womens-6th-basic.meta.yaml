@@ -1,0 +1,11 @@
+# The locked basic pattern set. Everything else in the library descends from it.
+id: aldrich-womens-6th-basic
+name: Aldrich 6th Ed Basic Pattern
+description: >-
+  Winifred Aldrich's women's basic blocks (6th edition): skirt front and back, trousers front and
+  back, bodice front and back, and a one-piece sleeve, drafted from the Aldrich women's
+  multisize measurements (UK 6 to 14).
+garment_type: basic-set
+tags: [basic, block, women, skirt, trousers, bodice, sleeve]
+pattern: "{fixtures}/patterns/base/Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d"
+measurements: "{fixtures}/measurements/Aldrich-Womens-MultiSize-06-14.smms"

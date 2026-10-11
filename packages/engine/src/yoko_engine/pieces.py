@@ -10,7 +10,7 @@ unchanged but not computed.
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Collection, Mapping
 from dataclasses import dataclass
 
 from yoko_engine.evalcore import CurveGeom, Evaluation
@@ -18,7 +18,9 @@ from yoko_engine.geometry.outline import (
     check_loops,
     correct_equidistant_points,
     is_point_on_curve,
+    remove_duplicates,
     segment_points,
+    sum_trapezoids,
 )
 from yoko_engine.geometry.qt import Pt
 from yoko_engine.model import Pattern, RawNode
@@ -43,6 +45,8 @@ class PieceGeom:
     outline: tuple[Pt, ...]
     nodes: tuple[PieceNode, ...] = ()
     problems: tuple[str, ...] = ()
+    # the path crossed itself and Seamly2D cut the loops out of `outline`
+    had_loops: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -209,10 +213,18 @@ class _Outline:
         return [p for _, pts in self.contributions() for p in pts]
 
 
-def piece_outline(nodes: tuple[PieceNode, ...], modeling: Modeling) -> tuple[Pt, ...]:
-    """The cleaned main path of a piece (`VPiece::mainPathPoints`)."""
+def piece_outline(nodes: tuple[PieceNode, ...], modeling: Modeling) -> tuple[tuple[Pt, ...], bool]:
+    """The cleaned main path of a piece (`VPiece::mainPathPoints`), and whether it had loops."""
     points = _Outline(nodes, modeling).path_points()
-    return tuple(check_loops(correct_equidistant_points(points)))
+    cleaned = correct_equidistant_points(points)
+    outline = check_loops(cleaned)
+    return tuple(outline), len(outline) != len(cleaned) or outline != cleaned
+
+
+def has_area(outline: tuple[Pt, ...]) -> bool:
+    """At least three distinct corners that do not lie on one line."""
+    distinct = remove_duplicates(list(outline), True)
+    return len(distinct) >= 3 and abs(sum_trapezoids(distinct)) > 1e-6
 
 
 def node_marks(nodes: tuple[PieceNode, ...], modeling: Modeling) -> list[tuple[int, Pt]]:
@@ -225,9 +237,12 @@ def node_marks(nodes: tuple[PieceNode, ...], modeling: Modeling) -> list[tuple[i
     return marks
 
 
-def evaluate_pieces(pattern: Pattern, ev: Evaluation) -> Mapping[int, PieceGeom]:
-    """The outline of every piece in the pattern. A piece that refers to something missing gets an
-    empty outline and the reason in `problems` instead of failing the whole pattern."""
+def evaluate_pieces(
+    pattern: Pattern, ev: Evaluation, only: Collection[int] | None = None
+) -> Mapping[int, PieceGeom]:
+    """The outline of every piece in the pattern (or of the pieces in `only`; cleaning an outline
+    is the costly part, about 30 ms a piece). A piece that refers to something missing gets an empty
+    outline and the reason in `problems` instead of failing the whole pattern."""
     result: dict[int, PieceGeom] = {}
     for block in pattern.blocks:
         modeling = modeling_objects(block.sections, ev)
@@ -236,7 +251,7 @@ def evaluate_pieces(pattern: Pattern, ev: Evaluation) -> Mapping[int, PieceGeom]
                 continue
             for piece in section.children:
                 pid = _int(piece.get("id"))
-                if piece.tag != "piece" or pid is None:
+                if piece.tag != "piece" or pid is None or (only is not None and pid not in only):
                     continue
                 nodes = piece_nodes(piece)
                 name = piece.get("name", "") or ""
@@ -244,7 +259,8 @@ def evaluate_pieces(pattern: Pattern, ev: Evaluation) -> Mapping[int, PieceGeom]
                 if missing:
                     result[pid] = PieceGeom(pid, name, (), nodes, (*modeling.problems, *missing))
                 else:
-                    result[pid] = PieceGeom(pid, name, piece_outline(nodes, modeling), nodes)
+                    outline, loops = piece_outline(nodes, modeling)
+                    result[pid] = PieceGeom(pid, name, outline, nodes, had_loops=loops)
     return result
 
 

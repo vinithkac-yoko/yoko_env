@@ -12,7 +12,8 @@ WORK="$(mktemp -d)"; HOME_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK" "$HOME_DIR"' EXIT
 for pattern in "$ROOT"/fixtures/patterns/cases/*.sm2d; do
   name="$(basename "$pattern" .sm2d)"
-  cp "$pattern" "$WORK/"   # Seamly2D writes a .lck file next to the pattern
+  # Seamly2D writes a .lck file next to the pattern, and finds measurement files beside it
+  cp "$pattern" "$ROOT"/fixtures/measurements/*.smms "$WORK/"
   HOME="$HOME_DIR" QT_QPA_PLATFORM=offscreen YOKO_ORACLE_DUMP="$WORK/$name.json" \
     timeout 120 "$BIN" --test "$WORK/$name.sm2d" >/dev/null 2>&1
   python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); open(sys.argv[2],"w").write(json.dumps(d,indent=1))' \

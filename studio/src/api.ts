@@ -57,3 +57,28 @@ export async function fetchBaseSvg(token: string): Promise<string> {
   if (!res.ok) throw new Error(`render: ${res.status}`);
   return res.text();
 }
+
+export interface TreeNode {
+  id: string;
+  name: string;
+  area: string;
+  garment_type: string;
+  tags: string[];
+  children: TreeNode[];
+}
+
+export const fetchFamilyTree = (token: string) =>
+  getJson<{ roots: TreeNode[] }>("/api/library/tree", token).then((r) => r.roots);
+
+/** The tree flattened for display: each pattern with how deep it sits under the basic set. */
+export function flattenTree(roots: TreeNode[]): { node: TreeNode; depth: number }[] {
+  const out: { node: TreeNode; depth: number }[] = [];
+  const walk = (nodes: TreeNode[], depth: number) => {
+    for (const node of nodes) {
+      out.push({ node, depth });
+      walk(node.children, depth + 1);
+    }
+  };
+  walk(roots, 0);
+  return out;
+}

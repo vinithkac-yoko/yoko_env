@@ -9,11 +9,23 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from yoko_engine.evaluator import Evaluation, Evaluator, Issue
 from yoko_engine.model import DraftBlock, MeasurementSet, Obj, Pattern, RawNode, Variable
+from yoko_engine.pieces import PieceGeom, evaluate_pieces, has_area
+from yoko_engine.pieces_edit import (
+    EditError,
+    NodeSpec,
+    add_block,
+    add_piece,
+    delete_block,
+    delete_piece,
+    pieces_using,
+    rename_block,
+    set_piece,
+)
 from yoko_engine.units import px_to_mm
 from yoko_engine.validation import errors, validate
 
@@ -71,7 +83,59 @@ class DeleteVariable:
     name: str
 
 
-Action = AddObject | SetAttrs | DeleteObject | SetVariable | DeleteVariable
+@dataclass(frozen=True, slots=True)
+class AddPiece:
+    """A piece from a closed path of draft objects (points, arcs, curves), in outline order."""
+
+    name: str
+    nodes: tuple[NodeSpec, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class SetPiece:
+    """Rename a piece and/or give it a different outline (everything else about it stays)."""
+
+    id: int
+    name: str | None = None
+    nodes: tuple[NodeSpec, ...] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class DeletePiece:
+    id: int
+
+
+@dataclass(frozen=True, slots=True)
+class AddBlock:
+    name: str
+
+
+@dataclass(frozen=True, slots=True)
+class RenameBlock:
+    old: str
+    new: str
+
+
+@dataclass(frozen=True, slots=True)
+class DeleteBlock:
+    """Only a block with no objects and no pieces can be deleted."""
+
+    name: str
+
+
+Action = (
+    AddObject
+    | SetAttrs
+    | DeleteObject
+    | SetVariable
+    | DeleteVariable
+    | AddPiece
+    | SetPiece
+    | DeletePiece
+    | AddBlock
+    | RenameBlock
+    | DeleteBlock
+)
 
 
 # -- results ---------------------------------------------------------------------------------------
@@ -256,6 +320,7 @@ class PatternSession:
         self._state = _State(pattern, evaluator)
         self._undo: list[_State] = []
         self._hash: tuple[int, str] | None = None
+        self._pieces: tuple[int, dict[int, PieceGeom]] | None = None
         self.parent_hash: str | None = None  # hash of the pattern this one was derived from
 
     # -- reading ----------------------------------------------------------------------------
@@ -270,8 +335,57 @@ class PatternSession:
     def issues(self) -> list[Issue]:
         return list(self._state.issues)
 
+    def pieces(self) -> dict[int, PieceGeom]:
+        """The outline of every piece of the current state (computed on demand: about 30 ms a
+        piece, so not on every action)."""
+        key = id(self.pattern)
+        if self._pieces is None or self._pieces[0] != key:
+            self._pieces = (key, dict(evaluate_pieces(self.pattern, self.evaluation)))
+        return self._pieces[1]
+
+    def piece_issues(self) -> list[Issue]:
+        """Problems with the pieces: something a piece uses does not exist or does not evaluate (an
+        error), an outline with no area (an error), a path that crossed itself
+        and had its loops cut out (a warning)."""
+        out: list[Issue] = []
+        for pid, piece in sorted(self.pieces().items()):
+            if piece.problems:
+                out.append(Issue("piece_invalid", "; ".join(piece.problems), pid))
+            elif not has_area(piece.outline):
+                out.append(Issue("piece_too_small", f"piece {piece.name!r} has no area", pid))
+            elif piece.had_loops:
+                out.append(
+                    Issue(
+                        "piece_self_intersecting",
+                        f"the outline of piece {piece.name!r} crosses itself",
+                        pid,
+                        None,
+                        "Seamly2D cuts the loops out; check the order of the nodes",
+                        "warning",
+                    )
+                )
+        return out
+
     def provenance(self, object_id: int) -> tuple[Provenance, ...]:
         return self._state.provenance.get(object_id, ())
+
+    def producers(self) -> dict[int, int]:
+        """Which object made each point and curve (an operation or a dart tool makes several)."""
+        out: dict[int, int] = {}
+        for oid, rec in self._state.evaluator.records.items():
+            for made in (*rec.points, *rec.curves):
+                out[made] = oid
+        return out
+
+    @property
+    def measurements(self) -> Mapping[str, float]:
+        """The measurement values the pattern is evaluated with."""
+        return self._values
+
+    def names_used(self, object_id: int) -> frozenset[str]:
+        """The names (measurements, variables, line and curve lengths) an object formula uses."""
+        rec = self._state.evaluator.records.get(object_id)
+        return frozenset(rec.uses_names) if rec is not None else frozenset()
 
     def dependencies(self, object_id: int) -> frozenset[int]:
         """The objects `object_id` was built from."""
@@ -332,8 +446,33 @@ class PatternSession:
         )
         child._undo = []
         child._hash = self._hash
+        child._pieces = self._pieces
         child.parent_hash = self.parent_hash
         return child
+
+    def apply_all(self, actions: Sequence[Action], meta: ActionMeta | None = None) -> Result:
+        """Apply several actions as one: if any is refused, none of them is kept."""
+        depth = len(self._undo)
+        created: list[int] = []
+        changed: list[int] = []
+        deleted: list[int] = []
+        last = Result(True)
+        for action in actions:
+            result = self.apply(action, meta)
+            if not result.ok:
+                while len(self._undo) > depth:
+                    self.undo()
+                return result
+            created += result.created
+            changed += result.changed
+            deleted += result.deleted
+            last = result
+        return replace(
+            last,
+            created=tuple(created),
+            changed=tuple(sorted(set(changed) - set(created))),
+            deleted=tuple(deleted),
+        )
 
     def undo(self) -> Result:
         if not self._undo:
@@ -368,6 +507,10 @@ class PatternSession:
         evaluator = self._state.evaluator.copy()
         before_issues = self._state.error_keys
         evaluator.update(new_pattern, self._values, edited)
+        if isinstance(action, AddPiece | SetPiece):
+            problem = _piece_problem(action, new_pattern, evaluator.ev, created)
+            if problem is not None:
+                return Result(False, error=problem)
         after = validate(new_pattern, evaluator.ev)
         new_errors = [i for i in errors(after) if _key(i) not in before_issues]
         if new_errors:
@@ -415,7 +558,45 @@ class PatternSession:
             return self._delete(pattern, action)
         if isinstance(action, SetVariable):
             return self._set_variable(pattern, action), set(), [], []
-        return self._delete_variable(pattern, action), set(), [], []
+        if isinstance(action, DeleteVariable):
+            return self._delete_variable(pattern, action), set(), [], []
+        try:
+            return self._build_structure(pattern, action)
+        except EditError as err:
+            raise _Rejected(err.code, str(err)) from None
+
+    def _build_structure(
+        self,
+        pattern: Pattern,
+        action: AddPiece | SetPiece | DeletePiece | AddBlock | RenameBlock | DeleteBlock,
+    ) -> tuple[Pattern, set[int], list[int], list[int]]:
+        """Pieces and draft blocks. They hold no formulas, so nothing is re-evaluated."""
+        if isinstance(action, AddPiece):
+            new, pid = add_piece(
+                pattern, self.evaluation, self.producers(), action.name, action.nodes
+            )
+            return new, set(), [pid], []
+        if isinstance(action, SetPiece):
+            return (
+                set_piece(
+                    pattern,
+                    self.evaluation,
+                    self.producers(),
+                    action.id,
+                    name=action.name,
+                    nodes=action.nodes,
+                ),
+                set(),
+                [],
+                [],
+            )
+        if isinstance(action, DeletePiece):
+            return delete_piece(pattern, action.id), set(), [], [action.id]
+        if isinstance(action, AddBlock):
+            return add_block(pattern, action.name), set(), [], []
+        if isinstance(action, RenameBlock):
+            return rename_block(pattern, action.old, action.new), set(), [], []
+        return delete_block(pattern, action.name), set(), [], []
 
     def _add(
         self, pattern: Pattern, a: AddObject
@@ -489,8 +670,21 @@ class PatternSession:
                 hint="edit or delete the objects that use it first, or change them to use "
                 "something else",
             )
+        in_pieces = pieces_using(pattern, a.id)
+        if in_pieces:
+            raise _Rejected(
+                "used_by_piece",
+                f"object {a.id} is part of piece {', '.join(str(p) for p in in_pieces[:8])}",
+                object_id=a.id,
+                hint="remove it from the piece (or delete the piece) first",
+            )
         blocks = [
-            replace(b, objects=tuple(o for o in b.objects if o.id != a.id)) for b in pattern.blocks
+            replace(
+                b,
+                objects=tuple(o for o in b.objects if o.id != a.id),
+                sections=tuple(_without_group_item(s, a.id) for s in b.sections),
+            )
+            for b in pattern.blocks
         ]
         return replace(pattern, blocks=tuple(blocks)), set(), [], [a.id]
 
@@ -530,6 +724,47 @@ class PatternSession:
                 moved.append((g.label, dist))
         moved.sort(key=lambda m: -m[1])
         return Moved(len(moved), tuple((label, round(d, 6)) for label, d in moved[:3]))
+
+
+def _without_group_item(section: RawNode, object_id: int) -> RawNode:
+    """A deleted object leaves every group it was in (Seamly2D's groups list objects by id)."""
+    if section.tag != "groups":
+        return section
+    groups = tuple(
+        replace(
+            g,
+            children=tuple(
+                c for c in g.children if not (c.tag == "item" and c.get("object") == str(object_id))
+            ),
+        )
+        if g.tag == "group"
+        else g
+        for g in section.children
+    )
+    return replace(section, children=groups)
+
+
+def _piece_problem(
+    action: AddPiece | SetPiece, pattern: Pattern, ev: Evaluation, created: list[int]
+) -> ActionError | None:
+    """A piece whose outline cannot be computed (a node that does not evaluate, fewer than three
+    corners) is refused."""
+    pid = created[0] if created else action.id if isinstance(action, SetPiece) else None
+    if pid is None:
+        return None
+    piece = evaluate_pieces(pattern, ev, {pid}).get(pid)
+    if piece is None:
+        return ActionError("unknown_piece", f"there is no piece {pid}", object_id=pid)
+    if piece.problems:
+        return ActionError("piece_invalid", "; ".join(piece.problems), object_id=pid)
+    if not has_area(piece.outline):
+        return ActionError(
+            "piece_invalid",
+            "the outline has no area (fewer than three corners, or all in a line)",
+            object_id=pid,
+            hint="choose points that are not all in the same place",
+        )
+    return None
 
 
 class _Rejected(Exception):

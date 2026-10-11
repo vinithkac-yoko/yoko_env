@@ -60,3 +60,20 @@ def test_library_base_needs_the_token_and_describes_the_locked_basic_set(monkeyp
     assert svg.status_code == 200
     assert svg.headers["content-type"].startswith("image/svg+xml")
     assert svg.text.startswith("<svg")
+
+
+def test_library_tree_search_and_pattern_need_the_token(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.setenv("STUDIO_TOKEN", "s3cret")
+    c = client()
+    for path in ("/api/library/tree", "/api/library/search", "/api/library/patterns/x"):
+        assert c.get(path).status_code == 401
+    auth = {"Authorization": "Bearer s3cret"}
+    tree = c.get("/api/library/tree", headers=auth).json()
+    assert [r["id"] for r in tree["roots"]] == ["aldrich-womens-6th-basic"]
+    found = c.get("/api/library/search?q=bodice&tag=basic", headers=auth).json()
+    assert [r["id"] for r in found["results"]] == ["aldrich-womens-6th-basic"]
+    assert c.get("/api/library/search?q=dress", headers=auth).json()["results"] == []
+    one = c.get("/api/library/patterns/aldrich-womens-6th-basic", headers=auth).json()
+    assert one["locked"] is True and one["parent"] is None
+    assert len(one["pieces"]) == 7 and one["points"] == 302
+    assert c.get("/api/library/patterns/nope", headers=auth).status_code == 404

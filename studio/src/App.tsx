@@ -6,6 +6,9 @@ import {
   fetchBaseSummary,
   fetchBaseSvg,
   fetchBuild,
+  fetchFamilyTree,
+  flattenTree,
+  type TreeNode,
   fetchFixtures,
   fetchHealth,
   shortSha,
@@ -29,6 +32,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [base, setBase] = useState<BaseSummary | null>(null);
   const [svgUrl, setSvgUrl] = useState<string | null>(null);
+  const [tree, setTree] = useState<TreeNode[] | null>(null);
 
   useEffect(() => {
     fetchHealth()
@@ -51,6 +55,7 @@ export default function App() {
         setError(e.message);
       });
     fetchBaseSummary(token).then(setBase).catch(() => setBase(null));
+    fetchFamilyTree(token).then(setTree).catch(() => setTree(null));
     fetchBaseSvg(token)
       .then((svg) => setSvgUrl(URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }))))
       .catch(() => setSvgUrl(null));
@@ -105,6 +110,23 @@ export default function App() {
           </ul>
         )}
       </section>
+
+      {tree && (
+        <section className="mt-6 rounded border p-4" data-testid="family-tree">
+          <h2 className="font-medium">Family tree</h2>
+          <ul className="mt-2 space-y-1 text-sm">
+            {flattenTree(tree).map(({ node, depth }) => (
+              <li key={node.id} style={{ paddingLeft: `${depth * 1.5}rem` }}>
+                <span className="font-medium">{node.name}</span>{" "}
+                <span className="text-slate-500">
+                  {node.area === "base" ? "locked base" : node.garment_type || "style"}
+                  {node.tags.length > 0 && ` · ${node.tags.join(", ")}`}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {base && (
         <section className="mt-6 rounded border p-4" data-testid="base-pattern">

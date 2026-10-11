@@ -7,13 +7,20 @@ import os
 from pathlib import Path
 from typing import Annotated, Any
 
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from fastapi.responses import FileResponse, Response
 from fastapi.staticfiles import StaticFiles
+from yoko_engine.library import LibraryError
 
 from yoko_server import __version__
 from yoko_server.buildinfo import build_info, fixture_manifest, repo_root
-from yoko_server.library import base_summary, base_svg
+from yoko_server.library import (
+    base_summary,
+    base_svg,
+    library_pattern,
+    library_search,
+    library_tree,
+)
 
 
 def require_token(authorization: Annotated[str | None, Header()] = None) -> None:
@@ -57,6 +64,27 @@ def create_app() -> FastAPI:
     @app.get("/api/library/base/render.svg", dependencies=[Depends(require_token)])
     def library_base_svg() -> Response:
         return Response(base_svg(), media_type="image/svg+xml")
+
+    @app.get("/api/library/tree", dependencies=[Depends(require_token)])
+    def library_family_tree() -> dict[str, Any]:
+        return library_tree()
+
+    @app.get("/api/library/search", dependencies=[Depends(require_token)])
+    def library_find(
+        q: str = "",
+        tag: Annotated[list[str] | None, Query()] = None,
+        garment_type: str | None = None,
+        area: str | None = None,
+        limit: int = 20,
+    ) -> dict[str, Any]:
+        return library_search(q, tuple(tag or ()), garment_type, area, max(1, min(limit, 100)))
+
+    @app.get("/api/library/patterns/{pattern_id}", dependencies=[Depends(require_token)])
+    def library_one(pattern_id: str) -> dict[str, Any]:
+        try:
+            return library_pattern(pattern_id)
+        except LibraryError as err:
+            raise HTTPException(status_code=404, detail=str(err)) from err
 
     dist = studio_dist()
     if dist is not None:
