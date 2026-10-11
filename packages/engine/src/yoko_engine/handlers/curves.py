@@ -65,6 +65,7 @@ def arc(c: Ctx, o: Obj) -> None:
 
 
 def cubic_bezier(c: Ctx, o: Obj) -> None:
+    _reject_length_options(o)
     pts = [c.point(o, f"point{i}") for i in (1, 2, 3, 4)]
     bez = Bezier(pts[0].p, pts[1].p, pts[2].p, pts[3].p)
     name = f"Spl_{pts[0].label}_{pts[3].label}{_duplicate_suffix(o)}"
@@ -84,6 +85,7 @@ def _path_points(c: Ctx, o: Obj) -> list[PointGeom]:
 
 
 def cubic_bezier_path(c: Ctx, o: Obj) -> None:
+    _reject_length_options(o)
     points = _path_points(c, o)
     path = BezierPath(tuple(p.p for p in points))
     if path.count() < 1:

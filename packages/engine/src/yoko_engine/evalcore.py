@@ -54,6 +54,8 @@ class CurveGeom:
     geom: Arc | Bezier | Spline | BezierPath | SplinePath
     # labels of the points that define the curve, in order (needed to name pieces cut from it)
     labels: tuple[str, ...] = ()
+    # False for the arcs a cut tool leaves behind: real objects, but Seamly2D does not draw them
+    drawn: bool = True
 
 
 class ObjRecord:

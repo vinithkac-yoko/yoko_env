@@ -71,7 +71,9 @@ def test_the_whole_basic_set_evaluates_without_a_single_issue(
     ev = evaluate(pattern, table.values())
     assert ev.issues == []
     assert len(ev.points) == 302  # every point in the calculation section
-    assert len(ev.curves) == 37  # 15 arcs, 9 Beziers, 13 Bezier paths
+    # 15 arcs, 9 Beziers, 13 Bezier paths, and 6 arcs that curveIntersectAxis leaves behind
+    assert len(ev.curves) == 43
+    assert sum(1 for c in ev.curves.values() if c.drawn) == 37
 
 
 def test_evaluation_is_fast_and_deterministic(pattern: Pattern, table: MeasurementSet) -> None:

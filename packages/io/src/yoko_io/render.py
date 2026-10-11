@@ -30,6 +30,8 @@ _LINE_FROM: dict[str, tuple[str, ...]] = {
     "lineIntersectAxis": ("basePoint",),
     "curveIntersectAxis": ("basePoint",),
     "intersectXY": ("firstPoint", "secondPoint"),
+    "height": ("basePoint",),
+    "shoulder": ("p1Line",),
 }
 
 POINT_RADIUS_MM = 0.9
@@ -89,7 +91,7 @@ def build_scene(pattern: Pattern, ev: Evaluation, focus_ids: set[int] | None = N
     objs = {o.id: o for o in pattern.objects()}
     for cid, curve in ev.curves.items():
         src = objs.get(cid)
-        if src is not None and _hidden(src):
+        if not curve.drawn or (src is not None and _hidden(src)):
             continue
         polylines.append(_curve_polyline(curve))
 

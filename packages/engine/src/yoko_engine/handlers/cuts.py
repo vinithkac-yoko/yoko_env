@@ -1,14 +1,14 @@
-"""Tools that split a curve: intersection with an axis, and (next) the cut tools."""
+"""Tools that split a curve: intersection with an axis, and the three cut tools."""
 
 from __future__ import annotations
 
 from yoko_engine.evalcore import Ctx, CurveGeom, Issue, ObjectError, PointGeom
 from yoko_engine.geometry import Pt
 from yoko_engine.geometry.axis import curve_axis_point
-from yoko_engine.geometry.curves import Arc, Bezier, Spline
+from yoko_engine.geometry.curves import Arc, Bezier, BezierPath, Spline, SplinePath
 from yoko_engine.geometry.cut import cut_spline, cut_spline_path, length_by_point
 from yoko_engine.model import Obj
-from yoko_engine.units import from_pixel
+from yoko_engine.units import from_pixel, to_pixel
 
 
 def _curve_points(curve: CurveGeom) -> list[Pt]:
@@ -77,6 +77,8 @@ def _register_cut_pieces(
         for offset, arc in enumerate(pieces, start=1):
             name = f"Arc_{curve.labels[0]}_{cut_point.id + offset}"
             if on_curve:
+                piece_id = cut_point.id + offset
+                c.add_curve(piece_id, CurveGeom(piece_id, name, arc, curve.labels, drawn=False))
                 c.add_curve_variables(o.id, name, arc.length(), arc.start_angle(), arc.end_angle())
                 c.set_symbol(f"Radius{name}", from_pixel(arc.radius, c.unit), o.id)
             else:
@@ -101,3 +103,56 @@ def _register_cut_pieces(
 def _register_empty(c: Ctx, owner: int, name: str) -> None:
     c.add_curve_variables(owner, name, 0.0, 0.0, 0.0)
     c.add_control_lengths(owner, name, 0.0, 0.0)
+
+
+def _cut_length(c: Ctx, o: Obj, curve_length_px: float) -> float:
+    """The length to cut at, in pixels. The formula is rounded to 4 decimals (Seamly2D goes through
+    `QString::number(value, 'f', 4)`), and `direction="backward"` counts from the curve's end."""
+    fx = float(f"{c.check(o, 'length', '0'):.4f}")
+    if (o.get("direction") or "forward") == "forward":
+        length = fx
+    else:
+        length = from_pixel(curve_length_px, c.unit) - fx
+    return to_pixel(length, c.unit)
+
+
+def cut_spline_point(c: Ctx, o: Obj) -> None:
+    """`VToolCutSpline`: a point on a spline at a given length, which splits it in two."""
+    curve = c.curve(o, "spline")
+    if not isinstance(curve.geom, Bezier | Spline):
+        raise ObjectError(Issue("bad_curve", "'spline' is not a single spline", o.id, "spline"))
+    length = _cut_length(c, o, curve.geom.length())
+    cut = cut_spline(curve.geom, length)
+    if cut is None:
+        raise ObjectError(Issue("cut_failed", "the curve is too short to cut", o.id, "spline"))
+    c.add_point(o, cut.point)
+    _register_cut_pieces(c, o, curve, c.ev.points[o.id], length)
+
+
+def cut_spline_path_point(c: Ctx, o: Obj) -> None:
+    """`VToolCutSplinePath`: the same for a path of splines."""
+    curve = c.curve(o, "splinePath")
+    if not isinstance(curve.geom, BezierPath | SplinePath):
+        raise ObjectError(
+            Issue("bad_curve", "'splinePath' is not a spline path", o.id, "splinePath")
+        )
+    length = _cut_length(c, o, curve.geom.length())
+    cut = cut_spline_path(curve.geom, curve.labels, length, o.label)
+    if cut is None:
+        raise ObjectError(Issue("cut_failed", "the curve is too short to cut", o.id, "splinePath"))
+    c.add_point(o, cut.point)
+    _register_cut_pieces(c, o, curve, c.ev.points[o.id], length)
+
+
+def cut_arc_point(c: Ctx, o: Obj) -> None:
+    """`VToolCutArc`: a point on an arc at a given length. The two pieces become arcs with the ids
+    after the point's (`id + 1`, `id + 2`)."""
+    curve = c.curve(o, "arc")
+    if not isinstance(curve.geom, Arc):
+        raise ObjectError(Issue("bad_curve", "'arc' is not an arc", o.id, "arc"))
+    length = _cut_length(c, o, curve.geom.length())
+    cut = curve.geom.cut(length)
+    if cut is None:
+        raise ObjectError(Issue("cut_failed", "the arc is too short to cut", o.id, "arc"))
+    c.add_point(o, cut[0])
+    _register_cut_pieces(c, o, curve, c.ev.points[o.id], length)

@@ -46,7 +46,7 @@ def base_summary() -> dict[str, Any]:
         "unit": pattern.unit,
         "objects": len(pattern.objects()),
         "points": len(ev.points),
-        "curves": len(ev.curves),
+        "curves": sum(1 for curve in ev.curves.values() if curve.drawn),
         "variables": len(pattern.variables),
         "issues": len(session.issues()),
         "state_hash": session.state_hash(),

@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
-from yoko_engine.evalcore import Ctx, Issue
+import math
+
+from yoko_engine.evalcore import Ctx, Issue, ObjectError
 from yoko_engine.fuzzy import fuzzy_compare_possible_nulls
 from yoko_engine.geometry import Line, Pt
-from yoko_engine.geometry.circle_line import find_circle_line_point
+from yoko_engine.geometry.circle_line import (
+    closest_point,
+    find_circle_line_point,
+    line_intersect_circle,
+)
+from yoko_engine.geometry.cut import q_round
 from yoko_engine.geometry.qt import IntersectType
 from yoko_engine.model import Obj
 from yoko_engine.units import from_pixel, to_pixel
@@ -176,3 +183,119 @@ def true_darts(c: Ctx, o: Obj) -> None:
     id2 = int(o.get("point2", "-1") or -1)
     c.add_point(o, p1, key=id1, label=o.get("name1", "A"))
     c.add_point(o, p2, key=id2, label=o.get("name2", "A"))
+
+
+def line_intersect(c: Ctx, o: Obj) -> None:
+    """`VToolLineIntersect`: where two lines (each through two points) cross. Seamly2D creates no
+    point when they are parallel, so later objects that use it cannot be built either."""
+    p1l1 = c.point(o, "p1Line1")
+    p2l1 = c.point(o, "p2Line1")
+    p1l2 = c.point(o, "p1Line2")
+    p2l2 = c.point(o, "p2Line2")
+    kind, found = Line(p1l1.p, p2l1.p).intersects(Line(p1l2.p, p2l2.p))
+    if kind not in (IntersectType.UNBOUNDED, IntersectType.BOUNDED) or found is None:
+        c.rec.issues.append(
+            Issue(
+                "no_intersection",
+                "the two lines do not cross (they are parallel)",
+                o.id,
+                None,
+                "change one of the lines' points",
+            )
+        )
+        return
+    c.add_point(o, found)
+    new = c.ev.points[o.id]
+    c.add_line(o.id, p1l1, new)
+    c.add_line(o.id, new, p2l1)
+    c.add_line(o.id, p1l2, new)
+    c.add_line(o.id, new, p2l2)
+
+
+def height(c: Ctx, o: Obj) -> None:
+    """`VToolHeight`: the foot of the perpendicular from a point onto a line."""
+    base = c.point(o, "basePoint")
+    first = c.point(o, "p1Line")
+    second = c.point(o, "p2Line")
+    c.add_point(o, closest_point(Line(first.p, second.p), base.p))
+    new = c.ev.points[o.id]
+    c.add_line(o.id, base, new)
+    c.add_line(o.id, first, new)
+    c.add_line(o.id, second, new)
+
+
+def _shoulder_point(p1_line: Pt, p2_line: Pt, p_shoulder: Pt, length: float) -> Pt:
+    """`VToolShoulderPoint::FindPoint`: on the line p1-p2 (extended), the point at distance
+    `length` from `p_shoulder`, beyond p2 and in the same direction. p2 if there is none."""
+    found = p2_line
+    if length <= 0:
+        return found
+    line = Line(p1_line, p2_line)
+    base_length = line.length()
+    base_angle = q_round(line.angle())
+    line = line.set_length(length * 2)
+    count, p1, p2 = line_intersect_circle(p_shoulder, length, line)
+    if count in (1, 2):
+        line1 = Line(p1_line, p1)
+        line2 = Line(p1_line, p2)
+        if line1.length() > base_length and base_angle == q_round(line1.angle()):
+            found = p1
+        elif count == 2 and line2.length() > base_length and base_angle == q_round(line2.angle()):
+            found = p2
+    return found
+
+
+def shoulder(c: Ctx, o: Obj) -> None:
+    """`VToolShoulderPoint`: a point on the line through p1 and p2, `length` away from a third
+    point (the neck point, in a bodice)."""
+    first = c.point(o, "p1Line")
+    second = c.point(o, "p2Line")
+    p_shoulder = c.point(o, "pShoulder")
+    length = to_pixel(c.check(o, "length", "100.0"), c.unit)
+    c.add_point(o, _shoulder_point(first.p, second.p, p_shoulder.p, length))
+    new = c.ev.points[o.id]
+    c.add_line(o.id, first, new)
+    c.add_line(o.id, second, new)
+
+
+_TRIANGLE_LIMIT = 1_000_000  # Seamly2D's loop has none; a degenerate triangle would never end
+
+
+def _triangle_point(axis1: Pt, axis2: Pt, first: Pt, second: Pt) -> Pt | None:
+    """`VToolTriangle::FindPoint`: the point on the axis from which the segment first-second is seen
+    at a right angle (integer-pixel steps, as Seamly2D does). (0, 0) when the axis and the segment
+    are parallel."""
+    axis = Line(axis1, axis2)
+    hypotenuse = Line(first, second)
+    kind, start = axis.intersects(hypotenuse)
+    if kind not in (IntersectType.UNBOUNDED, IntersectType.BOUNDED) or start is None:
+        return Pt(0.0, 0.0)
+    if fuzzy_compare_possible_nulls(axis.angle(), hypotenuse.angle()) or (
+        fuzzy_compare_possible_nulls(abs(axis.angle() - hypotenuse.angle()), 180)
+    ):
+        return Pt(0.0, 0.0)
+    step = 1.0
+    # QLineF line; line.setP1(start): the other end stays at the origin until the angle is set
+    line = Line(start, Pt(0.0, 0.0)).set_angle(axis.angle()).set_length(step)
+    target = math.floor(hypotenuse.length())
+    for _ in range(_TRIANGLE_LIMIT):
+        line = line.set_length(line.length() + step)
+        a = math.floor(Line(line.p2, first).length())
+        b = math.floor(Line(line.p2, second).length())
+        if target * target <= a * a + b * b:
+            return line.p2
+    return None
+
+
+def triangle(c: Ctx, o: Obj) -> None:
+    """`VToolTriangle`: the point on an axis that sees a segment at a right angle."""
+    axis1 = c.point(o, "axisP1")
+    axis2 = c.point(o, "axisP2")
+    first = c.point(o, "firstPoint")
+    second = c.point(o, "secondPoint")
+    found = _triangle_point(axis1.p, axis2.p, first.p, second.p)
+    if found is None:
+        raise ObjectError(
+            Issue("no_solution", "no triangle point was found on the axis", o.id, "axisP1")
+        )
+    c.add_point(o, found)
