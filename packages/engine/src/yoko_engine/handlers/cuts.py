@@ -7,6 +7,7 @@ from yoko_engine.geometry import Pt
 from yoko_engine.geometry.axis import curve_axis_point
 from yoko_engine.geometry.curves import Arc, Bezier, BezierPath, Spline, SplinePath
 from yoko_engine.geometry.cut import cut_spline, cut_spline_path, length_by_point
+from yoko_engine.geometry.ellipse import ElArc
 from yoko_engine.model import Obj
 from yoko_engine.units import from_pixel, to_pixel
 
@@ -70,6 +71,12 @@ def _register_cut_pieces(
                 _register_spline_variables(c, o.id, name, spl)
             else:
                 _register_empty(c, o.id, name)
+    elif isinstance(geom, ElArc):
+        raise ObjectError(
+            Issue(
+                "not_implemented", "cutting an elliptical arc is not evaluated yet", o.id, "curve"
+            )
+        )
     elif isinstance(geom, Arc):
         # InitArc: the pieces get ids p+1 and p+2 (their names contain the id).
         cut_arc = geom.cut(length)

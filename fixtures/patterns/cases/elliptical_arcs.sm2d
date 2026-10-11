@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements/>
+    <variables/>
+    <draftBlock name="Pattern piece 1">
+        <calculation>
+            <point id="1" mx="0.132292" my="0.264583" name="A" type="single" x="10" y="10"/>
+            <elArc angle1="0" angle2="360" center="1" color="black" id="2" lineWeight="1" penStyle="solidLine" radius1="2" radius2="3" rotationAngle="0" type="simple"/>
+            <elArc angle1="0" angle2="90" center="1" color="black" id="3" lineWeight="1" penStyle="solidLine" radius1="4" radius2="2" rotationAngle="0" type="simple"/>
+            <elArc angle1="30" angle2="200" center="1" color="black" id="4" lineWeight="1" penStyle="solidLine" radius1="4" radius2="2" rotationAngle="0" type="simple"/>
+            <elArc angle1="200" angle2="30" center="1" color="black" id="5" lineWeight="1" penStyle="solidLine" radius1="4" radius2="2" rotationAngle="0" type="simple"/>
+            <elArc angle1="45" angle2="135" center="1" color="black" id="6" lineWeight="1" penStyle="solidLine" radius1="3" radius2="5" rotationAngle="30" type="simple"/>
+            <elArc angle1="270" angle2="90" center="1" color="black" id="7" lineWeight="1" penStyle="solidLine" radius1="5" radius2="3" rotationAngle="0" type="simple"/>
+            <elArc angle1="10" angle2="350" center="1" color="black" id="8" lineWeight="1" penStyle="solidLine" radius1="5" radius2="3" rotationAngle="45" type="simple"/>
+            <elArc angle1="0" angle2="180" center="1" color="black" id="9" lineWeight="1" penStyle="solidLine" radius1="2.5" radius2="2.5" rotationAngle="0" type="simple"/>
+            <elArc angle1="5" angle2="355" center="1" color="black" id="10" lineWeight="1" penStyle="solidLine" radius1="6" radius2="1" rotationAngle="90" type="simple"/>
+            <elArc angle1="100" angle2="101" center="1" color="black" id="11" lineWeight="1" penStyle="solidLine" radius1="3" radius2="3" rotationAngle="0" type="simple"/>
+            <elArc angle1="359" angle2="1" center="1" color="black" id="12" lineWeight="1" penStyle="solidLine" radius1="3" radius2="4" rotationAngle="0" type="simple"/>
+            <elArc angle1="90" angle2="90" center="1" color="black" id="13" lineWeight="1" penStyle="solidLine" radius1="3" radius2="4" rotationAngle="0" type="simple"/>
+            <elArc angle1="17.5" angle2="222.25" center="1" color="black" id="14" lineWeight="1" penStyle="solidLine" radius1="7" radius2="3" rotationAngle="12.5" type="simple"/>
+            <elArc angle1="60" angle2="300" center="1" color="black" id="15" lineWeight="1" penStyle="solidLine" radius1="1.5" radius2="6" rotationAngle="200" type="simple"/>
+            <elArc angle1="180" angle2="270" center="1" color="black" id="16" lineWeight="1" penStyle="solidLine" radius1="4" radius2="4" rotationAngle="0" type="simple"/>
+            <elArc angle1="0" angle2="45" center="1" color="black" id="17" lineWeight="1" penStyle="solidLine" radius1="4" radius2="2.5" rotationAngle="0" type="simple"/>
+            <elArc angle1="315" angle2="45" center="1" color="black" id="18" lineWeight="1" penStyle="solidLine" radius1="3" radius2="2" rotationAngle="0" type="simple"/>
+            <elArc angle1="123" angle2="234" center="1" color="black" id="19" lineWeight="1" penStyle="solidLine" radius1="5" radius2="2" rotationAngle="321" type="simple"/>
+            <elArc angle1="45" angle2="45.0001" center="1" color="black" id="20" lineWeight="1" penStyle="solidLine" radius1="2" radius2="5" rotationAngle="0" type="simple"/>
+            <elArc angle1="89.9" angle2="90.1" center="1" color="black" id="21" lineWeight="1" penStyle="solidLine" radius1="3.3" radius2="2.2" rotationAngle="0" type="simple"/>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+</pattern>

@@ -2,7 +2,7 @@
   "all_tools_pattern/alltools_pattern.sm2d": {
     "pieces": 1,
     "points": 38,
-    "variables": 169
+    "variables": 174
   },
   "basic_block_women-2016.sm2d": {
     "pieces": 4,
@@ -85,7 +85,7 @@
     "variables": 159
   },
   "steampunk_trousers/steampunk_trousers.sm2d": {
-    "pieces": 1,
+    "pieces": 2,
     "points": 80,
     "variables": 506
   },

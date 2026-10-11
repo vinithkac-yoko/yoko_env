@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from yoko_engine.formula import FormulaError, FormulaErrorCode, parse
 from yoko_engine.geometry import Line, Pt
 from yoko_engine.geometry.curves import Arc, Bezier, BezierPath, Spline, SplinePath
+from yoko_engine.geometry.ellipse import ElArc
 from yoko_engine.model import Obj, RawNode
 from yoko_engine.units import from_pixel, px_to_mm
 
@@ -51,7 +52,7 @@ class PointGeom:
 class CurveGeom:
     id: int
     name: str
-    geom: Arc | Bezier | Spline | BezierPath | SplinePath
+    geom: Arc | ElArc | Bezier | Spline | BezierPath | SplinePath
     # labels of the points that define the curve, in order (needed to name pieces cut from it)
     labels: tuple[str, ...] = ()
     # False for the arcs a cut tool leaves behind: real objects, but Seamly2D does not draw them

@@ -18,6 +18,7 @@ from yoko_engine.geometry.outline import (
 )
 from yoko_engine.geometry.qt import Pt
 from yoko_engine.pieces import evaluate_pieces, modeling_objects
+from yoko_engine.union import UnionData, UnionError, UNode, node_on_edge, remove_edge, unite
 from yoko_io.seamly import read_measurements, read_pattern
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
@@ -135,3 +136,47 @@ def test_a_zero_area_polygon_overlaps_nothing() -> None:
     sliver = pts((0, 0), (0, 10), (0, 0))
     assert not crossing(sliver, pts((-5, 2), (5, 2), (5, 8), (-5, 8)))
     assert not crossing(pts((3, 3)), pts((0, 0), (10, 0), (10, 10), (0, 10)))
+
+
+# ---- union ------------------------------------------------------------------------------------
+
+STEAMPUNK = "steampunk_trousers/steampunk_trousers.sm2d"
+
+
+def test_a_union_piece_matches_seamly2ds_outline_exactly() -> None:
+    ext = FIXTURES / "external/seamly2d"
+    pattern = read_pattern(ext / "upgraded" / STEAMPUNK)
+    table = read_measurements(ext / "original/steampunk_trousers/steampunk_trousers.smis")
+    ev = evaluate(pattern, table.values())
+    oracle = json.loads((ext / "oracle" / f"{STEAMPUNK}.seamly2d.json").read_text())
+    pieces = evaluate_pieces(pattern, ev)
+    united = next(o for o in oracle["pieces"] if o["name"] == "Waist Back")
+    mine = pieces[united["id"]]
+    assert mine.problems == ()
+    assert [(p.x, p.y) for p in mine.outline] == [tuple(xy) for xy in united["outline"]]
+
+
+def _path(*spec: tuple[int, str]) -> tuple[UNode, ...]:
+    return tuple(UNode(i, t) for i, t in spec)
+
+
+def test_removing_an_edge_drops_the_curves_along_it_and_keeps_its_points() -> None:
+    path = _path((1, "NodePoint"), (2, "NodePoint"), (3, "NodeSpline"), (4, "NodePoint"))
+    assert node_on_edge(path, 1) == (UNode(2, "NodePoint"), UNode(4, "NodePoint"))
+    assert node_on_edge(path, 2) == (UNode(4, "NodePoint"), UNode(1, "NodePoint"))
+    assert [n.id for n in remove_edge(path, 1)] == [1, 2, 4]
+    assert [n.id for n in remove_edge(path, 0)] == [1, 2, 3, 4]
+
+
+def test_a_union_whose_child_count_is_wrong_says_so() -> None:
+    data = UnionData(
+        9,
+        0,
+        0,
+        _path((1, "NodePoint"), (2, "NodePoint")),
+        _path((3, "NodePoint"), (4, "NodePoint")),
+        (10,),
+    )
+    points = {i: ("P", Pt(float(i), 0.0)) for i in (1, 2, 3, 4)}
+    with pytest.raises(UnionError, match="expected 3"):
+        unite(data, points, {})

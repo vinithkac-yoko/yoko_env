@@ -17,6 +17,7 @@ from yoko_engine.geometry.curves import (
     SplinePoint,
     normalize_angle,
 )
+from yoko_engine.geometry.ellipse import ElArc
 from yoko_engine.model import Obj
 from yoko_engine.units import from_pixel, to_pixel
 
@@ -100,6 +101,25 @@ def arc_with_length(c: Ctx, o: Obj) -> None:
         o.id, name, arc_geom.length(), arc_geom.start_angle(), arc_geom.end_angle()
     )
     c.set_symbol(f"Radius{name}", from_pixel(radius, c.unit), o.id)
+
+
+def elliptical_arc(c: Ctx, o: Obj) -> None:
+    """`VToolEllipticalArc` (tag `elArc`, type `simple`): radii, start and end angle and a rotation
+    of the ellipse, all formulas."""
+    center = c.point(o, "center")
+    radius1 = to_pixel(c.check(o, "radius1", "10"), c.unit)
+    radius2 = to_pixel(c.check(o, "radius2", "10"), c.unit)
+    f1 = normalize_angle(c.check(o, "angle1", "180"), 0.0, 360.0)
+    f2 = normalize_angle(c.check(o, "angle2", "270"), 0.0, 360.0)
+    rotation = normalize_angle(c.check(o, "rotationAngle", "0"), 0.0, 360.0)
+    arc_geom = ElArc(center.p, radius1, radius2, f1, f2, rotation)
+    name = f"ElArc_{center.label}_{o.id}{_duplicate_suffix(o)}"
+    c.add_curve(o.id, CurveGeom(o.id, name, arc_geom, (center.label,)))
+    c.add_curve_variables(
+        o.id, name, arc_geom.length(), arc_geom.start_angle(), arc_geom.end_angle()
+    )
+    c.set_symbol(f"Radius1{name}", from_pixel(radius1, c.unit), o.id)
+    c.set_symbol(f"Radius2{name}", from_pixel(radius2, c.unit), o.id)
 
 
 def cubic_bezier(c: Ctx, o: Obj) -> None:

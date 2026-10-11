@@ -10,6 +10,7 @@ from __future__ import annotations
 from yoko_engine.evalcore import Ctx, CurveGeom, Issue, ObjectError
 from yoko_engine.geometry import Line, Pt
 from yoko_engine.geometry.curves import Arc, Bezier, Spline
+from yoko_engine.geometry.ellipse import ElArc
 from yoko_engine.geometry.operate import (
     Mapper,
     flip_mapper,
@@ -66,6 +67,15 @@ def _copy_all(c: Ctx, o: Obj, mappers: list[Mapper], *, mirror: bool) -> None:
             )
         c.deps.add(sid)
         geom = curve.geom
+        if isinstance(geom, ElArc):
+            raise ObjectError(
+                Issue(
+                    "not_implemented",
+                    "mirror, rotate and move of an elliptical arc are not evaluated yet",
+                    o.id,
+                    "source",
+                )
+            )
         for f in mappers:
             geom = map_geom(geom, f, mirror=mirror)
         name = curve.name + suffix

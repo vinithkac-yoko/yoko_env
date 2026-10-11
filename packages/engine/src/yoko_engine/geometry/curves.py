@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, replace
-from itertools import pairwise
 
 from yoko_engine.fuzzy import fuzzy_compare_possible_nulls, fuzzy_is_null
 from yoko_engine.geometry.qt import Line, Pt, points_equal
@@ -130,8 +129,12 @@ def path_length(points: list[Pt]) -> float:
     if len(points) < 2:
         return 0.0
     total = 0.0
-    for a, b in pairwise(points):
-        total += Line(a, b).length()
+    last = points[0]
+    for p in points[1:]:
+        if points_equal(p, last):
+            continue  # QPainterPath::lineTo ignores a point equal to the last one
+        total += Line(last, p).length()
+        last = p
     return total
 
 

@@ -22,6 +22,7 @@ from yoko_engine.geometry.outline import (
 )
 from yoko_engine.geometry.qt import Pt
 from yoko_engine.model import Pattern, RawNode
+from yoko_engine.union import Child, UnionError, parse_union, unite
 
 NODE_POINT = "NodePoint"
 CURVE_NODES = frozenset({"NodeArc", "NodeElArc", "NodeSpline", "NodeSplinePath"})
@@ -50,6 +51,7 @@ class Modeling:
 
     points: dict[int, tuple[str, Pt]]
     curves: dict[int, CurveGeom]
+    problems: tuple[str, ...] = ()
 
 
 def _truthy(raw: str | None) -> bool:
@@ -62,23 +64,41 @@ def _int(raw: str | None) -> int | None:
 
 def modeling_objects(sections: tuple[RawNode, ...], ev: Evaluation) -> Modeling:
     """Seamly2D's `ParseNode*`: each modeling object copies the geometry of the draft object it
-    names in `idObject`. A copy of something that no longer exists is ignored."""
+    names in `idObject`. A copy of something that no longer exists is ignored. A union tool
+    (`<tools type="union">`) makes objects of its own (the second piece moved onto the first);
+    copies that name one of those take the moved geometry."""
     points: dict[int, tuple[str, Pt]] = {}
     curves: dict[int, CurveGeom] = {}
+    made: dict[int, Child] = {}
+    problems: list[str] = []
     for section in sections:
         if section.tag != "modeling":
             continue
         for node in section.children:
+            union = parse_union(node)
+            if union is not None:
+                try:
+                    made.update(unite(union, points, curves))
+                except UnionError as e:
+                    problems.append(f"union {union.tool_id}: {e}")
+                continue
             mid, source = _int(node.get("id")), _int(node.get("idObject"))
             if mid is None or source is None:
                 continue
-            if source in ev.points and node.tag == "point":
+            if source in made:
+                child = made[source]
+                if child.point is not None and node.tag == "point":
+                    points[mid] = child.point
+                elif child.curve is not None and node.tag != "point":
+                    c = child.curve
+                    curves[mid] = CurveGeom(mid, c.name, c.geom, c.labels, drawn=False)
+            elif source in ev.points and node.tag == "point":
                 p = ev.points[source]
                 points[mid] = (p.label, p.p)
             elif source in ev.curves:
                 src = ev.curves[source]
                 curves[mid] = CurveGeom(mid, src.name, src.geom, src.labels, drawn=False)
-    return Modeling(points, curves)
+    return Modeling(points, curves, tuple(problems))
 
 
 def piece_nodes(piece: RawNode) -> tuple[PieceNode, ...]:
@@ -222,7 +242,7 @@ def evaluate_pieces(pattern: Pattern, ev: Evaluation) -> Mapping[int, PieceGeom]
                 name = piece.get("name", "") or ""
                 missing = _missing(nodes, modeling)
                 if missing:
-                    result[pid] = PieceGeom(pid, name, (), nodes, missing)
+                    result[pid] = PieceGeom(pid, name, (), nodes, (*modeling.problems, *missing))
                 else:
                     result[pid] = PieceGeom(pid, name, piece_outline(nodes, modeling), nodes)
     return result

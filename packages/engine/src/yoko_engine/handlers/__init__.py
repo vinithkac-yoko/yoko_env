@@ -31,6 +31,7 @@ HANDLERS: dict[str, Handler] = {
     "pointOfIntersectionCurves": intersections.curves,
     "arc:simple": curves.arc,
     "arc:arcWithLength": curves.arc_with_length,
+    "elArc:simple": curves.elliptical_arc,
     "spline:cubicBezier": curves.cubic_bezier,
     "spline:cubicBezierPath": curves.cubic_bezier_path,
     "spline:simpleInteractive": curves.spline_interactive,

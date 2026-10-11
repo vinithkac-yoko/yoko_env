@@ -64,6 +64,7 @@ jobs:
         run: |
           scripts/oracle_base.sh seamly2d-build/src/app/seamly2d/bin/seamly2d
           scripts/oracle_upgrade.sh seamly2d-build/src/app/seamly2d/bin/seamly2d
+          scripts/oracle_cases.sh seamly2d-build/src/app/seamly2d/bin/seamly2d
 
       - name: the committed oracle files are what Seamly2D just produced
         run: |
