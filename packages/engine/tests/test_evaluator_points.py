@@ -257,23 +257,15 @@ def test_cut_arc_gives_the_point_and_two_arcs_with_the_next_ids() -> None:
     assert back.symbols["Arc_A_4"] == pytest.approx(5 * math.pi - 5, abs=1e-6)
 
 
-def test_options_that_change_handles_are_refused_on_every_cubic() -> None:
+def test_options_that_change_handles_are_refused_on_a_bezier_path() -> None:
     p = pattern(
-        single(1, "A", 1, 1),
-        single(2, "B", 5, 1),
-        single(3, "C", 9, 1),
-        single(4, "D", 15, 1),
+        *(single(i, chr(64 + i), 4.0 * i, float(i % 2)) for i in range(1, 8)),
         obj(
-            5,
-            "cubicBezier",
+            9,
+            "cubicBezierPath",
             tag="spline",
-            point1="1",
-            point2="2",
-            point3="3",
-            point4="4",
+            children=tuple(RawNode("pathPoint", (("pSpline", str(i)),)) for i in range(1, 8)),
             autoSmooth="true",
-            lengthMode="3",
-            length="17",
         ),
     )
     assert [i.code for i in evaluate(p, {}).issues] == ["not_implemented"]

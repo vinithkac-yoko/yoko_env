@@ -18,6 +18,11 @@ from yoko_engine.geometry.curves import (
     normalize_angle,
 )
 from yoko_engine.geometry.ellipse import ElArc
+from yoko_engine.geometry.hobby import (
+    hobby_handle_lengths,
+    solve_handle_lengths,
+    solve_hobby_tension,
+)
 from yoko_engine.model import Obj
 from yoko_engine.units import from_pixel, to_pixel
 
@@ -123,9 +128,19 @@ def elliptical_arc(c: Ctx, o: Obj) -> None:
 
 
 def cubic_bezier(c: Ctx, o: Obj) -> None:
-    _reject_length_options(o)
     pts = [c.point(o, f"point{i}") for i in (1, 2, 3, 4)]
-    bez = Bezier(pts[0].p, pts[1].p, pts[2].p, pts[3].p)
+    p1, p2, p3, p4 = (p.p for p in pts)
+    h1 = Line(p1, p2)
+    h2 = Line(p4, p3)
+    auto_smooth, mode, has_target = _length_mode(o)
+    target = _target_px(c, o, has_target)
+    (c1, c2), changed = _chosen_handles(
+        p1, p4, h1.angle(), h2.angle(), (h1.length(), h2.length()), (auto_smooth, mode, target)
+    )
+    if changed:  # `setHandlesFromLengths`: the handles keep their angles and get the new lengths
+        p2 = Line(p1, Pt(p1.x + c1, p1.y + 0.0)).set_angle(h1.angle()).p2
+        p3 = Line(p4, Pt(p4.x + c2, p4.y + 0.0)).set_angle(h2.angle()).p2
+    bez = Bezier(p1, p2, p3, p4)
     name = f"Spl_{pts[0].label}_{pts[3].label}{_duplicate_suffix(o)}"
     register_spline(c, o, bez, name, tuple(p.label for p in pts))
 
@@ -154,23 +169,55 @@ def cubic_bezier_path(c: Ctx, o: Obj) -> None:
     register_path(c, o, path, name, tuple(p.label for p in points))
 
 
-def _reject_length_options(o: Obj) -> None:
-    """0.7.4 added `autoSmooth` (Hobby handles) and `lengthMode` with a target `length`. They change
-    the handle lengths through solvers that are not ported yet."""
+def _length_mode(o: Obj) -> tuple[bool, int, bool]:
+    """The 0.7.4 options of the spline tools: `autoSmooth` (Hobby handles), `lengthMode` (which
+    handle a target length may change) and the target `length` itself. Returns (auto_smooth, mode,
+    has_target)."""
     try:
         mode = int(o.get("lengthMode", "0") or 0)
     except ValueError:
         mode = 0
-    if o.get("autoSmooth") == "true" or (mode > 0 and (o.get("length") or "")):
+    return o.get("autoSmooth") == "true", mode, mode > 0 and bool(o.get("length") or "")
+
+
+def _reject_length_options(o: Obj) -> None:
+    """Tools that do not have these options (Bezier paths) refuse them rather than ignore them."""
+    auto_smooth, _, has_target = _length_mode(o)
+    if auto_smooth or has_target:
         raise ObjectError(
             Issue(
                 "not_implemented",
-                "autoSmooth and lengthMode (format 0.7.4) are not evaluated yet",
+                "autoSmooth and lengthMode are not evaluated for this kind of curve",
                 o.id,
                 "autoSmooth",
                 "set the handle lengths directly",
             )
         )
+
+
+def _target_px(c: Ctx, o: Obj, has_target: bool) -> float:
+    return to_pixel(c.check(o, "length", "0"), c.unit) if has_target else 0.0
+
+
+def _chosen_handles(
+    p1: Pt,
+    p4: Pt,
+    angle1: float,
+    angle2: float,
+    base: tuple[float, float],
+    options: tuple[bool, int, float],
+) -> tuple[tuple[float, float], bool]:
+    """Exactly one of the three modes sets the handles (Hobby alone, Hobby tension solved for a
+    target length, or the given handles scaled to a target length). Returns the lengths and whether
+    anything changed."""
+    auto_smooth, mode, target = options
+    if auto_smooth and target > 0.0:
+        return solve_hobby_tension(p1, p4, angle1, angle2, target, mode), True
+    if auto_smooth:
+        return hobby_handle_lengths(p1, p4, angle1, angle2), True
+    if target > 0.0:
+        return solve_handle_lengths(p1, p4, angle1, angle2, base[0], base[1], target, mode), True
+    return base, False
 
 
 def spline_interactive(c: Ctx, o: Obj) -> None:
@@ -181,7 +228,11 @@ def spline_interactive(c: Ctx, o: Obj) -> None:
     angle2 = c.check(o, "angle2", "0")
     length1 = to_pixel(c.check(o, "length1", "0"), c.unit)
     length2 = to_pixel(c.check(o, "length2", "0"), c.unit)
-    _reject_length_options(o)
+    auto_smooth, mode, has_target = _length_mode(o)
+    target = _target_px(c, o, has_target)
+    (length1, length2), _ = _chosen_handles(
+        p1.p, p4.p, angle1, angle2, (length1, length2), (auto_smooth, mode, target)
+    )
     spl = Spline(p1.p, p4.p, angle1, angle2, length1, length2)
     name = f"Spl_{p1.label}_{p4.label}{_duplicate_suffix(o)}"
     register_spline(c, o, spl, name, (p1.label, p4.label))

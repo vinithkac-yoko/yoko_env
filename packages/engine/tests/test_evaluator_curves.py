@@ -355,16 +355,41 @@ def test_a_curve_drawn_twice_gets_a_numbered_name() -> None:
     assert "Spl_A_B_1" in ev.symbols and "Spl_A_B" not in ev.symbols
 
 
-def test_auto_smooth_is_reported_not_guessed() -> None:
+def test_auto_smooth_gives_a_symmetric_curve_equal_handles() -> None:
+    """A curve leaving A at 45 degrees and arriving at B at 135 degrees is symmetric, so Hobby's
+    handles have the same length (the stored ones, 1 cm, are ignored)."""
     ev = evaluate(
         pattern(
             *line_ab(),
-            spline(3, 1, 2, angle1="0", angle2="180", length1="1", length2="1", autoSmooth="true"),
+            spline(3, 1, 2, angle1="45", angle2="135", length1="1", length2="1", autoSmooth="true"),
         ),
         {},
     )
-    assert [i.code for i in ev.issues] == ["not_implemented"]
-    assert "Spl_A_B" not in ev.symbols
+    assert not ev.issues
+    assert ev.symbols["C1LengthSpl_A_B"] == pytest.approx(ev.symbols["C2LengthSpl_A_B"], rel=1e-9)
+    assert ev.symbols["C1LengthSpl_A_B"] > 1.0
+
+
+def test_a_target_length_sets_the_curve_length_within_a_twentieth_of_a_millimetre() -> None:
+    ev = evaluate(
+        pattern(
+            *line_ab(),
+            spline(
+                3,
+                1,
+                2,
+                angle1="45",
+                angle2="135",
+                length1="2",
+                length2="2",
+                lengthMode="3",
+                length="40",
+            ),
+        ),
+        {},
+    )
+    assert not ev.issues
+    assert ev.symbols["Spl_A_B"] == pytest.approx(40.0, abs=0.005)
 
 
 def test_old_simple_spline_uses_the_quarter_circle_handle() -> None:
