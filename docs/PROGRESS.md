@@ -71,6 +71,33 @@ Backlog the test patterns give Phase 3 (issues per not-yet-evaluated kind over t
 
 Checkpoint check: the basic set round-trips byte for byte, and the engine equals Seamly2D exactly (deviation 0, the limit was 0.01 mm). The CI oracle job is green on GitHub (Seamly2D built with Qt 6.11.1): every committed oracle file equals what it produced, and the exactness tests pass.
 
+## Decisions from Kasi, 2026-10-10 and 2026-10-11 (Phase 3)
+
+- Pillow as a dependency of `yoko_io` for PNG drawing: ok. Keep the 15 MB of fixtures: ok. Start Phase 3: yes.
+- Order of work: most-used tools first. Pieces: outline geometry and round trip (no seam allowance, grainlines, labels or notches).
+- Landmark vocabulary goes to the pattern makers as a spreadsheet; Kasi asked what it is for and how it is made (answered in chat). It is built but **not sent anywhere**: that needs Kasi's word.
+
+## Phase 3 log (tools, pieces, library)
+
+Everything below is checked against the pinned Seamly2D, bit for bit, unless it says otherwise.
+
+- **Every tool in the release now evaluates.** The all-tools pattern runs with no issue, and across Seamly2D's 23 openable test patterns the engine gets no point, variable or piece outline wrong (the ratchet only went up; no unknown kinds are left). Per-tool status: `docs/COVERAGE.md`.
+- **Pieces.** Outlines (`VPiecePath::PathPoints`, `CorrectEquidistantPoints`, `CheckLoops`; a Qt polygon-overlap stand-in verified on 27 real calls). The basic set's 7 pieces and 61 pieces in the test patterns are exact.
+- **Union of pieces** (`UnionTool`): the second piece is moved onto the first along the chosen edges; the united piece "Waist Back" in `steampunk_trousers` equals Seamly2D's outline. Only the main outline is united; seam allowance paths, internal paths and anchors are kept, not computed. No action creates a union yet.
+- **Elliptical arcs.** Seamly2D measures them with Qt's `QPainterPath::arcTo` and path flattening, so those routines are ported (from the Qt 6.4.2 source) and 20 arcs with different angles and rotations equal Seamly2D's length and angles exactly. Two Qt behaviours found by differential testing: `QPainterPath::lineTo` ignores a point equal to the last one (this changed the last bit of a full ellipse; `path_length` now does the same for every curve), and the first subpath of the arc path starts at `GetP1`.
+- **`autoSmooth` and `lengthMode`** (format 0.7.4) for splines and cubic Beziers: Hobby handle lengths, the Gauss-Legendre length and the two bisection solvers. 156 curves covering every combination of the options equal Seamly2D's exactly.
+- **Case patterns for differential tests.** `fixtures/patterns/cases/*.sm2d` are small patterns written for one tool in many configurations; `scripts/oracle_cases.sh` has the pinned Seamly2D compute them (`fixtures/oracle/cases/`), and CI regenerates them and fails on any difference (`elliptical_arcs`, `spline_length_modes`, `added_piece`). New tools and edits can get a case in minutes.
+- **Edit and delete.** Session actions `AddPiece`, `SetPiece`, `DeletePiece`, `AddBlock`, `RenameBlock`, `DeleteBlock` join `AddObject`, `SetAttrs`, `DeleteObject`, `SetVariable`, `DeleteVariable`. A piece we create has an id, a name and its nodes; Seamly2D opens the file and computes the same outline (case `added_piece`: 7 copies of the basic set's pieces). A point that is part of a piece cannot be deleted; a deleted object leaves its groups; a piece with no area is refused; a path that crosses itself is a warning (`piece_issues`). `apply_all` makes a batch of actions all-or-nothing.
+- **Pattern library.** `yoko_engine.library` (metadata, parent links, family tree, ancestors and descendants, tag and text search, a `SearchIndex` interface for embeddings later), `yoko_io.library` (on disk: `library/base` locked, `library/styles`; deriving a style copies the parent's file byte for byte and links it; the base refuses every write), `plan_copy_piece` (copy one piece with every object, variable and measurement it depends on into another pattern: ids are renumbered, labels and variables must not clash, the destination must have the measurements). API `/api/library/tree`, `/search`, `/patterns/{id}` and a family-tree panel in the studio.
+- **Landmark sheet** for the pattern makers: `docs/landmarks/basic-set-landmarks.xlsx` (one tab per piece, a numbered picture, a row per outline point or curve, proposed name with confidence and reason, yellow Verdict / Correct name / Comment columns). Every name is a proposal; nothing uses one until a pattern maker confirms it. See `docs/landmarks/README.md`.
+
+Not done, and why:
+
+- Mirror, rotate, move and cut of an **elliptical arc** (needs `QTransform::inverted` and the arc cut by bisection; none of the 41 test patterns uses it). The engine says `not_implemented`.
+- **Seam length mismatches between matched edges** (spec, Validation): which edges match is a pattern-making rule, so this needs the pattern makers.
+- Union and internal paths cannot be created by an action yet; internal paths are kept, not computed (the depth decided with Kasi).
+- The landmark sheet's LibreOffice render could not be checked in this container (LibreOffice cannot open any file here); the workbook reads back correctly with openpyxl and has no formulas.
+
 ## Environment variables by phase
 
 | Phase | Variables |
