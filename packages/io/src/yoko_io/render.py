@@ -16,7 +16,7 @@ from html import escape
 from io import BytesIO
 
 from PIL import Image, ImageDraw, ImageFont
-from yoko_engine.evaluator import CurveGeom, Evaluation
+from yoko_engine.evalcore import CurveGeom, Evaluation
 from yoko_engine.model import Obj, Pattern
 from yoko_engine.units import px_to_mm
 
