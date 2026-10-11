@@ -19,6 +19,7 @@ from collections import Counter
 from pathlib import Path
 
 from yoko_engine.evaluator import evaluate
+from yoko_engine.pieces import evaluate_pieces
 from yoko_io.seamly import read_measurements, read_pattern
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,19 @@ def compare(rel: Path) -> tuple[dict[str, int], Counter[str]]:
     oracle = json.loads((EXT / "oracle" / f"{rel}.seamly2d.json").read_text())
     counts = {"points": 0, "wrong_points": 0, "missing_points": 0}
     counts.update({"variables": 0, "wrong_variables": 0})
+    counts.update({"pieces": 0, "wrong_pieces": 0, "missing_pieces": 0})
+    mine_pieces = evaluate_pieces(pattern, ev)
+    for o in oracle.get("pieces", []):
+        if o.get("error"):
+            continue  # Seamly2D could not compute this outline either
+        piece = mine_pieces.get(o["id"])
+        want = [tuple(xy) for xy in o["outline"]]
+        if piece is None or piece.problems:
+            counts["missing_pieces"] += 1
+        elif [(q.x, q.y) for q in piece.outline] == want:
+            counts["pieces"] += 1
+        else:
+            counts["wrong_pieces"] += 1
     for o in oracle["points"]:
         mine = ev.points.get(o["id"])
         if mine is None:
@@ -67,12 +81,17 @@ def main() -> None:
     for f in sorted((EXT / "upgraded").rglob("*.sm2d")):
         rel = f.relative_to(EXT / "upgraded")
         counts, kinds = compare(rel)
-        rows[rel.as_posix()] = {"points": counts["points"], "variables": counts["variables"]}
+        rows[rel.as_posix()] = {
+            "points": counts["points"],
+            "variables": counts["variables"],
+            "pieces": counts["pieces"],
+        }
         all_kinds.update(kinds)
         print(
             f"{rel.as_posix():62s} points {counts['points']:4d} (wrong {counts['wrong_points']}, "
             f"not computed {counts['missing_points']:3d})  variables {counts['variables']:5d} "
-            f"(wrong {counts['wrong_variables']})"
+            f"(wrong {counts['wrong_variables']})  pieces {counts['pieces']} "
+            f"(wrong {counts['wrong_pieces']}, not computed {counts['missing_pieces']})"
         )
     print("\nnot implemented yet (issues per kind):")
     for msg, n in all_kinds.most_common():

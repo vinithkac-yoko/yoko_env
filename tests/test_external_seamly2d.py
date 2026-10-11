@@ -17,6 +17,7 @@ from pathlib import Path
 import pytest
 from yoko_engine.evaluator import evaluate
 from yoko_engine.model import MeasurementSet, RawNode
+from yoko_engine.pieces import evaluate_pieces
 from yoko_io.seamly import (
     SeamlyFileError,
     read_measurements,
@@ -141,7 +142,20 @@ def test_engine_matches_seamly2d_on_every_point_and_variable_it_computes(path: P
         if var in ev.symbols:
             assert ev.symbols[var] == value, (name, var, ev.symbols[var], value)
             variables += 1
+    pieces = 0
+    mine_pieces = evaluate_pieces(pattern, ev)
+    for o in oracle.get("pieces", []):
+        piece = mine_pieces.get(o["id"])
+        if o.get("error") or piece is None or piece.problems:
+            continue  # Seamly2D could not compute it, or it needs something not built yet
+        assert [(q.x, q.y) for q in piece.outline] == [tuple(xy) for xy in o["outline"]], (
+            name,
+            o["id"],
+            o["name"],
+        )
+        pieces += 1
     want = RATCHET[name]
+    assert pieces >= want["pieces"], f"{name}: {pieces} pieces, the ratchet says {want['pieces']}"
     assert points >= want["points"], f"{name}: {points} points, the ratchet says {want['points']}"
     assert variables >= want["variables"], (
         f"{name}: {variables} variables, the ratchet says {want['variables']}"

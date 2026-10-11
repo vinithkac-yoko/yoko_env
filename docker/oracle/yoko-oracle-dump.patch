@@ -1,8 +1,8 @@
 diff --git a/src/app/seamly2d/mainwindow.cpp b/src/app/seamly2d/mainwindow.cpp
-index a2aeacb..24f0726 100644
+index a2aeacb..ec7c5f1 100644
 --- a/src/app/seamly2d/mainwindow.cpp
 +++ b/src/app/seamly2d/mainwindow.cpp
-@@ -8092,6 +8092,83 @@ bool MainWindow::setHeight(const QString &text)
+@@ -8092,6 +8092,116 @@ bool MainWindow::setHeight(const QString &text)
  }
  
  //---------------------------------------------------------------------------------------------------------------------
@@ -17,6 +17,7 @@ index a2aeacb..24f0726 100644
 +#include "../../libs/vgeometry/varc.h"
 +#include "../../libs/vgeometry/vpointf.h"
 +#include "../../libs/vpatterndb/variables/vinternalvariable.h"
++#include "../../libs/vpatterndb/vpiece.h"
 +
 +static void yokoOracleDump(const VContainer *data, const QString &path)
 +{
@@ -71,10 +72,42 @@ index a2aeacb..24f0726 100644
 +        variables.insert(it.key(), constVar->GetValue());
 +    }
 +
++    // The outline of every piece (the main path with its loops corrected), in pixels.
++    QJsonArray pieces;
++    const QHash<quint32, VPiece> *pieceData = data->DataPieces();
++    QList<quint32> pieceIds = pieceData->keys();
++    std::sort(pieceIds.begin(), pieceIds.end());
++    for (quint32 id : pieceIds)
++    {
++        const VPiece piece = pieceData->value(id);
++        QJsonObject o;
++        o.insert("id", static_cast<qint64>(id));
++        o.insert("name", piece.GetName());
++        QJsonArray outline;
++        try
++        {
++            const QVector<QPointF> pts = piece.mainPathPoints(data);
++            for (const QPointF &pt : pts)
++            {
++                QJsonArray xy;
++                xy.append(pt.x());
++                xy.append(pt.y());
++                outline.append(xy);
++            }
++        }
++        catch (...)
++        {
++            o.insert("error", QStringLiteral("could not compute the main path"));
++        }
++        o.insert("outline", outline);
++        pieces.append(o);
++    }
++
 +    QJsonObject root;
 +    root.insert("points", points);
 +    root.insert("curves", curves);
 +    root.insert("variables", variables);
++    root.insert("pieces", pieces);
 +    QFile out(path);
 +    if (out.open(QIODevice::WriteOnly))
 +    {
@@ -86,7 +119,7 @@ index a2aeacb..24f0726 100644
  void MainWindow::processCommandLine()
  {
      const VCommandLinePtr cmd = qApp->commandLine();
-@@ -8137,6 +8214,21 @@ void MainWindow::processCommandLine()
+@@ -8137,6 +8247,21 @@ void MainWindow::processCommandLine()
              }
          }
  

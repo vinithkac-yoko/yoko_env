@@ -1,93 +1,116 @@
 {
   "all_tools_pattern/alltools_pattern.sm2d": {
+    "pieces": 1,
     "points": 38,
     "variables": 169
   },
   "basic_block_women-2016.sm2d": {
+    "pieces": 4,
     "points": 102,
     "variables": 576
   },
   "bra/bra.sm2d": {
+    "pieces": 0,
     "points": 27,
     "variables": 264
   },
   "gent_jacket_with_tummy.sm2d": {
+    "pieces": 28,
     "points": 183,
     "variables": 1053
   },
   "glimited/glimited_no_m.sm2d": {
+    "pieces": 0,
     "points": 2,
     "variables": 3
   },
   "glimited/glimited_vit.sm2d": {
+    "pieces": 0,
     "points": 2,
     "variables": 3
   },
   "glimited/glimited_vst.sm2d": {
+    "pieces": 1,
     "points": 3,
     "variables": 7
   },
   "imk_zhaketa/imk_zhaketa_poluprilegayuschego_silueta.sm2d": {
+    "pieces": 1,
     "points": 81,
     "variables": 422
   },
   "issue_256/issue_256.sm2d": {
+    "pieces": 1,
     "points": 4,
     "variables": 28
   },
   "issue_256/issue_256_wrong_path.sm2d": {
+    "pieces": 1,
     "points": 4,
     "variables": 28
   },
   "keiko_skirt/keiko_skirt.sm2d": {
+    "pieces": 2,
     "points": 39,
     "variables": 381
   },
   "maleshirt/male_shirt.sm2d": {
+    "pieces": 3,
     "points": 54,
     "variables": 355
   },
   "modell/modell_2.sm2d": {
+    "pieces": 0,
     "points": 25,
     "variables": 187
   },
   "moulage/07_armhole_adjustment_010.sm2d": {
+    "pieces": 1,
     "points": 145,
     "variables": 876
   },
   "moulage/moulage_05_armhole_neckline.sm2d": {
+    "pieces": 0,
     "points": 67,
     "variables": 415
   },
   "pantaloon/pantalon_base_Eli.sm2d": {
+    "pieces": 0,
     "points": 37,
     "variables": 171
   },
   "patron_blusa/patron_blusa.sm2d": {
+    "pieces": 1,
     "points": 14,
     "variables": 159
   },
   "steampunk_trousers/steampunk_trousers.sm2d": {
+    "pieces": 1,
     "points": 80,
     "variables": 506
   },
   "susan/pajama_top_wrap2.sm2d": {
+    "pieces": 3,
     "points": 25,
     "variables": 217
   },
   "test_dart.sm2d": {
+    "pieces": 1,
     "points": 13,
     "variables": 54
   },
   "trousers/trousers.sm2d": {
+    "pieces": 8,
     "points": 108,
     "variables": 663
   },
   "tshirt_test.sm2d": {
+    "pieces": 2,
     "points": 18,
     "variables": 96
   },
   "zigzag/zigzag.sm2d": {
+    "pieces": 1,
     "points": 206,
     "variables": 1295
   }

@@ -25,6 +25,29 @@
             "type": 3
         }
     ],
+    "pieces": [
+        {
+            "error": "could not compute the main path",
+            "id": 176,
+            "name": "Detail",
+            "outline": [
+            ]
+        },
+        {
+            "error": "could not compute the main path",
+            "id": 238,
+            "name": "Detail",
+            "outline": [
+            ]
+        },
+        {
+            "error": "could not compute the main path",
+            "id": 268,
+            "name": "Detail",
+            "outline": [
+            ]
+        }
+    ],
     "points": [
         {
             "id": 1,
