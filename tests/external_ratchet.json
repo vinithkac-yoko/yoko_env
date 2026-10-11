@@ -1,19 +1,19 @@
 {
   "all_tools_pattern/alltools_pattern.sm2d": {
-    "points": 37,
+    "points": 38,
     "variables": 169
   },
   "basic_block_women-2016.sm2d": {
-    "points": 91,
-    "variables": 534
+    "points": 102,
+    "variables": 576
   },
   "bra/bra.sm2d": {
     "points": 27,
     "variables": 264
   },
   "gent_jacket_with_tummy.sm2d": {
-    "points": 147,
-    "variables": 887
+    "points": 183,
+    "variables": 1053
   },
   "glimited/glimited_no_m.sm2d": {
     "points": 2,
@@ -68,8 +68,8 @@
     "variables": 159
   },
   "steampunk_trousers/steampunk_trousers.sm2d": {
-    "points": 69,
-    "variables": 425
+    "points": 80,
+    "variables": 506
   },
   "susan/pajama_top_wrap2.sm2d": {
     "points": 25,
@@ -80,8 +80,8 @@
     "variables": 54
   },
   "trousers/trousers.sm2d": {
-    "points": 91,
-    "variables": 624
+    "points": 108,
+    "variables": 663
   },
   "tshirt_test.sm2d": {
     "points": 18,
@@ -89,6 +89,6 @@
   },
   "zigzag/zigzag.sm2d": {
     "points": 206,
-    "variables": 1290
+    "variables": 1295
   }
 }

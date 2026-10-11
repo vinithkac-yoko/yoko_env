@@ -38,6 +38,9 @@ HANDLERS: dict[str, Handler] = {
     "spline:pathInteractive": curves.spline_path_interactive,
     "spline:path": curves.spline_path_simple,
     "operation:flippingByLine": operations.flip_by_line,
+    "operation:flippingByAxis": operations.flip_by_axis,
+    "operation:rotation": operations.rotation,
+    "operation:moving": operations.moving,
 }
 
 # Kinds that are part of the language but not computed yet; the evaluator reports them.

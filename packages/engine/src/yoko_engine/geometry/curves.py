@@ -384,6 +384,8 @@ class Arc:
     radius: float
     f1: float
     f2: float
+    # A mirrored arc runs clockwise from f1 to f2 and has a negative length (`VAbstractArc`).
+    flipped: bool = False
 
     def angle_arc(self) -> float:
         """VAbstractArc::AngleArc."""
@@ -392,10 +394,12 @@ class Arc:
             return 360.0
         l1 = Line(Pt(0, 0), Pt(100, 0)).set_angle(self.f1)
         l2 = Line(Pt(0, 0), Pt(100, 0)).set_angle(self.f2)
-        return l1.angle_to(l2)
+        angle = l1.angle_to(l2)
+        return 360 - angle if self.flipped else angle
 
     def length(self) -> float:
-        return self.radius * math.radians(self.angle_arc())
+        length = self.radius * math.radians(self.angle_arc())
+        return -length if self.flipped else length
 
     def start_angle(self) -> float:
         return self.f1
@@ -406,7 +410,7 @@ class Arc:
     def points(self) -> list[Pt]:
         """VArc::getPoints: the arc as a polyline, built from cubic Beziers of at most 45 degrees,
         each flattened like any other spline."""
-        p_start = self.p1()
+        p_start = self.p2() if self.flipped else self.p1()
         angle = self.angle_arc()
         if fuzzy_is_null(angle):
             return [p_start]
@@ -445,16 +449,21 @@ class Arc:
             return None
         line = Line(self.center, self.p1())
         one_mm = (1.0 / 25.4) * 96.0
-        if length < 0:
-            length = full + length
-        lo, hi = one_mm, full - one_mm
-        length = max(lo, min(length, hi))  # qBound(min, value, max)
-        line = line.set_angle(line.angle() + math.degrees(length / self.radius))
+        if not self.flipped:
+            if length < 0:
+                length = full + length
+            length = max(one_mm, min(length, full - one_mm))  # qBound(min, value, max)
+            line = line.set_angle(line.angle() + math.degrees(length / self.radius))
+        else:
+            if length > 0:
+                length = full + length
+            length = max(full + one_mm, min(length, -one_mm))
+            line = line.set_angle(line.angle() - math.degrees(abs(length) / self.radius))
         a = line.angle()
         return (
             line.p2,
-            Arc(self.center, self.radius, self.f1, a),
-            Arc(self.center, self.radius, a, self.f2),
+            Arc(self.center, self.radius, self.f1, a, self.flipped),
+            Arc(self.center, self.radius, a, self.f2, self.flipped),
         )
 
     def p1(self) -> Pt:

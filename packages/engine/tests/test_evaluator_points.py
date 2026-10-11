@@ -466,12 +466,167 @@ def test_arc_with_length_cannot_be_longer_than_the_circle() -> None:
     assert ev.symbols["Arc_A_2"] == pytest.approx(20 * math.pi)
 
 
-def test_arc_with_negative_length_is_reported() -> None:
+def test_arc_with_negative_length_is_flipped() -> None:
     ev = evaluate(
         pattern(
             single(1, "A", 1, 1),
-            obj(2, "arcWithLength", tag="arc", center="1", radius="10", angle1="0", length="-3"),
+            obj(2, "arcWithLength", tag="arc", center="1", radius="10", angle1="90", length="-5"),
         ),
         {},
     )
-    assert [i.code for i in ev.issues] == ["not_implemented"]
+    assert ev.issues == []
+    assert ev.symbols["Arc_A_2"] == pytest.approx(-5.0)
+    # clockwise from 90 degrees by 5 / 10 radians (28.65 degrees)
+    assert ev.symbols["Angle2Arc_A_2"] == pytest.approx(90 - math.degrees(0.5))
+
+
+# ---- operations: rotate, move, mirror ------------------------------------------------------------
+
+
+def operation(id_: int, kind: str, sources: list[int], dests: list[int], **attrs: str) -> Obj:
+    src = RawNode(
+        "source", (), "", tuple(RawNode("item", (("idObject", str(i)),)) for i in sources)
+    )
+    dst = RawNode(
+        "destination", (), "", tuple(RawNode("item", (("idObject", str(i)),)) for i in dests)
+    )
+    return obj(id_, kind, tag="operation", children=(src, dst), **attrs)
+
+
+def test_rotation_turns_a_point_and_names_the_copy() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            operation(10, "rotation", [2], [20], center="1", angle="90", suffix="_r"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.points[20].label == "B_r"
+    close((ev.points[20].x_mm, ev.points[20].y_mm), 10.0, -90.0, 1e-6)
+
+
+def test_rotation_copies_curves_with_their_variables() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            obj(
+                3,
+                "simpleInteractive",
+                tag="spline",
+                point1="1",
+                point4="2",
+                angle1="0",
+                angle2="180",
+                length1="3",
+                length2="3",
+            ),
+            operation(10, "rotation", [3], [30], center="1", angle="90", suffix="_r"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.symbols["Spl_A_B_r"] == pytest.approx(ev.symbols["Spl_A_B"], abs=1e-6)
+    assert ev.symbols["Angle1Spl_A_B_r"] == pytest.approx(90.0, abs=1e-6)
+    assert 30 in ev.curves
+
+
+def test_moving_shifts_by_a_length_at_an_angle() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            operation(
+                10,
+                "moving",
+                [2],
+                [20],
+                center="0",
+                angle="90",
+                length="5",
+                rotationAngle="0",
+                suffix="_m",
+            ),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    close((ev.points[20].x_mm, ev.points[20].y_mm), 110.0, -40.0, 1e-6)
+
+
+def test_moving_then_rotating_about_the_centre_of_the_moved_objects() -> None:
+    """With no pivot point, the objects turn about the centre of their bounding box, moved with
+    them (`findRotationOrigin`)."""
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            operation(
+                10,
+                "moving",
+                [1, 2],
+                [20, 21],
+                center="0",
+                angle="0",
+                length="0",
+                rotationAngle="180",
+                suffix="_m",
+            ),
+        ),
+        {},
+    )
+    # the pair turns 180 degrees about its middle (6, 1): A -> B's place and B -> A's place
+    close((ev.points[20].x_mm, ev.points[20].y_mm), 110.0, 10.0, 1e-6)
+    close((ev.points[21].x_mm, ev.points[21].y_mm), 10.0, 10.0, 1e-6)
+
+
+def test_mirror_by_a_vertical_axis() -> None:
+    ev = evaluate(
+        pattern(
+            *two_points(),
+            operation(10, "flippingByAxis", [2], [20], center="1", axisType="1", suffix="_m"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    close((ev.points[20].x_mm, ev.points[20].y_mm), -90.0, 10.0, 1e-6)
+    horizontal = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            single(2, "B", 1, 5),
+            operation(10, "flippingByAxis", [2], [20], center="1", axisType="2", suffix="_m"),
+        ),
+        {},
+    )
+    close((horizontal.points[20].x_mm, horizontal.points[20].y_mm), 10.0, -30.0, 1e-6)
+
+
+def test_a_mirrored_arc_runs_the_other_way_and_has_a_negative_length() -> None:
+    ev = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            arc(2, 1, "10", "0", "90"),
+            operation(10, "flippingByAxis", [2], [20], center="1", axisType="1", suffix="_m"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.symbols["Arc_A_2"] == pytest.approx(5 * math.pi)
+    assert ev.symbols["Arc_A_2_m"] == pytest.approx(-5 * math.pi)
+    assert ev.curves[20].geom.flipped is True  # type: ignore[union-attr]
+    # the mirror of the mirror is the original again
+    twice = evaluate(
+        pattern(
+            single(1, "A", 1, 1),
+            arc(2, 1, "10", "0", "90"),
+            operation(10, "flippingByAxis", [2], [20], center="1", axisType="1", suffix="_m"),
+            operation(11, "flippingByAxis", [20], [21], center="1", axisType="1", suffix="_n"),
+        ),
+        {},
+    )
+    assert twice.symbols["Arc_A_2_m_n"] == pytest.approx(5 * math.pi)
+
+
+def test_a_source_that_does_not_exist_is_reported() -> None:
+    ev = evaluate(
+        pattern(*two_points(), operation(10, "rotation", [99], [20], center="1", angle="1")), {}
+    )
+    assert ev.issues[0].code == "missing_reference"

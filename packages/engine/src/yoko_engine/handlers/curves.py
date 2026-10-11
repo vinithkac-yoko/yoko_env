@@ -30,20 +30,35 @@ def _duplicate_suffix(o: Obj) -> str:
     return f"_{n}" if n > 0 else ""
 
 
-def _register_spline(
-    c: Ctx, o: Obj, geom: Bezier | Spline, name: str, labels: tuple[str, ...]
+def register_spline(
+    c: Ctx,
+    o: Obj,
+    geom: Bezier | Spline,
+    name: str,
+    labels: tuple[str, ...],
+    *,
+    curve_id: int | None = None,
 ) -> None:
-    """VContainer::AddSpline: length, angles and the two handle lengths."""
-    c.add_curve(o.id, CurveGeom(o.id, name, geom, labels))
+    """VContainer::AddSpline: length, angles and the two handle lengths. `curve_id` is the id the
+    curve takes when it is not the object itself (the copy an operation makes)."""
+    cid = o.id if curve_id is None else curve_id
+    c.add_curve(cid, CurveGeom(cid, name, geom, labels))
     c.add_curve_variables(o.id, name, geom.length(), geom.start_angle(), geom.end_angle())
     c.add_control_lengths(o.id, name, geom.c1_length(), geom.c2_length())
 
 
-def _register_path(
-    c: Ctx, o: Obj, path: BezierPath | SplinePath, name: str, labels: tuple[str, ...]
+def register_path(
+    c: Ctx,
+    o: Obj,
+    path: BezierPath | SplinePath,
+    name: str,
+    labels: tuple[str, ...],
+    *,
+    curve_id: int | None = None,
 ) -> None:
     """VContainer::AddCurveWithSegments: the path, then each segment under `<name>_Seg_<n>`."""
-    c.add_curve(o.id, CurveGeom(o.id, name, path, labels))
+    cid = o.id if curve_id is None else curve_id
+    c.add_curve(cid, CurveGeom(cid, name, path, labels))
     c.add_curve_variables(o.id, name, path.length(), path.start_angle(), path.end_angle())
     c.add_control_lengths(o.id, name, path.c1_length(), path.c2_length())
     for i, seg in enumerate(path.segments(), start=1):
@@ -65,28 +80,20 @@ def arc(c: Ctx, o: Obj) -> None:
 
 
 def arc_with_length(c: Ctx, o: Obj) -> None:
-    """`VToolArcWithLength`: an arc from a start angle and an arc length (`VArc::FindF2`).
-
-    A negative length makes Seamly2D draw the arc the other way round ("flipped"); that is not
-    evaluated yet."""
+    """`VToolArcWithLength`: an arc from a start angle and an arc length (`VArc::FindF2`). A
+    negative length gives a flipped arc: it runs clockwise from the start angle and its length is
+    negative."""
     radius = to_pixel(c.check(o, "radius", "10"), c.unit)
     length = to_pixel(c.check(o, "length", "10"), c.unit)
     f1 = c.check(o, "angle1", "180")
     center = c.point(o, "center")
-    if length < 0:
-        raise ObjectError(
-            Issue(
-                "not_implemented",
-                "an arc with a negative length (a flipped arc) is not evaluated yet",
-                o.id,
-                "length",
-                "use a positive length",
-            )
-        )
-    length = min(length, math.tau * radius)
+    flipped = length < 0
+    length = min(length, math.tau * radius)  # `length >= MaxLength` only limits the positive side
     arc_angle = abs(math.degrees(length / radius))
+    if flipped:
+        arc_angle = -arc_angle
     f2 = Line(Pt(0.0, 0.0), Pt(100.0, 0.0)).set_angle(f1 + arc_angle).angle()
-    arc_geom = Arc(center.p, radius, f1, f2)
+    arc_geom = Arc(center.p, radius, f1, f2, flipped)
     name = f"Arc_{center.label}_{o.id}{_duplicate_suffix(o)}"
     c.add_curve(o.id, CurveGeom(o.id, name, arc_geom, (center.label,)))
     c.add_curve_variables(
@@ -100,7 +107,7 @@ def cubic_bezier(c: Ctx, o: Obj) -> None:
     pts = [c.point(o, f"point{i}") for i in (1, 2, 3, 4)]
     bez = Bezier(pts[0].p, pts[1].p, pts[2].p, pts[3].p)
     name = f"Spl_{pts[0].label}_{pts[3].label}{_duplicate_suffix(o)}"
-    _register_spline(c, o, bez, name, tuple(p.label for p in pts))
+    register_spline(c, o, bez, name, tuple(p.label for p in pts))
 
 
 def _path_points(c: Ctx, o: Obj) -> list[PointGeom]:
@@ -124,7 +131,7 @@ def cubic_bezier_path(c: Ctx, o: Obj) -> None:
             Issue("too_few_points", "a Bezier path needs at least 4 points", o.id, "pathPoint")
         )
     name = f"SplPath_{points[0].label}_{points[-1].label}{_duplicate_suffix(o)}"
-    _register_path(c, o, path, name, tuple(p.label for p in points))
+    register_path(c, o, path, name, tuple(p.label for p in points))
 
 
 def _reject_length_options(o: Obj) -> None:
@@ -157,7 +164,7 @@ def spline_interactive(c: Ctx, o: Obj) -> None:
     _reject_length_options(o)
     spl = Spline(p1.p, p4.p, angle1, angle2, length1, length2)
     name = f"Spl_{p1.label}_{p4.label}{_duplicate_suffix(o)}"
-    _register_spline(c, o, spl, name, (p1.label, p4.label))
+    register_spline(c, o, spl, name, (p1.label, p4.label))
 
 
 def _handle_scale(p1: Pt, p4: Pt, k_curve: float) -> float:
@@ -190,7 +197,7 @@ def spline_simple(c: Ctx, o: Obj) -> None:
         _handle_length(p4.p, scale * k_asm2, angle2),
     )
     name = f"Spl_{p1.label}_{p4.label}{_duplicate_suffix(o)}"
-    _register_spline(c, o, spl, name, (p1.label, p4.label))
+    register_spline(c, o, spl, name, (p1.label, p4.label))
 
 
 def _spline_point(
@@ -228,15 +235,14 @@ def spline_path_interactive(c: Ctx, o: Obj) -> None:
         p = c.point_by_id(o, int(raw), "pSpline")
         path = path.append(_spline_point(p, a1, a1_text, a2, a2_text, l1, l2))
         labels.append(p.label)
-    if not path.nodes:
-        raise ObjectError(Issue("too_few_points", "a spline path needs points", o.id, "pathPoint"))
+    # An empty path is legal in Seamly2D (it holds an unnamed curve of length 0).
     _register_spline_path(c, o, path, tuple(labels))
 
 
 def _register_spline_path(c: Ctx, o: Obj, path: SplinePath, labels: tuple[str, ...]) -> None:
     """`VAbstractCubicBezierPath::CreateName` and `VContainer::AddCurveWithSegments`."""
     name = path.name + (_duplicate_suffix(o) if path.count() >= 1 else "")
-    _register_path(c, o, path, name, labels)
+    register_path(c, o, path, name, labels)
 
 
 def spline_path_simple(c: Ctx, o: Obj) -> None:

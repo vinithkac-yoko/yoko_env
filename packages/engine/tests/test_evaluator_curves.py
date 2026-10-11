@@ -468,9 +468,12 @@ def test_old_spline_path_from_coefficients() -> None:
     assert ev.symbols["SplPath_A_C"] == pytest.approx(20.0)
 
 
-def test_spline_path_needs_a_point() -> None:
+def test_an_empty_spline_path_is_an_unnamed_curve_of_length_zero() -> None:
+    """Seamly2D accepts it (some real patterns contain one) and registers the unnamed variables."""
     ev = evaluate(pattern(*three_points(), _spline_path(4, "pathInteractive", [])), {})
-    assert ev.issues[0].code == "too_few_points"
+    assert ev.issues == []
+    assert ev.symbols[""] == 0.0
+    assert ev.symbols["Angle1"] == 0.0 and ev.symbols["C2Length"] == 0.0
 
 
 def test_a_spline_can_be_cut_by_an_axis() -> None:
