@@ -13,8 +13,8 @@ from dataclasses import dataclass
 
 from yoko_engine.formula import FormulaError, FormulaErrorCode, parse
 from yoko_engine.geometry import Line, Pt
-from yoko_engine.geometry.curves import Arc, Bezier, BezierPath
-from yoko_engine.model import Obj
+from yoko_engine.geometry.curves import Arc, Bezier, BezierPath, Spline, SplinePath
+from yoko_engine.model import Obj, RawNode
 from yoko_engine.units import from_pixel, px_to_mm
 
 CURRENT_LENGTH = "CurrentLength"
@@ -51,7 +51,7 @@ class PointGeom:
 class CurveGeom:
     id: int
     name: str
-    geom: Arc | Bezier | BezierPath
+    geom: Arc | Bezier | Spline | BezierPath | SplinePath
     # labels of the points that define the curve, in order (needed to name pieces cut from it)
     labels: tuple[str, ...] = ()
 
@@ -203,12 +203,13 @@ class Ctx:
                 Issue("bad_number", f"'{attr}' is not a number: {raw!r}", o.id, attr)
             ) from None
 
-    def check(self, o: Obj, attr: str, default: str) -> float:
-        """Evaluate a formula attribute in the pattern unit.
+    def check(self, o: Obj, attr: str, default: str, node: RawNode | None = None) -> float:
+        """Evaluate a formula attribute in the pattern unit. `node` is a child element of `o` (a
+        `pathPoint`) when the formula sits there instead of on the object.
 
         Like Seamly2D's `VAbstractTool::CheckFormula`, an infinite or NaN result becomes 0.
         """
-        text = o.get(attr, default) or default
+        text = (node if node is not None else o).get(attr, default) or default
         try:
             f = parse(text)
             self.rec.uses_names.update(f.names)

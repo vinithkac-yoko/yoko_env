@@ -11,11 +11,11 @@ Values are in Seamly2D's pixel scale (see `yoko_engine.units`).
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import pairwise
 
 from yoko_engine.fuzzy import fuzzy_compare_possible_nulls, fuzzy_is_null
-from yoko_engine.geometry.qt import Line, Pt
+from yoko_engine.geometry.qt import Line, Pt, points_equal
 
 _COLLINEARITY_EPSILON = 1e-30
 _RECURSION_LIMIT = 32
@@ -279,6 +279,91 @@ class BezierPath:
     def c2_length(self) -> float:
         n = self.count()
         return self.segment(n).c2_length() if n > 0 else 0.0
+
+
+@dataclass(frozen=True, slots=True)
+class SplinePoint:
+    """`VSplinePoint`: a path point with a handle angle and length on each side."""
+
+    p: Pt
+    label: str
+    angle1: float = 0.0
+    angle2: float = 0.0
+    length1: float = 0.0
+    length2: float = 0.0
+
+    def with_angle2(self, value: float) -> SplinePoint:
+        """SetAngle2: normalise, and set angle1 to the opposite direction."""
+        angle2 = Line(Pt(0, 0), Pt(100, 0)).set_angle(value).angle()
+        angle1 = Line(Pt(0, 0), Pt(100, 0)).set_angle(angle2 + 180).angle()
+        return replace(self, angle2=angle2, angle1=angle1)
+
+    def with_angle1(self, value: float) -> SplinePoint:
+        """SetAngle1: normalise, and set angle2 to the opposite direction."""
+        angle1 = Line(Pt(0, 0), Pt(100, 0)).set_angle(value).angle()
+        angle2 = Line(Pt(0, 0), Pt(100, 0)).set_angle(angle1 + 180).angle()
+        return replace(self, angle1=angle1, angle2=angle2)
+
+
+@dataclass(frozen=True, slots=True)
+class SplinePath:
+    """`VSplinePath`: Bezier segments defined by angles and handle lengths at each point."""
+
+    nodes: tuple[SplinePoint, ...]
+
+    def append(self, point: SplinePoint) -> SplinePath:
+        """VSplinePath::append ignores a point equal to the last one."""
+        if self.nodes and points_equal(self.nodes[-1].p, point.p):
+            return self
+        return SplinePath((*self.nodes, point))
+
+    def count(self) -> int:
+        return len(self.nodes) - 1 if self.nodes else 0
+
+    def segment(self, index: int) -> Spline:
+        if index < 1 or index > self.count():
+            raise ValueError("this spline does not exist")
+        a = self.nodes[index - 1]
+        b = self.nodes[index]
+        return Spline(a.p, b.p, a.angle2, b.angle1, a.length2, b.length1)
+
+    def segments(self) -> list[Spline]:
+        return [self.segment(i) for i in range(1, self.count() + 1)]
+
+    def length(self) -> float:
+        total = 0.0
+        for seg in self.segments():
+            total += seg.length()
+        return total
+
+    def start_angle(self) -> float:
+        return self.nodes[0].angle2 if self.nodes else 0.0
+
+    def end_angle(self) -> float:
+        return self.nodes[-1].angle1 if self.nodes else 0.0
+
+    def c1_length(self) -> float:
+        return self.nodes[0].length2 if self.nodes else 0.0
+
+    def c2_length(self) -> float:
+        return self.nodes[-1].length1 if self.nodes else 0.0
+
+    def points(self) -> list[Pt]:
+        out: list[Pt] = []
+        for seg in self.segments():
+            if out:
+                out.pop()
+            out.extend(seg.points())
+        return out
+
+    @property
+    def name(self) -> str:
+        if not self.nodes:
+            return ""
+        name = f"SplPath_{self.nodes[0].label}"
+        if self.count() >= 1:
+            name += f"_{self.nodes[-1].label}"
+        return name
 
 
 def normalize_angle(value: float, start: float, end: float) -> float:

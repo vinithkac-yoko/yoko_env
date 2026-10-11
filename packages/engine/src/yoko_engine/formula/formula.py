@@ -71,3 +71,17 @@ def parse(text: str) -> Formula:
     for r in refs:
         seen.setdefault(r.name)
     return Formula(text, root, tuple(seen), tuple(refs))
+
+
+def is_single(text: str) -> bool:
+    """`QmuTokenParser::IsSingle`: the formula is one number (a minus sign is fine), nothing else.
+    A formula that does not parse is not single."""
+    if not text:
+        return False
+    try:
+        root = parse(text).root
+    except FormulaError:
+        return False
+    if isinstance(root, Neg):
+        root = root.operand
+    return isinstance(root, Num)

@@ -384,3 +384,16 @@ def test_arithmetic_matches_python(a: float, b: float) -> None:
     assert parse("min(a;b)").evaluate(values) == min(a, b)
     assert parse("max(a;b)").evaluate(values) == max(a, b)
     assert parse("a<b").evaluate(values) == float(a < b)
+
+
+def test_is_single_matches_seamly2d() -> None:
+    from yoko_engine.formula import is_single
+
+    assert is_single("270")
+    assert is_single("-5")
+    assert is_single("(5)")
+    assert not is_single("5+0")
+    assert not is_single("height")
+    assert not is_single("sin(0)")
+    assert not is_single("")
+    assert not is_single("1+")

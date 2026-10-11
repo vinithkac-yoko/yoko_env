@@ -52,7 +52,7 @@ def _register_cut_pieces(
     on_curve = seg_length != -1.0
     length = seg_length if on_curve else 0.0
     geom = curve.geom
-    if isinstance(geom, Bezier):
+    if isinstance(geom, Bezier | Spline):
         cut = cut_spline(geom, length)
         zero = Pt(0.0, 0.0)
         if cut is None:
@@ -63,7 +63,7 @@ def _register_cut_pieces(
         second = Spline.from_points(cut_point.p, p2b, p3b, geom.p4)
         names = (
             f"Spl_{curve.labels[0]}_{cut_point.label}",
-            f"Spl_{cut_point.label}_{curve.labels[3]}",
+            f"Spl_{cut_point.label}_{curve.labels[-1]}",
         )
         for name, spl in zip(names, (first, second), strict=True):
             if on_curve:

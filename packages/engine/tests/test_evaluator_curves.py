@@ -7,7 +7,7 @@ import math
 
 import pytest
 from yoko_engine.evaluator import evaluate
-from yoko_engine.model import DraftBlock, Obj, Pattern, RawNode
+from yoko_engine.model import DraftBlock, Obj, Pattern, RawNode, Variable
 
 
 def obj(
@@ -303,3 +303,187 @@ def test_flip_by_line_with_mismatched_lists_is_an_error() -> None:
         {},
     )
     assert ev.issues[0].code == "bad_operation"
+
+
+# ---- splines: simple, simpleInteractive, path, pathInteractive ----------------------------------
+
+
+def spline(id_: int, p1: int, p4: int, **attrs: str) -> Obj:
+    base = (("point1", str(p1)), ("point4", str(p4)))
+    return Obj(id_, "spline", "simpleInteractive", (*base, *attrs.items()))
+
+
+def line_ab() -> list[Obj]:
+    return [origin(), end(2, "B", 1, "30", "0")]
+
+
+def test_interactive_spline_from_angles_and_lengths() -> None:
+    ev = evaluate(
+        pattern(
+            *line_ab(),
+            spline(3, 1, 2, angle1="0", angle2="180", length1="10", length2="10"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.symbols["Spl_A_B"] == pytest.approx(30.0)
+    assert ev.symbols["Angle1Spl_A_B"] == 0.0
+    assert ev.symbols["Angle2Spl_A_B"] == 180.0
+    assert ev.symbols["C1LengthSpl_A_B"] == pytest.approx(10.0)
+
+
+def test_interactive_spline_formulas_can_use_variables_and_geometry() -> None:
+    p = pattern(
+        *line_ab(),
+        spline(3, 1, 2, angle1="0", angle2="180", length1="Line_A_B/3", length2="#h"),
+    )
+    p = Pattern(p.unit, p.version, p.measurements_file, (Variable("#h", "4"),), p.blocks)
+    ev = evaluate(p, {})
+    assert ev.issues == []
+    assert ev.symbols["C1LengthSpl_A_B"] == pytest.approx(10.0)
+    assert ev.symbols["C2LengthSpl_A_B"] == pytest.approx(4.0)
+
+
+def test_a_curve_drawn_twice_gets_a_numbered_name() -> None:
+    ev = evaluate(
+        pattern(
+            *line_ab(),
+            spline(3, 1, 2, angle1="0", angle2="180", length1="1", length2="1", duplicate="1"),
+        ),
+        {},
+    )
+    assert "Spl_A_B_1" in ev.symbols and "Spl_A_B" not in ev.symbols
+
+
+def test_auto_smooth_is_reported_not_guessed() -> None:
+    ev = evaluate(
+        pattern(
+            *line_ab(),
+            spline(3, 1, 2, angle1="0", angle2="180", length1="1", length2="1", autoSmooth="true"),
+        ),
+        {},
+    )
+    assert [i.code for i in ev.issues] == ["not_implemented"]
+    assert "Spl_A_B" not in ev.symbols
+
+
+def test_old_simple_spline_uses_the_quarter_circle_handle() -> None:
+    """With kAsm1 = kAsm2 = kCurve = 1 each handle is 4/3 tan(22.5 deg) times the radius of the
+    circle through the two points, 30 / sqrt(2): 11.7157 cm."""
+    ev = evaluate(
+        pattern(
+            *line_ab(),
+            obj(
+                3,
+                "simple",
+                tag="spline",
+                point1="1",
+                point4="2",
+                angle1="0",
+                angle2="180",
+                kAsm1="1",
+                kAsm2="1",
+                kCurve="1",
+            ),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    handle = 30 / math.sqrt(2) * 4 / 3 * math.tan(math.pi / 8)
+    assert ev.symbols["C1LengthSpl_A_B"] == pytest.approx(handle)
+    assert ev.symbols["C2LengthSpl_A_B"] == pytest.approx(handle)
+
+
+def _spline_path(id_: int, kind: str, points: list[dict[str, str]]) -> Obj:
+    kids = tuple(RawNode("pathPoint", tuple(p.items())) for p in points)
+    return obj(id_, kind, tag="spline", children=kids)
+
+
+def three_points() -> list[Obj]:
+    return [origin(), end(2, "B", 1, "10", "0"), end(3, "C", 1, "20", "0")]
+
+
+def test_interactive_spline_path_variables_and_segments() -> None:
+    path = _spline_path(
+        4,
+        "pathInteractive",
+        [
+            {"pSpline": "1", "angle1": "180", "angle2": "0", "length1": "0", "length2": "3"},
+            {"pSpline": "2", "angle1": "180", "angle2": "0", "length1": "3", "length2": "3"},
+            {"pSpline": "3", "angle1": "180", "angle2": "0", "length1": "3", "length2": "0"},
+        ],
+    )
+    ev = evaluate(pattern(*three_points(), path), {})
+    assert ev.issues == []
+    assert ev.symbols["SplPath_A_C"] == pytest.approx(20.0)
+    assert ev.symbols["SplPath_A_C_Seg_1"] == pytest.approx(10.0)
+    assert ev.symbols["Angle1SplPath_A_C"] == 0.0  # the first point's angle2
+    assert ev.symbols["Angle2SplPath_A_C"] == 180.0  # the last point's angle1
+    assert ev.symbols["C1LengthSplPath_A_C"] == pytest.approx(3.0)
+
+
+def test_spline_path_corrects_the_angle_that_is_a_plain_number() -> None:
+    """Handle angles of a point must be opposite. When they are not, the one that is a plain number
+    gives way to the one that is a formula (`VSplinePointData`)."""
+
+    def middle(a1: str, a2: str) -> list[dict[str, str]]:
+        return [
+            {"pSpline": "1", "angle1": "180", "angle2": "0", "length1": "0", "length2": "3"},
+            {"pSpline": "2", "angle1": a1, "angle2": a2, "length1": "3", "length2": "3"},
+            {"pSpline": "3", "angle1": "180", "angle2": "0", "length1": "3", "length2": "0"},
+        ]
+
+    # angle1 is a plain number, angle2 a formula: angle1 becomes angle2 + 180 = 180
+    plain_first = evaluate(
+        pattern(*three_points(), _spline_path(4, "pathInteractive", middle("90", "0+0"))), {}
+    )
+    assert plain_first.symbols["Angle2SplPath_A_C_Seg_1"] == 180.0
+    assert plain_first.symbols["Angle1SplPath_A_C_Seg_2"] == 0.0
+    # angle1 is a formula, angle2 a plain number: angle2 becomes angle1 + 180 = 270
+    formula_first = evaluate(
+        pattern(*three_points(), _spline_path(4, "pathInteractive", middle("0+90", "0"))), {}
+    )
+    assert formula_first.symbols["Angle1SplPath_A_C_Seg_2"] == 270.0
+    assert formula_first.symbols["Angle2SplPath_A_C_Seg_1"] == 90.0
+    # both plain numbers: angle2 is recomputed from angle1
+    both_plain = evaluate(
+        pattern(*three_points(), _spline_path(4, "pathInteractive", middle("90", "5"))), {}
+    )
+    assert both_plain.symbols["Angle1SplPath_A_C_Seg_2"] == 270.0
+
+
+def test_old_spline_path_from_coefficients() -> None:
+    path = _spline_path(
+        4,
+        "path",
+        [
+            {"pSpline": "1", "kAsm1": "1", "angle": "0", "kAsm2": "1"},
+            {"pSpline": "2", "kAsm1": "1", "angle": "0", "kAsm2": "1"},
+            {"pSpline": "3", "kAsm1": "1", "angle": "0", "kAsm2": "1"},
+        ],
+    )
+    path = Obj(path.id, path.tag, path.kind, (*path.attrs, ("kCurve", "1")), path.children)
+    ev = evaluate(pattern(*three_points(), path), {})
+    assert ev.issues == []
+    assert ev.symbols["SplPath_A_C"] == pytest.approx(20.0)
+
+
+def test_spline_path_needs_a_point() -> None:
+    ev = evaluate(pattern(*three_points(), _spline_path(4, "pathInteractive", [])), {})
+    assert ev.issues[0].code == "too_few_points"
+
+
+def test_a_spline_can_be_cut_by_an_axis() -> None:
+    """curveIntersectAxis splits the spline it crosses and registers both pieces."""
+    ev = evaluate(
+        pattern(
+            obj(1, "single", name="A", x="1", y="1"),
+            end(2, "B", 1, "30", "0"),
+            end(3, "C", 1, "15", "0"),
+            spline(4, 1, 2, angle1="0", angle2="180", length1="10", length2="10"),
+            obj(5, "curveIntersectAxis", name="X", basePoint="3", curve="4", angle="90"),
+        ),
+        {},
+    )
+    assert ev.issues == []
+    assert ev.symbols["Spl_A_X"] + ev.symbols["Spl_X_B"] == pytest.approx(30.0, abs=0.2)

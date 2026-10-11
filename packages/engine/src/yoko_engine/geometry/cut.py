@@ -15,6 +15,8 @@ from yoko_engine.geometry.curves import (
     Bezier,
     BezierPath,
     Spline,
+    SplinePath,
+    SplinePoint,
     flatten_bezier,
     path_length,
 )
@@ -152,83 +154,6 @@ def cut_spline(curve: Bezier | Spline, length: float) -> CutResult | None:
 
 
 # -- spline paths (VSplinePath) ----------------------------------------------------------------
-@dataclass(frozen=True, slots=True)
-class SplinePoint:
-    """`VSplinePoint`: a path point with a handle angle and length on each side."""
-
-    p: Pt
-    label: str
-    angle1: float = 0.0
-    angle2: float = 0.0
-    length1: float = 0.0
-    length2: float = 0.0
-
-    def with_angle2(self, value: float) -> SplinePoint:
-        """SetAngle2: normalise, and set angle1 to the opposite direction."""
-        angle2 = Line(Pt(0, 0), Pt(100, 0)).set_angle(value).angle()
-        angle1 = Line(Pt(0, 0), Pt(100, 0)).set_angle(angle2 + 180).angle()
-        return replace(self, angle2=angle2, angle1=angle1)
-
-    def with_angle1(self, value: float) -> SplinePoint:
-        """SetAngle1: normalise, and set angle2 to the opposite direction."""
-        angle1 = Line(Pt(0, 0), Pt(100, 0)).set_angle(value).angle()
-        angle2 = Line(Pt(0, 0), Pt(100, 0)).set_angle(angle1 + 180).angle()
-        return replace(self, angle1=angle1, angle2=angle2)
-
-
-@dataclass(frozen=True, slots=True)
-class SplinePath:
-    """`VSplinePath`: Bezier segments defined by angles and handle lengths at each point."""
-
-    points: tuple[SplinePoint, ...]
-
-    def append(self, point: SplinePoint) -> SplinePath:
-        """VSplinePath::append ignores a point equal to the last one."""
-        if self.points and points_equal(self.points[-1].p, point.p):
-            return self
-        return SplinePath((*self.points, point))
-
-    def count(self) -> int:
-        return len(self.points) - 1 if self.points else 0
-
-    def segment(self, index: int) -> Spline:
-        if index < 1 or index > self.count():
-            raise ValueError("this spline does not exist")
-        a = self.points[index - 1]
-        b = self.points[index]
-        return Spline(a.p, b.p, a.angle2, b.angle1, a.length2, b.length1)
-
-    def segments(self) -> list[Spline]:
-        return [self.segment(i) for i in range(1, self.count() + 1)]
-
-    def length(self) -> float:
-        total = 0.0
-        for seg in self.segments():
-            total += seg.length()
-        return total
-
-    def start_angle(self) -> float:
-        return self.points[0].angle2 if self.points else 0.0
-
-    def end_angle(self) -> float:
-        return self.points[-1].angle1 if self.points else 0.0
-
-    def c1_length(self) -> float:
-        return self.points[0].length2 if self.points else 0.0
-
-    def c2_length(self) -> float:
-        return self.points[-1].length1 if self.points else 0.0
-
-    @property
-    def name(self) -> str:
-        if not self.points:
-            return ""
-        name = f"SplPath_{self.points[0].label}"
-        if self.count() >= 1:
-            name += f"_{self.points[-1].label}"
-        return name
-
-
 def spline_path_points(path: BezierPath, labels: tuple[str, ...]) -> list[SplinePoint]:
     """VCubicBezierPath::GetSplinePath: the path re-expressed as angle-and-length points."""
     size = path.count()
@@ -250,7 +175,7 @@ class PathCut:
 
 
 def cut_spline_path(
-    path: BezierPath, labels: tuple[str, ...], length: float, cut_label: str
+    path: BezierPath | SplinePath, labels: tuple[str, ...], length: float, cut_label: str
 ) -> PathCut | None:
     """VAbstractCubicBezierPath::CutSplinePath combined with VToolCutSplinePath::CutSplinePath:
     cut a path at `length` and return the cut point and the two resulting spline paths."""
@@ -262,7 +187,7 @@ def cut_spline_path(
     max_length = full - MIN_CUT_LENGTH
     length = min(max(length, MIN_CUT_LENGTH), max_length)
 
-    points = spline_path_points(path, labels)
+    points = list(path.nodes) if isinstance(path, SplinePath) else spline_path_points(path, labels)
     running = 0.0
     for i in range(1, path.count() + 1):
         spl = path.segment(i)

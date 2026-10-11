@@ -1,25 +1,94 @@
 {
-  "all_tools_pattern/alltools_pattern.sm2d": 23,
-  "basic_block_women-2016.sm2d": 84,
-  "bra/bra.sm2d": 17,
-  "gent_jacket_with_tummy.sm2d": 97,
-  "glimited/glimited_no_m.sm2d": 2,
-  "glimited/glimited_vit.sm2d": 2,
-  "glimited/glimited_vst.sm2d": 3,
-  "imk_zhaketa/imk_zhaketa_poluprilegayuschego_silueta.sm2d": 13,
-  "issue_256/issue_256.sm2d": 4,
-  "issue_256/issue_256_wrong_path.sm2d": 4,
-  "keiko_skirt/keiko_skirt.sm2d": 15,
-  "maleshirt/male_shirt.sm2d": 48,
-  "modell/modell_2.sm2d": 25,
-  "moulage/07_armhole_adjustment_010.sm2d": 48,
-  "moulage/moulage_05_armhole_neckline.sm2d": 28,
-  "pantaloon/pantalon_base_Eli.sm2d": 32,
-  "patron_blusa/patron_blusa.sm2d": 14,
-  "steampunk_trousers/steampunk_trousers.sm2d": 52,
-  "susan/pajama_top_wrap2.sm2d": 22,
-  "test_dart.sm2d": 13,
-  "trousers/trousers.sm2d": 34,
-  "tshirt_test.sm2d": 16,
-  "zigzag/zigzag.sm2d": 166
+  "all_tools_pattern/alltools_pattern.sm2d": {
+    "points": 23,
+    "variables": 105
+  },
+  "basic_block_women-2016.sm2d": {
+    "points": 84,
+    "variables": 490
+  },
+  "bra/bra.sm2d": {
+    "points": 17,
+    "variables": 188
+  },
+  "gent_jacket_with_tummy.sm2d": {
+    "points": 97,
+    "variables": 542
+  },
+  "glimited/glimited_no_m.sm2d": {
+    "points": 2,
+    "variables": 3
+  },
+  "glimited/glimited_vit.sm2d": {
+    "points": 2,
+    "variables": 3
+  },
+  "glimited/glimited_vst.sm2d": {
+    "points": 3,
+    "variables": 7
+  },
+  "imk_zhaketa/imk_zhaketa_poluprilegayuschego_silueta.sm2d": {
+    "points": 13,
+    "variables": 58
+  },
+  "issue_256/issue_256.sm2d": {
+    "points": 4,
+    "variables": 28
+  },
+  "issue_256/issue_256_wrong_path.sm2d": {
+    "points": 4,
+    "variables": 28
+  },
+  "keiko_skirt/keiko_skirt.sm2d": {
+    "points": 15,
+    "variables": 170
+  },
+  "maleshirt/male_shirt.sm2d": {
+    "points": 54,
+    "variables": 355
+  },
+  "modell/modell_2.sm2d": {
+    "points": 25,
+    "variables": 187
+  },
+  "moulage/07_armhole_adjustment_010.sm2d": {
+    "points": 48,
+    "variables": 314
+  },
+  "moulage/moulage_05_armhole_neckline.sm2d": {
+    "points": 28,
+    "variables": 203
+  },
+  "pantaloon/pantalon_base_Eli.sm2d": {
+    "points": 32,
+    "variables": 149
+  },
+  "patron_blusa/patron_blusa.sm2d": {
+    "points": 14,
+    "variables": 159
+  },
+  "steampunk_trousers/steampunk_trousers.sm2d": {
+    "points": 52,
+    "variables": 321
+  },
+  "susan/pajama_top_wrap2.sm2d": {
+    "points": 22,
+    "variables": 187
+  },
+  "test_dart.sm2d": {
+    "points": 13,
+    "variables": 54
+  },
+  "trousers/trousers.sm2d": {
+    "points": 43,
+    "variables": 277
+  },
+  "tshirt_test.sm2d": {
+    "points": 16,
+    "variables": 82
+  },
+  "zigzag/zigzag.sm2d": {
+    "points": 188,
+    "variables": 1123
+  }
 }

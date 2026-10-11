@@ -20,6 +20,10 @@ HANDLERS: dict[str, Handler] = {
     "arc:simple": curves.arc,
     "spline:cubicBezier": curves.cubic_bezier,
     "spline:cubicBezierPath": curves.cubic_bezier_path,
+    "spline:simpleInteractive": curves.spline_interactive,
+    "spline:simple": curves.spline_simple,
+    "spline:pathInteractive": curves.spline_path_interactive,
+    "spline:path": curves.spline_path_simple,
     "operation:flippingByLine": operations.flip_by_line,
 }
 

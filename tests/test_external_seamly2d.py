@@ -31,7 +31,9 @@ EXT = Path(__file__).resolve().parents[1] / "fixtures/external/seamly2d"
 UPGRADED = sorted((EXT / "upgraded").rglob("*.sm2d"))
 ORIGINAL_PATTERNS = sorted((EXT / "original").rglob("*.sm2d"))
 MEASUREMENTS = sorted([*(EXT / "original").rglob("*.smis"), *(EXT / "original").rglob("*.smms")])
-RATCHET: dict[str, int] = json.loads((Path(__file__).parent / "external_ratchet.json").read_text())
+RATCHET: dict[str, dict[str, int]] = json.loads(
+    (Path(__file__).parent / "external_ratchet.json").read_text()
+)
 
 
 def rel(p: Path, base: str) -> str:
@@ -117,7 +119,7 @@ def test_empty_files_fail_clearly() -> None:
 
 
 @pytest.mark.parametrize("path", UPGRADED, ids=lambda p: rel(p, "upgraded"))
-def test_engine_matches_seamly2d_on_every_point_it_computes(path: Path) -> None:
+def test_engine_matches_seamly2d_on_every_point_and_variable_it_computes(path: Path) -> None:
     name = rel(path, "upgraded")
     pattern = read_pattern(path)
     values: dict[str, float] = {}
@@ -127,14 +129,23 @@ def test_engine_matches_seamly2d_on_every_point_it_computes(path: Path) -> None:
             values = read_measurements(m).values()
     ev = evaluate(pattern, values)
     oracle = json.loads((EXT / "oracle" / f"{name}.seamly2d.json").read_text())
-    exact = 0
+    points = 0
     for o in oracle["points"]:
         mine = ev.points.get(o["id"])
         if mine is None:
             continue
         assert (mine.p.x, mine.p.y) == (o["x_px"], o["y_px"]), (name, o["id"], o["name"])
-        exact += 1
-    assert exact >= RATCHET[name], f"{name}: {exact} points, the ratchet says {RATCHET[name]}"
+        points += 1
+    variables = 0
+    for var, value in oracle["variables"].items():
+        if var in ev.symbols:
+            assert ev.symbols[var] == value, (name, var, ev.symbols[var], value)
+            variables += 1
+    want = RATCHET[name]
+    assert points >= want["points"], f"{name}: {points} points, the ratchet says {want['points']}"
+    assert variables >= want["variables"], (
+        f"{name}: {variables} variables, the ratchet says {want['variables']}"
+    )
 
 
 CONVERTED = sorted((EXT / "converted").rglob("*.sm[ci]s")) + sorted(

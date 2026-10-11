@@ -26,8 +26,9 @@ EXT = ROOT / "fixtures/external/seamly2d"
 RATCHET = ROOT / "tests/external_ratchet.json"
 
 
-def compare(rel: Path) -> tuple[int, int, int, Counter[str]]:
-    """(exact, wrong, missing, unknown kinds) for one upgraded pattern."""
+def compare(rel: Path) -> tuple[dict[str, int], Counter[str]]:
+    """Counts for one upgraded pattern: points and variables Seamly2D computed that the engine gets
+    exactly right, wrong, or does not compute; and the kinds the engine does not know yet."""
     pattern = read_pattern(EXT / "upgraded" / rel)
     values: dict[str, float] = {}
     if pattern.measurements_file:
@@ -36,37 +37,49 @@ def compare(rel: Path) -> tuple[int, int, int, Counter[str]]:
             values = read_measurements(m).values()
     ev = evaluate(pattern, values)
     oracle = json.loads((EXT / "oracle" / f"{rel}.seamly2d.json").read_text())
-    exact = wrong = missing = 0
+    counts = {"points": 0, "wrong_points": 0, "missing_points": 0}
+    counts.update({"variables": 0, "wrong_variables": 0})
     for o in oracle["points"]:
         mine = ev.points.get(o["id"])
         if mine is None:
-            missing += 1
+            counts["missing_points"] += 1
         elif (mine.p.x, mine.p.y) == (o["x_px"], o["y_px"]):
-            exact += 1
+            counts["points"] += 1
         else:
-            wrong += 1
+            counts["wrong_points"] += 1
+    for name, value in oracle["variables"].items():
+        if name not in ev.symbols:
+            continue
+        if ev.symbols[name] == value:
+            counts["variables"] += 1
+        else:
+            counts["wrong_variables"] += 1
     kinds: Counter[str] = Counter()
     for i in ev.issues:
         if i.code == "unknown_kind":
             kinds[i.message] += 1
-    return exact, wrong, missing, kinds
+    return counts, kinds
 
 
 def main() -> None:
-    rows = {}
+    rows: dict[str, dict[str, int]] = {}
     all_kinds: Counter[str] = Counter()
     for f in sorted((EXT / "upgraded").rglob("*.sm2d")):
         rel = f.relative_to(EXT / "upgraded")
-        exact, wrong, missing, kinds = compare(rel)
-        rows[rel.as_posix()] = exact
+        counts, kinds = compare(rel)
+        rows[rel.as_posix()] = {"points": counts["points"], "variables": counts["variables"]}
         all_kinds.update(kinds)
-        print(f"{rel.as_posix():66s} exact {exact:4d}  wrong {wrong:3d}  not computed {missing:4d}")
+        print(
+            f"{rel.as_posix():62s} points {counts['points']:4d} (wrong {counts['wrong_points']}, "
+            f"not computed {counts['missing_points']:3d})  variables {counts['variables']:5d} "
+            f"(wrong {counts['wrong_variables']})"
+        )
     print("\nnot implemented yet (issues per kind):")
     for msg, n in all_kinds.most_common():
         print(f"  {n:4d}  {msg}")
     if "--write" in sys.argv:
         old = json.loads(RATCHET.read_text()) if RATCHET.exists() else {}
-        new = {k: max(v, old.get(k, 0)) for k, v in rows.items()}
+        new = {k: {m: max(v[m], old.get(k, {}).get(m, 0)) for m in v} for k, v in rows.items()}
         RATCHET.write_text(json.dumps(new, indent=2, sort_keys=True) + "\n")
         print(f"\nwrote {RATCHET.relative_to(ROOT)}")
 
