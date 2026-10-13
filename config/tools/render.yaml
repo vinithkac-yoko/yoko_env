@@ -1,0 +1,27 @@
+name: render
+version: 1
+tier: read
+description: 'Draw the pattern as an image so you can see it.
+
+  Use it when you want to check the shape of what has been drafted. Do not use it when you need exact
+  numbers: use measure or get_object.'
+parameters:
+  format:
+    type: string
+    enum:
+    - svg
+    - png
+    default: svg
+    description: svg is text; png is a picture (base64).
+  width_px:
+    type: integer
+    minimum: 200
+    maximum: 3000
+    default: 1000
+    description: Width of the png in pixels.
+required: []
+examples:
+- instruction: Show me the pattern
+  call:
+    format: svg
+handler: render

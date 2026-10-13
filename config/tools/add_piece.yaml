@@ -1,0 +1,46 @@
+name: add_piece
+version: 1
+tier: structure
+description: 'Make a pattern piece from a closed outline of points and curves.
+
+  Use it when the lines drawn so far enclose a shape that should become a piece (a front, a sleeve, a
+  facing). Do not use it when the piece already exists and only its outline changes: use set_piece.'
+parameters:
+  name:
+    type: string
+    maxLength: 80
+    description: Name of the piece, for example C - Bodice Front.
+  nodes:
+    type: array
+    minItems: 3
+    maxItems: 200
+    description: 'The outline, going once round the piece: points and the curves or arcs between them,
+      in order. A curve between two points goes in the list between them.'
+    items:
+      type: object
+      additionalProperties: false
+      required:
+      - object
+      properties:
+        object:
+          type: string
+          x-ref: object
+          description: 'A point, curve or arc: its label (a point), its name (a curve or arc), #<id>,
+            or a landmark name.'
+        reverse:
+          type: boolean
+          default: false
+          description: True if the curve runs against the direction of the outline.
+required:
+- name
+- nodes
+examples:
+- instruction: Make a piece from the rectangle A, B, D, C
+  call:
+    name: Rectangle
+    nodes:
+    - object: A
+    - object: B
+    - object: D
+    - object: C
+handler: add_piece

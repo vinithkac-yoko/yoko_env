@@ -77,11 +77,14 @@ class Toolbox:
         handlers: Mapping[str, Handler] | None = None,
         library: Any = None,
     ) -> None:
+        from yoko_tools.handlers import HANDLERS
+
         self.session = session
         self.specs = dict(specs)
         self.landmarks = landmarks
-        self.handlers = dict(handlers or {})
+        self.handlers: dict[str, Handler] = {**HANDLERS, **(handlers or {})}
         self.library = library
+        self.loaded: dict[str, PatternSession] = {}  # library patterns opened with load_pattern
 
     # -- names -> ids ---------------------------------------------------------------------------
     def resolve(self, name: str, kind: str, field: str) -> Target:
@@ -335,6 +338,18 @@ class Toolbox:
     def _apply(self, action: Action, meta: ActionMeta) -> dict[str, Any]:
         result = self.session.apply(action, meta)
         return self.report(result)
+
+    def ok(self, data: Mapping[str, Any]) -> dict[str, Any]:
+        """The result of a tool that only reads: the common shape, with the answer in `data`."""
+        return {
+            "ok": True,
+            "created": [],
+            "changed": [],
+            "deleted": [],
+            "warnings": [],
+            "diff": {},
+            "data": dict(data),
+        }
 
     def report(self, result: Result) -> dict[str, Any]:
         ev = self.session.evaluation

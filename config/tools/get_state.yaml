@@ -1,0 +1,25 @@
+name: get_state
+version: 1
+tier: read
+description: 'Summarise the pattern now: how many objects, which pieces and variables exist and their
+  values, and any problems.
+
+  Use it when you need to know where you are before deciding the next step. Do not use it when you need
+  the details of one object: use get_object.'
+parameters:
+  scope:
+    type: string
+    enum:
+    - summary
+    - variables
+    - pieces
+    - problems
+    default: summary
+    description: summary is a short overview; variables lists every variable with its value; pieces lists
+      the pieces; problems lists every error and warning.
+required: []
+examples:
+- instruction: What have I built so far?
+  call:
+    scope: summary
+handler: get_state

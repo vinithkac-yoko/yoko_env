@@ -1,0 +1,20 @@
+name: add_block
+version: 1
+tier: structure
+description: 'Add an empty drafting block. A block is a separate working area of the pattern, usually
+  with its own starting point.
+
+  Use it when a new piece is drafted from scratch, apart from the others. Do not use it when the work
+  belongs to an existing block.'
+parameters:
+  name:
+    type: string
+    maxLength: 80
+    description: Name of the block.
+required:
+- name
+examples:
+- instruction: Start a block for the facing
+  call:
+    name: Facing
+handler: add_block

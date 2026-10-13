@@ -1,0 +1,13 @@
+name: list_measurements
+version: 1
+tier: read
+description: 'List the body measurements the pattern is drafted for, with their values.
+
+  Use it when you need a measurement''s exact name or value for a formula. Do not use it when you want
+  a length in the drawing: use measure.'
+parameters: {}
+required: []
+examples:
+- instruction: What measurements are there?
+  call: {}
+handler: list_measurements

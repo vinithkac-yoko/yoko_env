@@ -1,0 +1,36 @@
+name: search_library
+version: 1
+tier: library
+description: 'Search the pattern library for patterns like a described one: by words, tags and garment
+  type.
+
+  Use it when you are choosing a starting pattern or looking for a similar style. Do not use it when you
+  already know the pattern: use load_pattern.'
+parameters:
+  brief:
+    type: string
+    maxLength: 200
+    description: Words describing what you want, for example a-line skirt with yoke.
+  tags:
+    type: array
+    maxItems: 10
+    items:
+      type: string
+    description: Only patterns that have all these tags.
+  garment_type:
+    type: string
+    maxLength: 40
+    description: For example skirt, trousers, bodice, sleeve.
+  limit:
+    type: integer
+    minimum: 1
+    maximum: 50
+    default: 10
+    description: Most results.
+required: []
+examples:
+- instruction: Find a skirt block
+  call:
+    brief: skirt
+    garment_type: skirt
+handler: search_library

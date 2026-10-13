@@ -1,0 +1,43 @@
+name: find_objects
+version: 1
+tier: read
+description: 'List objects that match: by kind, by part of the name, or by closeness to a point.
+
+  Use it when you need to find a point or curve and do not know its name. Do not use it when you know
+  its name: use get_object.'
+parameters:
+  kind:
+    type: string
+    enum:
+    - point
+    - curve
+    - line
+    - operation
+    description: Only objects of this kind.
+  text:
+    type: string
+    maxLength: 60
+    description: Only objects whose name contains this text (not case sensitive).
+  near:
+    type: string
+    x-ref: point
+    description: A point; only objects within `within_mm` of it. Give its label or landmark name.
+  within_mm:
+    type: number
+    minimum: 0
+    maximum: 2000
+    default: 50
+    description: Distance for `near`, in millimetres.
+  limit:
+    type: integer
+    minimum: 1
+    maximum: 200
+    default: 40
+    description: Most objects to list.
+required: []
+examples:
+- instruction: Which points are near A?
+  call:
+    near: A
+    within_mm: 30
+handler: find_objects

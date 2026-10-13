@@ -1,0 +1,25 @@
+name: copy_piece_from
+version: 1
+tier: library
+description: 'Copy one piece, with every point, curve and variable it depends on, from a loaded library
+  pattern into the pattern you are working on.
+
+  Use it when a piece from another pattern is needed here, for example a sleeve from the basic set. Do
+  not use it when the piece is already here: edit it instead.'
+parameters:
+  pattern:
+    type: string
+    maxLength: 64
+    description: The loaded pattern's id.
+  piece:
+    type: string
+    description: 'A piece: its name, for example C - Bodice Front, or #<id>.'
+required:
+- pattern
+- piece
+examples:
+- instruction: Bring the sleeve over
+  call:
+    pattern: aldrich-womens-6th-basic
+    piece: D - 1 Piece Sleeve
+handler: copy_piece_from

@@ -1,0 +1,26 @@
+name: measure
+version: 1
+tier: read
+description: 'Measure between two points (distance and direction), or the length of a curve or arc. Millimetres
+  and the pattern''s unit are both given.
+
+  Use it when you need a current length or angle, for example to check a target amount. Do not use it
+  when you want to change something: use a creating or editing tool.'
+parameters:
+  from:
+    type: string
+    x-ref: object
+    description: 'A point, or a curve or arc to measure the length of: its label (a point), its name (a
+      curve or arc), #<id>, or a landmark name.'
+  to:
+    type: string
+    x-ref: point
+    description: A second point. Leave out when measuring a curve.
+required:
+- from
+examples:
+- instruction: How far is B from A?
+  call:
+    from: A
+    to: B
+handler: measure

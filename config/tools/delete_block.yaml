@@ -1,0 +1,19 @@
+name: delete_block
+version: 1
+tier: structure
+description: 'Delete a drafting block that has nothing in it.
+
+  Use it when an empty block is left over. Do not use it when the block still has objects or pieces: delete
+  or move those first.'
+parameters:
+  block:
+    type: string
+    maxLength: 80
+    description: The block's name.
+required:
+- block
+examples:
+- instruction: Remove the empty block
+  call:
+    block: Neck facing
+handler: delete_block

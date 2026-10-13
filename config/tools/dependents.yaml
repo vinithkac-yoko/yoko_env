@@ -1,0 +1,19 @@
+name: dependents
+version: 1
+tier: read
+description: 'List the objects built directly from an object.
+
+  Use it when you want to know what changes if you edit or delete it. Do not use it when you want what
+  it was built from: use dependencies.'
+parameters:
+  object:
+    type: string
+    x-ref: object
+    description: 'An object: its label (a point), its name (a curve or arc), #<id>, or a landmark name.'
+required:
+- object
+examples:
+- instruction: What uses B?
+  call:
+    object: B
+handler: dependents

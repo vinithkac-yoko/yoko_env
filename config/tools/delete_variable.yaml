@@ -1,0 +1,20 @@
+name: delete_variable
+version: 1
+tier: variable
+description: 'Remove a variable. It is refused, with the list of formulas that use it, if anything uses
+  it.
+
+  Use it when a variable is no longer needed and nothing uses it. Do not use it when formulas still use
+  it: change those first.'
+parameters:
+  name:
+    type: string
+    maxLength: 48
+    description: 'The variable''s name, for example #s1_hem_flare.'
+required:
+- name
+examples:
+- instruction: Remove the unused variable
+  call:
+    name: '#s1_hem_flare'
+handler: delete_variable

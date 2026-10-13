@@ -1,0 +1,33 @@
+name: set_variable
+version: 1
+tier: variable
+description: 'Create a named number for the pattern, or change one that exists. Other formulas can use
+  it by name, and changing it moves everything built from it.
+
+  Use it when an amount should be one value used in several places, or a design amount (like a hem flare)
+  should be easy to change later. Do not use it when the number is used once and will never change: write
+  it into the formula directly.'
+parameters:
+  name:
+    type: string
+    maxLength: 48
+    description: 'Name starting with #, for example #s1_hem_flare.'
+  formula:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: A number or a formula in the pattern's unit; it may use measurements and other variables.
+  description:
+    type: string
+    maxLength: 200
+    description: What the number is for, in plain words.
+required:
+- name
+- formula
+examples:
+- instruction: Make the hem flare 6 cm
+  call:
+    name: '#s1_hem_flare'
+    formula: '6'
+    description: 'step 1: hem flare'
+handler: set_variable

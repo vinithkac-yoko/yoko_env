@@ -1,0 +1,20 @@
+name: load_pattern
+version: 1
+tier: library
+description: 'Open a library pattern to look at or to copy pieces from. It does not replace the pattern
+  you are working on.
+
+  Use it when you want to see a library pattern or copy a piece from it. Do not use it when you want to
+  start work from it: the starting pattern is chosen when the work begins.'
+parameters:
+  pattern:
+    type: string
+    maxLength: 64
+    description: The pattern's id in the library, for example aldrich-womens-6th-basic.
+required:
+- pattern
+examples:
+- instruction: Open the basic set
+  call:
+    pattern: aldrich-womens-6th-basic
+handler: load_pattern

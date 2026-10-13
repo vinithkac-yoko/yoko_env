@@ -1,0 +1,44 @@
+name: set_piece
+version: 1
+tier: structure
+description: 'Rename a piece, give it a different outline, or both. Everything else about the piece stays.
+
+  Use it when a piece needs another name or its outline must follow different points or curves. Do not
+  use it when you need a second piece: use add_piece.'
+parameters:
+  piece:
+    type: string
+    description: 'A piece: its name, for example C - Bodice Front, or #<id>.'
+  name:
+    type: string
+    maxLength: 80
+    description: The new name.
+  nodes:
+    type: array
+    minItems: 3
+    maxItems: 200
+    description: 'The outline, going once round the piece: points and the curves or arcs between them,
+      in order. A curve between two points goes in the list between them.'
+    items:
+      type: object
+      additionalProperties: false
+      required:
+      - object
+      properties:
+        object:
+          type: string
+          x-ref: object
+          description: 'A point, curve or arc: its label (a point), its name (a curve or arc), #<id>,
+            or a landmark name.'
+        reverse:
+          type: boolean
+          default: false
+          description: True if the curve runs against the direction of the outline.
+required:
+- piece
+examples:
+- instruction: Rename the piece
+  call:
+    piece: Rectangle
+    name: Front
+handler: set_piece

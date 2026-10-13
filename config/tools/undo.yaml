@@ -1,0 +1,13 @@
+name: undo
+version: 1
+tier: structure
+description: 'Take back the last change.
+
+  Use it when the last call was a mistake and nothing was built on it yet. Do not use it when you want
+  to change one object but keep later work: use an edit tool.'
+parameters: {}
+required: []
+examples:
+- instruction: Undo the last step
+  call: {}
+handler: undo

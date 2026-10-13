@@ -1,0 +1,25 @@
+name: rename_block
+version: 1
+tier: structure
+description: 'Give a drafting block another name.
+
+  Use it when a block''s name is wrong or unclear. Do not use it when the block should be a different
+  block.'
+parameters:
+  block:
+    type: string
+    maxLength: 80
+    description: The block's current name.
+  name:
+    type: string
+    maxLength: 80
+    description: The new name.
+required:
+- block
+- name
+examples:
+- instruction: Rename the block
+  call:
+    block: Facing
+    name: Neck facing
+handler: rename_block

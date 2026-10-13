@@ -1,0 +1,18 @@
+name: delete_piece
+version: 1
+tier: structure
+description: 'Delete a piece. The points and curves it was drawn from stay.
+
+  Use it when a piece is not wanted. Do not use it when you want to delete the points and curves: delete
+  the piece first, then them.'
+parameters:
+  piece:
+    type: string
+    description: 'A piece: its name, for example C - Bodice Front, or #<id>.'
+required:
+- piece
+examples:
+- instruction: Remove the piece
+  call:
+    piece: Front
+handler: delete_piece
