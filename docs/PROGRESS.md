@@ -107,6 +107,23 @@ Not done, and why:
 - Union and internal paths cannot be created by an action yet; internal paths are kept, not computed (the depth decided with Kasi).
 - The landmark sheet's LibreOffice render could not be checked in this container (LibreOffice cannot open any file here); the workbook reads back correctly with openpyxl and has no formulas.
 
+## Phase 4 plan (tool layer), written before coding, 2026-10-13
+
+Kasi's answers to the Phase 3 report are above; he said go ahead with my assumptions.
+
+Deliverables (spec section 6, Addendum 1 sections 7, 8, 15):
+
+1. **YAML tools** in `config/tools/`, one file per tool (`name`, `version`, `tier`, `description`, `parameters` as JSON Schema with `x-ref` / `x-formula` hints, `examples`, and for primitives an `engine` block saying which Seamly2D element the call builds). A loader validates each file, builds the Pydantic model and the JSON Schema, and hashes it. About 40 primitive tools (the parity matrix), the variable, piece and block tools, read tools (`get_state`, `get_object`, `find_objects`, `dependents`, `dependencies`, `measure`, `list_measurements`, `render`), library tools (`search_library`, `load_pattern`, `copy_piece_from`). **Edit and delete tools are derived** from each primitive's file (`edit_<tool>`, `delete_<tool>`), not written twice.
+2. **Executor** (`Toolbox`): a tool call becomes session actions; labels and landmark names are accepted wherever an object is named; every call returns `{ok, created, changed, deleted, warnings, error?: {code, field, message, hint}}` plus a compact state diff; arguments are validated and capped (Addendum 1 section 14).
+3. **Adapters**: Anthropic tools, OpenAI functions and a compact text DSL, each parsed back to the canonical call, with round-trip tests (property-based).
+4. **v1 text**: every tool description and the first drafter prompt (`config/prompts/drafter/v1.md`), bundles (prompt + tool descriptions + subset) hashed.
+5. **Plan schema** (`config/plan/schema.json`, versioned) with typed parameters (value + unit) that become variables `#s<step>_<param>`; plan validation (every parameter present, typed, in units, within the recipe's range once recipes exist).
+6. **Recipe procedure template** `docs/manipulations/TEMPLATE.md` and first drafts of the 8 most used procedures, marked as drafts for the pattern makers: I write the structure and the geometry that is defined by the tools, never the drafting rules, and list what I need them to say.
+
+Checks: the tools build a pattern that the pinned Seamly2D opens and computes the same (a case pattern made only through tool calls); adapter round trips; every tool file valid; every description present. Checkpoint (spec): adapter round-trip tests pass and Kasi reviews the procedures.
+
+Order: (A) spec, loader, executor and the primitive tools; (B) edit/delete, structure, read and library tools; (C) adapters and DSL; (D) prompts and bundles; (E) plan schema and variables; (F) template and procedures.
+
 ## Environment variables by phase
 
 | Phase | Variables |
