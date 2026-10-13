@@ -252,6 +252,58 @@ def piece_tab(ws, pr, proposals: dict[int, dict]) -> int:
     return header_row
 
 
+def seam_pairs(ws, piece_names: list[str]) -> None:
+    """A tab for the pattern makers to say which edges are sewn to which."""
+    ws.sheet_view.showGridLines = False
+    widths = [22, 12, 12, 22, 12, 12, 16, 40]
+    for c, w in enumerate(widths, start=1):
+        ws.column_dimensions[get_column_letter(c)].width = w
+    ws["A1"] = "Seam pairs: which edges are sewn together"
+    style(ws["A1"], bold=True, size=14, wrap=False)
+    ws["A2"] = (
+        "One row per seam. Use the numbers from the piece tabs ('No.' column): an edge runs from one "
+        "numbered corner to the next. Say if the two edges should be the same length, or by how much "
+        "one is longer (ease). Leave the yellow cells empty for seams you are not sure about."
+    )
+    style(ws["A2"], color="52606D")
+    ws.merge_cells("A2:H2")
+    ws.row_dimensions[2].height = 48
+    heads = [
+        "First piece", "Edge from No.", "Edge to No.", "Second piece", "Edge from No.", "Edge to No.",
+        "Same length?", "Comment (ease, notches, anything)",
+    ]  # fmt: skip
+    for c, h in enumerate(heads, start=1):
+        style(ws.cell(row=4, column=c, value=h), bold=True, color="FFFFFF", fill=HEAD_FILL)
+    example = [
+        "C - Bodice Front",
+        12,
+        15,
+        "C - Bodice Back",
+        9,
+        6,
+        "Yes",
+        "Example row: please overwrite",
+    ]
+    for c, v in enumerate(example, start=1):
+        cell = ws.cell(row=5, column=c, value=v)
+        style(cell, color="9AA5B1")
+        cell.border = BORDER
+    pieces = DataValidation(
+        type="list", formula1='"' + ",".join(piece_names) + '"', allow_blank=True
+    )
+    same = DataValidation(type="list", formula1='"Yes,No,Ease"', allow_blank=True)
+    ws.add_data_validation(pieces)
+    ws.add_data_validation(same)
+    for r in range(6, 36):
+        for c in range(1, 9):
+            cell = ws.cell(row=r, column=c)
+            style(cell, fill=INPUT_FILL)
+            cell.border = BORDER
+        pieces.add(ws.cell(row=r, column=1))
+        pieces.add(ws.cell(row=r, column=4))
+        same.add(ws.cell(row=r, column=7))
+
+
 def main() -> None:
     proposed = yaml.safe_load(PROPOSED.read_text())["pieces"]
     wb = Workbook()
@@ -272,6 +324,7 @@ def main() -> None:
         piece_tab(ws, pr, entries)
     gl = wb.create_sheet("Glossary", 1)
     glossary(gl, names)
+    seam_pairs(wb.create_sheet("Seam pairs", 2), list(names))
     OUT.parent.mkdir(parents=True, exist_ok=True)
     wb.save(OUT)
     print(f"wrote {OUT.relative_to(ROOT)}")

@@ -77,6 +77,15 @@ Checkpoint check: the basic set round-trips byte for byte, and the engine equals
 - Order of work: most-used tools first. Pieces: outline geometry and round trip (no seam allowance, grainlines, labels or notches).
 - Landmark vocabulary goes to the pattern makers as a spreadsheet; Kasi asked what it is for and how it is made (answered in chat). It is built but **not sent anywhere**: that needs Kasi's word.
 
+## Answers from Kasi after the Phase 3 report, 2026-10-13
+
+- Kasi sends the landmark sheet to the pattern makers himself.
+- A piece we create should get sensible defaults (seam allowance, grainline, labels): Kasi expects yes. I propose the basic set's own values (1 cm seam allowance, grainline and labels as on its pieces); he or the pattern makers confirm before I add them.
+- Matched seam edges: the sheet now has a `Seam pairs` tab to fill in.
+- Duplicate labels when copying a piece: left to me; the copy is refused with a clear message (kept as is).
+- Elliptical-arc cutting: left to me; not built (Seamly2D itself hangs).
+- Library on disk until Phase 6: ok. Keep working on this branch; no `main`.
+
 ## Phase 3 log (tools, pieces, library)
 
 Everything below is checked against the pinned Seamly2D, bit for bit, unless it says otherwise.
