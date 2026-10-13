@@ -49,6 +49,7 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 "scripts/make_landmark_sheet.py" = ["E501"]
 "scripts/landmark_rows.py" = ["E501"]
 "scripts/make_case_*.py" = ["E501"]
+"scripts/tool_catalog.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "packages"]

@@ -17,3 +17,4 @@ One short record per major choice. Status: `accepted` (settled by the spec or ad
 | 0011 | Evaluation kernel scale and object identity | accepted |
 | 0012 | Lossless Seamly2D files, and upgrades checked against Seamly2D | accepted |
 | 0013 | Qt routines ported, case patterns, how pieces and the library are edited | accepted |
+| 0014 | The tool layer | accepted |

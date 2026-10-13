@@ -174,3 +174,16 @@ def test_a_landmark_name_works_wherever_a_label_does() -> None:
         {"label": "D", "first_point": "test_piece.start", "second_point": "B", "length": "2"},
     )
     assert r["ok"], r
+
+
+def test_the_tool_catalog_for_the_pattern_makers_is_up_to_date() -> None:
+    import subprocess
+    import sys
+
+    done = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/tool_catalog.py"), "--check"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert done.returncode == 0, done.stderr

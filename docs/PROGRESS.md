@@ -124,6 +124,21 @@ Checks: the tools build a pattern that the pinned Seamly2D opens and computes th
 
 Order: (A) spec, loader, executor and the primitive tools; (B) edit/delete, structure, read and library tools; (C) adapters and DSL; (D) prompts and bundles; (E) plan schema and variables; (F) template and procedures.
 
+## Phase 4 log (tool layer)
+
+- **Tools as YAML** (`config/tools/`, 54 files): 34 primitives (the whole parity matrix), variables, pieces and blocks, `undo`, 8 read tools, 3 library tools. Each has a description that says when to use it and when not (the loader refuses a primitive without both), a JSON Schema, examples that must validate, and for primitives an `engine` block (which Seamly2D element a call builds). **54 more tools are derived**: `edit_<tool>` and `delete_<tool>` for every simple primitive (108 in all). The plain-words list is `docs/TOOLS.md` (generated; a test keeps it current).
+- **Loader** (`yoko_tools.spec`): validates a file, builds the JSON Schema and the Pydantic model, hashes it (description, schema, engine and examples).
+- **Runtime** (`yoko_tools.runtime.Toolbox`): arguments are checked first (types, enums, ranges, formula length 500, at most 50 to 200 items); names resolve to ids (a label, a curve name, `#<id>` for a line, or a landmark name), with "did you mean" hints; every call returns `{ok, created, changed, deleted, warnings, error?: {code, field, message, hint}, diff}` (read tools add `data`). Edit and delete check that the object was made with that tool; deletes are refused with the list of dependents.
+- **Seamly2D agrees with what the tools write.** A pattern built only through tool calls (every primitive, an edit, mirrors, a rotation, a move; case `tool_calls`) is opened by the pinned Seamly2D, which computes the same points, curves and variables as the engine. Findings on the way, all fixed: arcs copied by mirror, rotate or move are named after their centre and their own id (`Arc_A21_54`), not the original's name plus the suffix (the old engine missed 20 variables in the all-tools pattern; a new check requires every variable Seamly2D has in a fully evaluated pattern); new objects get an id that no copy, piece, dart point or operation output uses; the list of reference attributes was missing 16, which also made copying a piece miss references.
+- **Adapters** (`yoko_tools.adapters`): Anthropic tools, OpenAI functions and a plain text list; calls parsed back from Anthropic `tool_use`, OpenAI `tool_calls` and a one-line text DSL (`name(key=value, ...)`, JSON values). Round trips are tested for every example of every tool and, with Hypothesis, for arbitrary arguments (nested values, quotes, commas, backslashes, unicode).
+- **Prompts and bundles** (`yoko_tools.bundle`): `config/prompts/drafter/v1.md` (front matter, `{{slots}}`), a bundle = prompt + tool subset with a digest over the prompt text, the subset and every tool's digest. The prompt says how the drawing works, how to work in small steps and read errors, and that amounts come from plan variables.
+- **Plan schema** (`config/plan/schema.json`, version 1) and `yoko_tools.plan`: steps with typed parameters (value + unit); validation before approval (shape with the place of each mistake, step numbers, units; when recipes are known: presence, unit and range); `plan_variables` turns every amount into `#s<step>_<param>` in the pattern's unit.
+- **Recipe template** `docs/manipulations/TEMPLATE.md` and **eight drafts** (slash and spread; lengthen or shorten; add or remove width at a seam; true a seam or curve; style line and split; add, move or remove a dart; re-fit the sleeve cap; reshape armhole and shoulder). They are marked as drafts. I wrote the structure and the tool calls (checked: for example setting a sleeve cap to a target length with `edit_curve_spline`), and marked every drafting rule with **(?)** as a question for the pattern makers.
+
+Not done, on purpose: the recipes themselves, the teacher, valid actions and the status card (Phases 5 and 6); `done` and the environment API (Phase 6); groups, internal paths and unions have no tool (kept, not computed); the tool descriptions and the drafter prompt are `v1` and will need your edits.
+
+Checkpoint (spec): adapter round-trip tests pass, and Kasi reviews the procedures.
+
 ## Environment variables by phase
 
 | Phase | Variables |

@@ -180,3 +180,23 @@ def test_the_library_tools_search_load_and_copy_a_piece() -> None:
 def test_library_tools_need_a_library() -> None:
     box = square_box()
     assert box.call("search_library", {})["error"]["code"] == "not_available"
+
+
+def test_a_curve_can_be_set_to_a_target_length_by_editing_it() -> None:
+    """What the sleeve-cap procedure relies on: edit_curve_spline with a target length."""
+    box = square_box()
+    made = box.call(
+        "curve_spline",
+        {
+            "start": "A",
+            "end": "B",
+            "start_angle": "60",
+            "end_angle": "120",
+            "start_handle": "2",
+            "end_handle": "2",
+        },
+    )
+    name = made["created"][0]["name"]
+    r = box.call("edit_curve_spline", {"target": name, "length_mode": 3, "target_length": "12.5"})
+    assert r["ok"], r
+    assert box.call("measure", {"from": name})["data"]["length"] == pytest.approx(12.5, abs=0.006)

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yoko-env/plan/1",
+  "title": "Plan",
+  "description": "A design plan: what to draft, in ordered steps. Every amount is a typed parameter with a unit; each becomes a pattern variable named #s<step>_<parameter>.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "design_summary", "starting_pattern", "steps"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "design_summary": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "starting_pattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"},
+        "pieces": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "target_silhouette": {"type": "string", "maxLength": 1000},
+    "fit_notes": {"type": "string", "maxLength": 1000},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {"$ref": "#/$defs/step"}
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "transformation", "summary", "params"],
+      "properties": {
+        "step": {"type": "integer", "minimum": 1},
+        "transformation": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "The name of a recipe."},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 300, "description": "The step in plain words; it becomes the description of the step's variables."},
+        "pieces": {"type": "array", "items": {"type": "string"}, "uniqueItems": true, "description": "The pieces the step changes."},
+        "params": {
+          "type": "object",
+          "propertyNames": {"pattern": "^[a-z][a-z0-9_]{0,31}$"},
+          "additionalProperties": {"$ref": "#/$defs/amount"}
+        },
+        "retrue": {"type": "array", "items": {"type": "string", "maxLength": 200}, "description": "Things that must still hold after the step, for example: the sleeve cap must still match the new armhole."},
+        "check": {"type": "string", "maxLength": 300, "description": "What to check when the step is done."}
+      }
+    },
+    "amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {
+          "oneOf": [
+            {"type": "number"},
+            {"type": "string", "minLength": 1, "maxLength": 300, "description": "A formula over measurements and earlier variables, in the pattern's unit."}
+          ]
+        },
+        "unit": {"enum": ["cm", "mm", "inch", "deg", "count", "ratio"]}
+      }
+    }
+  }
+}
