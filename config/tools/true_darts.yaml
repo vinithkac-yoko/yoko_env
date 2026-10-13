@@ -1,0 +1,69 @@
+name: true_darts
+version: 1
+tier: primitive
+description: 'Create the two points Seamly2D''s ''true darts'' tool makes: where the legs of a dart end
+  up so that, when the dart is folded closed, the seam it leaves is true.
+
+  Use it when a dart must be trued before the pattern is cut. Do not use it when you only need to move
+  a point: use another point tool.'
+parameters:
+  label1:
+    type: string
+    description: Name for the first new point, for example D1.
+  label2:
+    type: string
+    description: Name for the second new point, for example D2.
+  base_start:
+    type: string
+    x-ref: point
+    description: First point of the base line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  base_end:
+    type: string
+    x-ref: point
+    description: Second point of the base line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  dart_first:
+    type: string
+    x-ref: point
+    description: First point of the dart (one leg end). Give its label (for example A) or a landmark name
+      (for example bodice_front.SNP).
+  dart_tip:
+    type: string
+    x-ref: point
+    description: The dart's tip. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  dart_second:
+    type: string
+    x-ref: point
+    description: Second point of the dart (the other leg end). Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+required:
+- label1
+- label2
+- base_start
+- base_end
+- dart_first
+- dart_tip
+- dart_second
+examples:
+- instruction: True the bust dart
+  call:
+    label1: D1
+    label2: D2
+    base_start: A
+    base_end: B
+    dart_first: C
+    dart_tip: E
+    dart_second: F
+engine:
+  builder: true_darts
+  tag: point
+  type: trueDarts
+  set:
+    name1: '{label1}'
+    name2: '{label2}'
+    baseLineP1: '{base_start}'
+    baseLineP2: '{base_end}'
+    dartP1: '{dart_first}'
+    dartP2: '{dart_tip}'
+    dartP3: '{dart_second}'

@@ -602,7 +602,7 @@ def test_a_mirrored_arc_runs_the_other_way_and_has_a_negative_length() -> None:
     )
     assert ev.issues == []
     assert ev.symbols["Arc_A_2"] == pytest.approx(5 * math.pi)
-    assert ev.symbols["Arc_A_2_m"] == pytest.approx(-5 * math.pi)
+    assert ev.symbols["Arc_A_20"] == pytest.approx(-5 * math.pi)
     assert ev.curves[20].geom.flipped is True  # type: ignore[union-attr]
     # the mirror of the mirror is the original again
     twice = evaluate(
@@ -614,7 +614,7 @@ def test_a_mirrored_arc_runs_the_other_way_and_has_a_negative_length() -> None:
         ),
         {},
     )
-    assert twice.symbols["Arc_A_2_m_n"] == pytest.approx(5 * math.pi)
+    assert twice.symbols["Arc_A_21"] == pytest.approx(5 * math.pi)
 
 
 def test_a_source_that_does_not_exist_is_reported() -> None:

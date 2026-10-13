@@ -1,0 +1,48 @@
+name: point_arc_tangent
+version: 1
+tier: primitive
+description: 'Create the point where a line drawn from a point just touches an existing arc (a tangent).
+
+  Use it when a straight line from a point must touch an arc already drawn. Do not use it when you only
+  have a centre and radius: use point_circle_tangent.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  tangent_from:
+    type: string
+    x-ref: point
+    description: The point the touching line starts from. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  arc:
+    type: string
+    x-ref: curve
+    description: The arc; its name, for example Arc_A_12. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  which:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'Which of the two crossing points to take: 1 or 2. If you get the wrong one, use the
+      other.'
+required:
+- label
+- tangent_from
+- arc
+examples:
+- instruction: Where a line from A touches the arc
+  call:
+    label: C
+    tangent_from: A
+    arc: Arc_B_9
+engine:
+  builder: simple
+  tag: point
+  type: pointFromArcAndTangent
+  set:
+    name: '{label}'
+    tangent: '{tangent_from}'
+    arc: '{arc}'
+    crossPoint: '{which}'

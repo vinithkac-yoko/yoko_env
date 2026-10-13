@@ -1,0 +1,57 @@
+name: point_circle_tangent
+version: 1
+tier: primitive
+description: 'Create the point where a line drawn from a point just touches a circle (a tangent).
+
+  Use it when a straight line from a point must touch a circle without crossing it. Do not use it when
+  the shape is an existing arc: use point_arc_tangent.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  tangent_from:
+    type: string
+    x-ref: point
+    description: The point the touching line starts from. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  center:
+    type: string
+    x-ref: point
+    description: The centre of the circle. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Radius of the circle. A number or a formula in the pattern''s unit (cm in the basic
+      set). A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  which:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'Which of the two crossing points to take: 1 or 2. If you get the wrong one, use the
+      other.'
+required:
+- label
+- tangent_from
+- center
+- radius
+examples:
+- instruction: Where a line from A touches the 5 cm circle round B
+  call:
+    label: C
+    tangent_from: A
+    center: B
+    radius: '5'
+engine:
+  builder: simple
+  tag: point
+  type: pointFromCircleAndTangent
+  set:
+    name: '{label}'
+    tangent: '{tangent_from}'
+    cCenter: '{center}'
+    cRadius: '{radius}'
+    crossPoint: '{which}'

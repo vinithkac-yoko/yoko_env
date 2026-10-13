@@ -1,0 +1,55 @@
+name: point_arc_line
+version: 1
+tier: primitive
+description: 'Create the point where a circle drawn round a centre point meets the line between two points.
+
+  Use it when you know a distance from a point and want where it lands on a line, for example a shoulder
+  length measured from the neck point. Do not use it when the circle has to meet another circle: use point_circle_circle.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  center:
+    type: string
+    x-ref: point
+    description: The centre of the circle. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Radius of the circle. A number or a formula in the pattern''s unit (cm in the basic
+      set). A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  line_start:
+    type: string
+    x-ref: point
+    description: One end of the line. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  line_end:
+    type: string
+    x-ref: point
+    description: The other end of the line. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+required:
+- label
+- center
+- radius
+- line_start
+- line_end
+examples:
+- instruction: 'The shoulder end: 12.5 cm from the neck point N, on the line N-S'
+  call:
+    label: T
+    center: N
+    radius: '12.5'
+    line_start: N
+    line_end: S
+engine:
+  builder: simple
+  tag: point
+  type: pointOfContact
+  set:
+    name: '{label}'
+    center: '{center}'
+    radius: '{radius}'
+    firstPoint: '{line_start}'
+    secondPoint: '{line_end}'

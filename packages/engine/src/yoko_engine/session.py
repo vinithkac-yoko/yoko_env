@@ -25,6 +25,7 @@ from yoko_engine.pieces_edit import (
     pieces_using,
     rename_block,
     set_piece,
+    used_ids,
 )
 from yoko_engine.units import px_to_mm
 from yoko_engine.validation import errors, validate
@@ -34,7 +35,9 @@ REF_ATTRS = frozenset(
     {
         "basePoint", "firstPoint", "secondPoint", "thirdPoint", "center", "p1Line", "p2Line",
         "curve", "point1", "point2", "point3", "point4", "baseLineP1", "baseLineP2",
-        "dartP1", "dartP2", "dartP3",
+        "dartP1", "dartP2", "dartP3", "p1Line1", "p2Line1", "p1Line2", "p2Line2", "pShoulder",
+        "axisP1", "axisP2", "c1Center", "c2Center", "cCenter", "tangent", "curve1", "curve2",
+        "spline", "splinePath", "arc", "firstArc", "secondArc",
     }
 )  # fmt: skip
 IMMUTABLE_ATTRS = frozenset({"id", "type"})
@@ -601,10 +604,13 @@ class PatternSession:
     def _add(
         self, pattern: Pattern, a: AddObject
     ) -> tuple[Pattern, set[int], list[int], list[int]]:
-        existing = {o.id for o in pattern.objects()}
+        existing = used_ids(pattern)
         obj = a.obj
         if obj.id == 0:
-            obj = replace(obj, id=max(existing, default=0) + 1)
+            # an id nothing else in the file uses (modeling copies and pieces have ids too)
+            obj = replace(obj, id=max(existing, default=0) + 1).with_attr(
+                "id", str(max(existing, default=0) + 1)
+            )
         elif obj.id in existing:
             raise _Rejected(
                 "duplicate_id", f"object id {obj.id} is already in use", object_id=obj.id

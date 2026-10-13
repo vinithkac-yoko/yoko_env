@@ -1,0 +1,56 @@
+name: point_triangle
+version: 1
+tier: primitive
+description: 'Create the point on a line (through two points) from which the distance between two other
+  points is seen at a right angle.
+
+  Use it when a point must lie on a given line so that it forms a right angle with two other points. Do
+  not use it when any simpler tool will do.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  axis_start:
+    type: string
+    x-ref: point
+    description: First point of the line the new point lies on. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  axis_end:
+    type: string
+    x-ref: point
+    description: Second point of that line. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  first_point:
+    type: string
+    x-ref: point
+    description: First point the new point is measured to. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  second_point:
+    type: string
+    x-ref: point
+    description: Second point the new point is measured to. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+required:
+- label
+- axis_start
+- axis_end
+- first_point
+- second_point
+examples:
+- instruction: Triangle point on line A-B from C and D
+  call:
+    label: E
+    axis_start: A
+    axis_end: B
+    first_point: C
+    second_point: D
+engine:
+  builder: simple
+  tag: point
+  type: triangle
+  set:
+    name: '{label}'
+    axisP1: '{axis_start}'
+    axisP2: '{axis_end}'
+    firstPoint: '{first_point}'
+    secondPoint: '{second_point}'

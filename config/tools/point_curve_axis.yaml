@@ -1,0 +1,51 @@
+name: point_curve_axis
+version: 1
+tier: primitive
+description: 'Create the point where a straight line through a base point at a given angle crosses a curve
+  or an arc. It also cuts the curve in two at that point.
+
+  Use it when a horizontal or vertical line from a point should meet a curve, for example finding where
+  a level line meets an armhole. Do not use it when the point is a given distance along the curve: use
+  cut_curve.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  base_point:
+    type: string
+    x-ref: point
+    description: A point the line passes through. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Direction of the line. Angles go counter-clockwise: 0 is to the right, 90 is up the
+      page. A number or a formula in degrees. A formula may use measurements, variables and other lengths,
+      for example #hem_flare/2 + 1.'
+  curve:
+    type: string
+    x-ref: curve
+    description: The curve or arc to cross; its name, for example Spl_A_B or Arc_A_12. Give its label
+      (for example A) or a landmark name (for example bodice_front.SNP).
+required:
+- label
+- base_point
+- angle
+- curve
+examples:
+- instruction: Where a level line from A meets the armhole curve
+  call:
+    label: B
+    base_point: A
+    angle: '0'
+    curve: Spl_C_D
+engine:
+  builder: simple
+  tag: point
+  type: curveIntersectAxis
+  set:
+    name: '{label}'
+    basePoint: '{base_point}'
+    angle: '{angle}'
+    curve: '{curve}'

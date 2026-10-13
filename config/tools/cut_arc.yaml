@@ -1,0 +1,48 @@
+name: cut_arc
+version: 1
+tier: primitive
+description: 'Create a point at a given length along an arc, splitting the arc in two at that point.
+
+  Use it when a point must sit a set distance along an arc. Do not use it when the curve is a spline (use
+  cut_curve).'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  arc:
+    type: string
+    x-ref: curve
+    description: The arc to cut; its name, for example Arc_A_12. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  length:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Distance along the arc. A number or a formula in the pattern''s unit (cm in the basic
+      set). A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  direction:
+    type: string
+    enum:
+    - forward
+    - backward
+    default: forward
+    description: forward counts the length from the curve's first end, backward from its last end.
+required:
+- label
+- arc
+- length
+examples:
+- instruction: A point 5 cm along the arc
+  call:
+    label: N3
+    arc: Arc_A_12
+    length: '5'
+engine:
+  builder: simple
+  tag: point
+  type: cutArc
+  set:
+    name: '{label}'
+    arc: '{arc}'
+    length: '{length}'
+    direction: '{direction}'

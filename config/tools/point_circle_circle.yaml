@@ -1,0 +1,68 @@
+name: point_circle_circle
+version: 1
+tier: primitive
+description: 'Create a point where two circles drawn round two centre points meet.
+
+  Use it when a point must be a set distance from two different points, for example a dart point or a
+  sleeve cap notch. Do not use it when one of the shapes is an existing arc: use point_arc_arc.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  center1:
+    type: string
+    x-ref: point
+    description: Centre of the first circle. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius1:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Radius of the first circle. A number or a formula in the pattern''s unit (cm in the
+      basic set). A formula may use measurements, variables and other lengths, for example #hem_flare/2
+      + 1.'
+  center2:
+    type: string
+    x-ref: point
+    description: Centre of the second circle. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius2:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Radius of the second circle. A number or a formula in the pattern''s unit (cm in the
+      basic set). A formula may use measurements, variables and other lengths, for example #hem_flare/2
+      + 1.'
+  which:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'Which of the two crossing points to take: 1 or 2. If you get the wrong one, use the
+      other.'
+required:
+- label
+- center1
+- radius1
+- center2
+- radius2
+examples:
+- instruction: A point 8 cm from A and 10 cm from B
+  call:
+    label: C
+    center1: A
+    radius1: '8'
+    center2: B
+    radius2: '10'
+engine:
+  builder: simple
+  tag: point
+  type: pointOfIntersectionCircles
+  set:
+    name: '{label}'
+    c1Center: '{center1}'
+    c1Radius: '{radius1}'
+    c2Center: '{center2}'
+    c2Radius: '{radius2}'
+    crossPoint: '{which}'

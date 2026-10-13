@@ -1,0 +1,54 @@
+name: arc_radius
+version: 1
+tier: primitive
+description: 'Draw an arc of a circle round a centre point, from a start angle to an end angle, counter-clockwise.
+
+  Use it when you need a circular curve of a known radius, for example a hem curve or a rounded corner.
+  Do not use it when the length of the arc is known rather than its end angle: use arc_length.'
+parameters:
+  center:
+    type: string
+    x-ref: point
+    description: The centre of the circle. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Radius of the arc. A number or a formula in the pattern''s unit (cm in the basic set).
+      A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  start_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Where the arc starts. Angles go counter-clockwise: 0 is to the right, 90 is up the page.
+      A number or a formula in degrees. A formula may use measurements, variables and other lengths, for
+      example #hem_flare/2 + 1.'
+  end_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Where the arc ends; the arc runs counter-clockwise from the start angle to here. Angles
+      go counter-clockwise: 0 is to the right, 90 is up the page. A number or a formula in degrees. A
+      formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+required:
+- center
+- radius
+- start_angle
+- end_angle
+examples:
+- instruction: A quarter circle of 5 cm round A, starting to the right
+  call:
+    center: A
+    radius: '5'
+    start_angle: '0'
+    end_angle: '90'
+engine:
+  builder: simple
+  tag: arc
+  type: simple
+  set:
+    center: '{center}'
+    radius: '{radius}'
+    angle1: '{start_angle}'
+    angle2: '{end_angle}'

@@ -1,0 +1,79 @@
+name: curve_bezier
+version: 1
+tier: primitive
+description: 'Draw a Bezier curve between two points steered by two control points that already exist
+  as points.
+
+  Use it when you want to steer a curve by two visible control points. Do not use it when you prefer to
+  give directions and handle lengths: use curve_spline.'
+parameters:
+  start:
+    type: string
+    x-ref: point
+    description: Start point. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  control1:
+    type: string
+    x-ref: point
+    description: Control point near the start. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  control2:
+    type: string
+    x-ref: point
+    description: Control point near the end. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  end:
+    type: string
+    x-ref: point
+    description: End point. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  auto_smooth:
+    type: boolean
+    default: false
+    description: True lets the program choose smooth handle lengths; the handle lengths you give are then
+      ignored.
+  length_mode:
+    type: integer
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    default: 0
+    description: '0 leaves the handles alone. To make the curve a set length (target_length): 1 changes
+      the start handle, 2 the end handle, 3 both.'
+  target_length:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'The length the curve should have when length_mode is not 0. A number or a formula in
+      the pattern''s unit (cm in the basic set). A formula may use measurements, variables and other lengths,
+      for example #hem_flare/2 + 1.'
+required:
+- start
+- control1
+- control2
+- end
+examples:
+- instruction: A Bezier from A to D steered by B and C
+  call:
+    start: A
+    control1: B
+    control2: C
+    end: D
+engine:
+  builder: simple
+  tag: spline
+  type: cubicBezier
+  set:
+    point1: '{start}'
+    point2: '{control1}'
+    point3: '{control2}'
+    point4: '{end}'
+    autoSmooth:
+      param: auto_smooth
+      map:
+        'true': 'true'
+        'false': null
+    lengthMode:
+      param: length_mode
+      omit_if: '0'
+    length: '{target_length}'

@@ -1,0 +1,52 @@
+name: mirror_by_line
+version: 1
+tier: primitive
+description: 'Make a mirror-image copy of points, curves and arcs across the line through two points.
+
+  Use it when a half pattern must be mirrored into a whole one, or a piece mirrored for the other side.
+  Do not use it when the mirror line is horizontal or vertical through one point: use mirror_by_axis.'
+parameters:
+  line_start:
+    type: string
+    x-ref: point
+    description: One point on the mirror line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  line_end:
+    type: string
+    x-ref: point
+    description: Another point on the mirror line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  sources:
+    type: array
+    minItems: 1
+    maxItems: 100
+    description: The points, lines-curves and arcs to copy (labels or curve names).
+    items:
+      type: string
+      x-ref: object
+  suffix:
+    type: string
+    maxLength: 16
+    description: Text added to the name of every copy, for example _m so that B becomes B_m.
+required:
+- line_start
+- line_end
+- sources
+- suffix
+examples:
+- instruction: Mirror B and the armhole across the centre line A-C
+  call:
+    line_start: A
+    line_end: C
+    sources:
+    - B
+    - Spl_B_D
+    suffix: _m
+engine:
+  builder: operation
+  tag: operation
+  type: flippingByLine
+  set:
+    p1Line: '{line_start}'
+    p2Line: '{line_end}'
+    suffix: '{suffix}'

@@ -1,0 +1,69 @@
+name: move
+version: 1
+tier: primitive
+description: 'Make a copy of points, curves and arcs moved a distance in a direction, and optionally turned
+  afterwards.
+
+  Use it when part of a pattern must be slid to a new place, for example separating pieces or spreading
+  a slash line. Do not use it when you only need to turn things about a point: use rotate.'
+parameters:
+  length:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'How far to move. A number or a formula in the pattern''s unit (cm in the basic set).
+      A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Direction to move in. Angles go counter-clockwise: 0 is to the right, 90 is up the page.
+      A number or a formula in degrees. A formula may use measurements, variables and other lengths, for
+      example #hem_flare/2 + 1.'
+  rotation:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Turn applied after the move, about the turn point. 0 for none. Angles go counter-clockwise:
+      0 is to the right, 90 is up the page. A number or a formula in degrees. A formula may use measurements,
+      variables and other lengths, for example #hem_flare/2 + 1.'
+  turn_point:
+    type: string
+    x-ref: point
+    description: Point to turn about after the move. Leave out to turn about the middle of the moved things.
+  sources:
+    type: array
+    minItems: 1
+    maxItems: 100
+    description: The points, lines-curves and arcs to copy (labels or curve names).
+    items:
+      type: string
+      x-ref: object
+  suffix:
+    type: string
+    maxLength: 16
+    description: Text added to the name of every copy, for example _m so that B becomes B_m.
+required:
+- length
+- angle
+- sources
+- suffix
+examples:
+- instruction: Move the side panel 3 cm to the right
+  call:
+    length: '3'
+    angle: '0'
+    sources:
+    - B
+    - C
+    suffix: _s
+engine:
+  builder: operation
+  tag: operation
+  type: moving
+  set:
+    length: '{length}'
+    angle: '{angle}'
+    rotationAngle: '{rotation}'
+    center: '{turn_point}'
+    suffix: '{suffix}'

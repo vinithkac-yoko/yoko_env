@@ -1,0 +1,55 @@
+name: point_line_line
+version: 1
+tier: primitive
+description: 'Create the point where the line through two points crosses the line through two other points.
+
+  Use it when two straight lines cross and you need the crossing. Do not use it when one of the lines
+  is a curve (use point_curve_curve) or an axis at an angle (use point_line_axis).'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  line1_start:
+    type: string
+    x-ref: point
+    description: First end of the first line. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  line1_end:
+    type: string
+    x-ref: point
+    description: Second end of the first line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  line2_start:
+    type: string
+    x-ref: point
+    description: First end of the second line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+  line2_end:
+    type: string
+    x-ref: point
+    description: Second end of the second line. Give its label (for example A) or a landmark name (for
+      example bodice_front.SNP).
+required:
+- label
+- line1_start
+- line1_end
+- line2_start
+- line2_end
+examples:
+- instruction: Where A-B crosses C-D
+  call:
+    label: E
+    line1_start: A
+    line1_end: B
+    line2_start: C
+    line2_end: D
+engine:
+  builder: simple
+  tag: point
+  type: lineIntersect
+  set:
+    name: '{label}'
+    p1Line1: '{line1_start}'
+    p2Line1: '{line1_end}'
+    p1Line2: '{line2_start}'
+    p2Line2: '{line2_end}'

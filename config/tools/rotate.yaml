@@ -1,0 +1,54 @@
+name: rotate
+version: 1
+tier: primitive
+description: 'Make a copy of points, curves and arcs turned by an angle about a point.
+
+  Use it when part of a pattern must be pivoted, for example closing a dart by turning one side towards
+  the other. Do not use it when you only need to slide things: use move.'
+parameters:
+  center:
+    type: string
+    x-ref: point
+    description: The point to turn about. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'How far to turn (positive is counter-clockwise). Angles go counter-clockwise: 0 is to
+      the right, 90 is up the page. A number or a formula in degrees. A formula may use measurements,
+      variables and other lengths, for example #hem_flare/2 + 1.'
+  sources:
+    type: array
+    minItems: 1
+    maxItems: 100
+    description: The points, lines-curves and arcs to copy (labels or curve names).
+    items:
+      type: string
+      x-ref: object
+  suffix:
+    type: string
+    maxLength: 16
+    description: Text added to the name of every copy, for example _m so that B becomes B_m.
+required:
+- center
+- angle
+- sources
+- suffix
+examples:
+- instruction: Turn the dart side 12 degrees about the dart tip
+  call:
+    center: D
+    angle: '12'
+    sources:
+    - E
+    - F
+    suffix: _r
+engine:
+  builder: operation
+  tag: operation
+  type: rotation
+  set:
+    center: '{center}'
+    angle: '{angle}'
+    suffix: '{suffix}'

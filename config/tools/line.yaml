@@ -1,0 +1,33 @@
+name: line
+version: 1
+tier: primitive
+description: 'Draw a straight line between two existing points. A line is just a drawn line: it does not
+  create a point.
+
+  Use it when you want a visible line between two points, for example a seam or a construction line. Do
+  not use it when you need a new point: use a point tool, which draws its own line where that makes sense.'
+parameters:
+  first_point:
+    type: string
+    x-ref: point
+    description: One end of the line. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  second_point:
+    type: string
+    x-ref: point
+    description: The other end of the line. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+required:
+- first_point
+- second_point
+examples:
+- instruction: Draw the centre front from A to B
+  call:
+    first_point: A
+    second_point: B
+engine:
+  builder: simple
+  tag: line
+  type: null
+  set:
+    firstPoint: '{first_point}'
+    secondPoint: '{second_point}'

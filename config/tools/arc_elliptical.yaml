@@ -1,0 +1,74 @@
+name: arc_elliptical
+version: 1
+tier: primitive
+description: 'Draw an arc of an ellipse round a centre point, from a start angle to an end angle, with
+  an optional tilt of the ellipse.
+
+  Use it when you need an oval curve, for example a pocket corner or an oval neckline. Do not use it when
+  a circle will do: use arc_radius.'
+parameters:
+  center:
+    type: string
+    x-ref: point
+    description: The centre of the ellipse. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  radius1:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Half the ellipse''s width, before the tilt. A number or a formula in the pattern''s
+      unit (cm in the basic set). A formula may use measurements, variables and other lengths, for example
+      #hem_flare/2 + 1.'
+  radius2:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Half the ellipse''s height, before the tilt. A number or a formula in the pattern''s
+      unit (cm in the basic set). A formula may use measurements, variables and other lengths, for example
+      #hem_flare/2 + 1.'
+  start_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Where the arc starts. Angles go counter-clockwise: 0 is to the right, 90 is up the page.
+      A number or a formula in degrees. A formula may use measurements, variables and other lengths, for
+      example #hem_flare/2 + 1.'
+  end_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Where the arc ends. Angles go counter-clockwise: 0 is to the right, 90 is up the page.
+      A number or a formula in degrees. A formula may use measurements, variables and other lengths, for
+      example #hem_flare/2 + 1.'
+  tilt:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'How far the whole ellipse is turned. Angles go counter-clockwise: 0 is to the right,
+      90 is up the page. A number or a formula in degrees. A formula may use measurements, variables and
+      other lengths, for example #hem_flare/2 + 1.'
+required:
+- center
+- radius1
+- radius2
+- start_angle
+- end_angle
+examples:
+- instruction: A half ellipse, 6 cm wide and 3 cm high round A
+  call:
+    center: A
+    radius1: '6'
+    radius2: '3'
+    start_angle: '0'
+    end_angle: '180'
+engine:
+  builder: simple
+  tag: elArc
+  type: simple
+  set:
+    center: '{center}'
+    radius1: '{radius1}'
+    radius2: '{radius2}'
+    angle1: '{start_angle}'
+    angle2: '{end_angle}'
+    rotationAngle: '{tilt}'

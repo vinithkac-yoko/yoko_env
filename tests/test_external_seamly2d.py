@@ -138,6 +138,9 @@ def test_engine_matches_seamly2d_on_every_point_and_variable_it_computes(path: P
         assert (mine.p.x, mine.p.y) == (o["x_px"], o["y_px"]), (name, o["id"], o["name"])
         points += 1
     variables = 0
+    if not ev.issues:  # everything evaluated, so every variable Seamly2D has must be there
+        absent = [v for v in oracle["variables"] if v not in ev.symbols]
+        assert absent == [], (name, absent[:5])
     for var, value in oracle["variables"].items():
         if var in ev.symbols:
             assert ev.symbols[var] == value, (name, var, ev.symbols[var], value)

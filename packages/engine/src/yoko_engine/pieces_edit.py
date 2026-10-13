@@ -46,6 +46,15 @@ def _ids(node: RawNode) -> Iterable[int]:
 def used_ids(pattern: Pattern) -> set[int]:
     """Every numeric id in the pattern's blocks (objects, copies, pieces, groups, paths)."""
     out = {o.id for o in pattern.objects()}
+    for o in pattern.objects():
+        # the points an object makes besides itself: dart points, copies made by an operation
+        if o.kind == "trueDarts":
+            out.update(int(v) for k in ("point1", "point2") if (v := o.get(k)) and v.isdigit())
+        for group in o.children:
+            if group.tag == "destination":
+                out.update(
+                    int(v) for d in group.children if (v := d.get("idObject")) and v.isdigit()
+                )
     for block in pattern.blocks:
         for section in block.sections:
             out.update(_ids(section))

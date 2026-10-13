@@ -79,7 +79,8 @@ def _copy_all(
             moved = geom
             for op in arc_ops:
                 moved = op(moved)
-            name = curve.name + suffix
+            # Seamly2D names the copy of an arc after its centre and the copy's own id
+            name = f"ElArc_{curve.labels[0]}_{did}"
             c.add_curve(did, CurveGeom(did, name, moved, curve.labels))
             c.add_curve_variables(
                 o.id, name, moved.length(), moved.start_angle(), moved.end_angle()
@@ -89,7 +90,7 @@ def _copy_all(
             continue
         for f in mappers:
             geom = map_geom(geom, f, mirror=mirror)
-        name = curve.name + suffix
+        name = f"Arc_{curve.labels[0]}_{did}" if isinstance(geom, Arc) else curve.name + suffix
         copy = CurveGeom(did, name, geom, curve.labels)
         if isinstance(geom, Arc):
             c.add_curve(did, copy)

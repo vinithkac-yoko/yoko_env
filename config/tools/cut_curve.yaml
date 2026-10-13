@@ -1,0 +1,49 @@
+name: cut_curve
+version: 1
+tier: primitive
+description: 'Create a point at a given length along a single curve (a spline or Bezier), splitting it
+  into two curves at that point.
+
+  Use it when a point must sit a set distance along a curve, for example a notch or a dart start. Do not
+  use it when the curve is a path of several splines (use cut_curve_path) or an arc (use cut_arc).'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  curve:
+    type: string
+    x-ref: curve
+    description: The curve to cut; its name, for example Spl_A_B. Give its label (for example A) or a
+      landmark name (for example bodice_front.SNP).
+  length:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Distance along the curve. A number or a formula in the pattern''s unit (cm in the basic
+      set). A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+  direction:
+    type: string
+    enum:
+    - forward
+    - backward
+    default: forward
+    description: forward counts the length from the curve's first end, backward from its last end.
+required:
+- label
+- curve
+- length
+examples:
+- instruction: A point 6 cm along the armhole curve
+  call:
+    label: N1
+    curve: Spl_A_B
+    length: '6'
+engine:
+  builder: simple
+  tag: point
+  type: cutSpline
+  set:
+    name: '{label}'
+    spline: '{curve}'
+    length: '{length}'
+    direction: '{direction}'

@@ -1,0 +1,54 @@
+name: point_curve_curve
+version: 1
+tier: primitive
+description: 'Create a point where two curves (or arcs) cross.
+
+  Use it when two curves must meet, for example a new style line and an existing seam. Do not use it when
+  one is a straight line: use point_curve_axis.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  first_curve:
+    type: string
+    x-ref: curve
+    description: The first curve; its name, for example Spl_A_B. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  second_curve:
+    type: string
+    x-ref: curve
+    description: The second curve. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  vertical:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'If the curves cross more than once: 1 takes the highest crossing, 2 the lowest.'
+  horizontal:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'If the curves cross more than once: 1 takes the leftmost crossing, 2 the rightmost.'
+required:
+- label
+- first_curve
+- second_curve
+examples:
+- instruction: Where the new yoke curve meets the armhole
+  call:
+    label: E
+    first_curve: Spl_A_B
+    second_curve: Spl_C_D
+engine:
+  builder: simple
+  tag: point
+  type: pointOfIntersectionCurves
+  set:
+    name: '{label}'
+    curve1: '{first_curve}'
+    curve2: '{second_curve}'
+    vCrossPoint: '{vertical}'
+    hCrossPoint: '{horizontal}'

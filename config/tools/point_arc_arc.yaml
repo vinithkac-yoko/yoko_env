@@ -1,0 +1,47 @@
+name: point_arc_arc
+version: 1
+tier: primitive
+description: 'Create a point where two existing arcs cross.
+
+  Use it when two arcs already drawn must meet. Do not use it when you only have centres and radii: use
+  point_circle_circle.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  first_arc:
+    type: string
+    x-ref: curve
+    description: The first arc; its name, for example Arc_A_12. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  second_arc:
+    type: string
+    x-ref: curve
+    description: The second arc. Give its label (for example A) or a landmark name (for example bodice_front.SNP).
+  which:
+    type: integer
+    enum:
+    - 1
+    - 2
+    default: 1
+    description: 'Which of the two crossing points to take: 1 or 2. If you get the wrong one, use the
+      other.'
+required:
+- label
+- first_arc
+- second_arc
+examples:
+- instruction: Where the two arcs meet
+  call:
+    label: D
+    first_arc: Arc_A_10
+    second_arc: Arc_B_11
+engine:
+  builder: simple
+  tag: point
+  type: pointOfIntersectionArcs
+  set:
+    name: '{label}'
+    firstArc: '{first_arc}'
+    secondArc: '{second_arc}'
+    crossPoint: '{which}'

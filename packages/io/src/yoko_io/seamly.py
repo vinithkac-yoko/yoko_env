@@ -432,3 +432,38 @@ def write_measurements(table: MeasurementSet, *, canonical: bool = True) -> byte
         d.declaration,
         canonical=canonical,
     )
+
+
+_BLANK = """<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v{app} (https://seamly.io).-->
+    <version>{version}</version>
+    <unit>{unit}</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements>{measurements}</measurements>
+    <variables/>
+    <draftBlock name="{block}">
+        <calculation/>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+</pattern>
+"""
+
+
+def blank_pattern(
+    unit: str = "cm", measurements_file: str = "", block: str = "Pattern piece 1"
+) -> Pattern:
+    """An empty pattern in the pinned format, the way Seamly2D writes a new one."""
+    return read_pattern(
+        _BLANK.format(
+            app=PINNED_SEAMLY2D,
+            version=PINNED_FORMAT,
+            unit=unit,
+            measurements=measurements_file,
+            block=block,
+        ).encode()
+    )

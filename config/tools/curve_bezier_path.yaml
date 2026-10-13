@@ -1,0 +1,38 @@
+name: curve_bezier_path
+version: 1
+tier: primitive
+description: 'Draw a chain of Bezier curves through points given as groups of (point, control, control,
+  point, control, control, point ...).
+
+  Use it when you already have the control points as points and want a long Bezier chain. Do not use it
+  when you want to give directions and handle lengths: use curve_spline_path.'
+parameters:
+  points:
+    type: array
+    minItems: 4
+    maxItems: 100
+    description: 'Points in order: an end point, two controls, an end point, two controls, and so on.
+      The count is 3n+1.'
+    items:
+      type: string
+      x-ref: point
+      description: A point or control point. Give its label (for example A) or a landmark name (for example
+        bodice_front.SNP).
+required:
+- points
+examples:
+- instruction: Two joined Beziers
+  call:
+    points:
+    - A
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+engine:
+  builder: bezier_path
+  tag: spline
+  type: cubicBezierPath
+  set: {}

@@ -1,0 +1,40 @@
+name: point_from_xy
+version: 1
+tier: primitive
+description: 'Create a point that takes its horizontal position from one point and its vertical position
+  from another.
+
+  Use it when you want the corner of a rectangle built from two existing points. Do not use it when the
+  point depends on a distance or angle: use another point tool.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  x_from:
+    type: string
+    x-ref: point
+    description: The point whose horizontal position (distance from the left) is used. Give its label
+      (for example A) or a landmark name (for example bodice_front.SNP).
+  y_from:
+    type: string
+    x-ref: point
+    description: The point whose vertical position (distance from the top) is used. Give its label (for
+      example A) or a landmark name (for example bodice_front.SNP).
+required:
+- label
+- x_from
+- y_from
+examples:
+- instruction: The point level with A across and level with B down
+  call:
+    label: C
+    x_from: A
+    y_from: B
+engine:
+  builder: simple
+  tag: point
+  type: intersectXY
+  set:
+    name: '{label}'
+    firstPoint: '{x_from}'
+    secondPoint: '{y_from}'

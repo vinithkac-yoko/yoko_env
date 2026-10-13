@@ -1,0 +1,40 @@
+name: point_origin
+version: 1
+tier: primitive
+description: 'Create a free point at fixed coordinates, measured from the page origin. Normally one per
+  drafting block.
+
+  Use it when you start a new drafting block that hangs off no other point. Do not use it when the point
+  can be placed relative to an existing point: use point_at_distance_angle instead.'
+parameters:
+  label:
+    type: string
+    description: Name for the new point, unique in the pattern, for example B1.
+  x:
+    type: number
+    description: Distance from the left edge of the page, in the pattern's unit.
+    minimum: -500
+    maximum: 500
+  y:
+    type: number
+    description: Distance from the top edge of the page, in the pattern's unit. Down the page is positive.
+    minimum: -500
+    maximum: 500
+required:
+- label
+- x
+- y
+examples:
+- instruction: Start the drafting at 1 cm from the left and top
+  call:
+    label: A
+    x: 1
+    y: 1
+engine:
+  builder: simple
+  tag: point
+  type: single
+  set:
+    name: '{label}'
+    x: '{x}'
+    y: '{y}'

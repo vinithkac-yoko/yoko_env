@@ -1,0 +1,77 @@
+name: curve_spline_path
+version: 1
+tier: primitive
+description: 'Draw one smooth curve through several points in order. At every point you choose the direction
+  and handle lengths.
+
+  Use it when a long curve passes through three or more points, for example a whole neckline or a hem
+  curve. Do not use it when two points are enough: use curve_spline.'
+parameters:
+  points:
+    type: array
+    minItems: 2
+    maxItems: 50
+    description: The points in order, each with its direction and handle lengths. The first point has
+      no incoming handle and the last no outgoing one.
+    items:
+      type: object
+      additionalProperties: false
+      required:
+      - point
+      properties:
+        point:
+          type: string
+          x-ref: point
+          description: A point on the curve. Give its label (for example A) or a landmark name (for example
+            bodice_front.SNP).
+        angle1:
+          type: string
+          x-formula: true
+          maxLength: 500
+          description: 'Direction of the handle arriving at this point. Leave out at the first point.
+            Angles go counter-clockwise: 0 is to the right, 90 is up the page. A number or a formula in
+            degrees. A formula may use measurements, variables and other lengths, for example #hem_flare/2
+            + 1.'
+        length1:
+          type: string
+          x-formula: true
+          maxLength: 500
+          description: 'Length of the handle arriving at this point. Leave out at the first point. A number
+            or a formula in the pattern''s unit (cm in the basic set). A formula may use measurements,
+            variables and other lengths, for example #hem_flare/2 + 1.'
+        angle2:
+          type: string
+          x-formula: true
+          maxLength: 500
+          description: 'Direction of the handle leaving this point. Leave out at the last point. Angles
+            go counter-clockwise: 0 is to the right, 90 is up the page. A number or a formula in degrees.
+            A formula may use measurements, variables and other lengths, for example #hem_flare/2 + 1.'
+        length2:
+          type: string
+          x-formula: true
+          maxLength: 500
+          description: 'Length of the handle leaving this point. Leave out at the last point. A number
+            or a formula in the pattern''s unit (cm in the basic set). A formula may use measurements,
+            variables and other lengths, for example #hem_flare/2 + 1.'
+required:
+- points
+examples:
+- instruction: A curve through A, B and C
+  call:
+    points:
+    - point: A
+      angle2: '30'
+      length2: '3'
+    - point: B
+      angle1: '200'
+      length1: '2'
+      angle2: '20'
+      length2: '2'
+    - point: C
+      angle1: '190'
+      length1: '3'
+engine:
+  builder: spline_path
+  tag: spline
+  type: pathInteractive
+  set: {}

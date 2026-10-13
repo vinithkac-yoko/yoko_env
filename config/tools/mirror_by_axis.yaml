@@ -1,0 +1,58 @@
+name: mirror_by_axis
+version: 1
+tier: primitive
+description: 'Make a mirror-image copy of points, curves and arcs across a vertical or horizontal line
+  through one point.
+
+  Use it when the mirror line is straight up and down, or level, through a point. Do not use it when the
+  mirror line is slanted: use mirror_by_line.'
+parameters:
+  center:
+    type: string
+    x-ref: point
+    description: A point the mirror line passes through. Give its label (for example A) or a landmark
+      name (for example bodice_front.SNP).
+  axis:
+    type: string
+    enum:
+    - vertical
+    - horizontal
+    description: vertical mirrors left to right, horizontal mirrors top to bottom.
+  sources:
+    type: array
+    minItems: 1
+    maxItems: 100
+    description: The points, lines-curves and arcs to copy (labels or curve names).
+    items:
+      type: string
+      x-ref: object
+  suffix:
+    type: string
+    maxLength: 16
+    description: Text added to the name of every copy, for example _m so that B becomes B_m.
+required:
+- center
+- axis
+- sources
+- suffix
+examples:
+- instruction: Mirror the front left to right about A
+  call:
+    center: A
+    axis: vertical
+    sources:
+    - B
+    - C
+    suffix: _m
+engine:
+  builder: operation
+  tag: operation
+  type: flippingByAxis
+  set:
+    center: '{center}'
+    axisType:
+      param: axis
+      map:
+        vertical: '1'
+        horizontal: '2'
+    suffix: '{suffix}'

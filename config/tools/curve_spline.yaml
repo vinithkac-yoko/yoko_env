@@ -1,0 +1,107 @@
+name: curve_spline
+version: 1
+tier: primitive
+description: 'Draw a smooth curve between two points. At each end you choose the direction the curve leaves
+  in and how long the handle is (the longer the handle, the longer the curve keeps that direction).
+
+  Use it when you need a free-form curve such as an armhole, neckline or hip curve between two points.
+  Do not use it when you need a curve through several points: use curve_spline_path; if you need to steer
+  with control points: use curve_bezier.'
+parameters:
+  start:
+    type: string
+    x-ref: point
+    description: Start point of the curve. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  end:
+    type: string
+    x-ref: point
+    description: End point of the curve. Give its label (for example A) or a landmark name (for example
+      bodice_front.SNP).
+  start_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Direction the curve leaves the start point in. Angles go counter-clockwise: 0 is to
+      the right, 90 is up the page. A number or a formula in degrees. A formula may use measurements,
+      variables and other lengths, for example #hem_flare/2 + 1.'
+  end_angle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Direction of the handle at the end point, seen from the end point (the curve arrives
+      from the opposite way). Angles go counter-clockwise: 0 is to the right, 90 is up the page. A number
+      or a formula in degrees. A formula may use measurements, variables and other lengths, for example
+      #hem_flare/2 + 1.'
+  start_handle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Length of the handle at the start point. A number or a formula in the pattern''s unit
+      (cm in the basic set). A formula may use measurements, variables and other lengths, for example
+      #hem_flare/2 + 1.'
+  end_handle:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'Length of the handle at the end point. A number or a formula in the pattern''s unit
+      (cm in the basic set). A formula may use measurements, variables and other lengths, for example
+      #hem_flare/2 + 1.'
+  auto_smooth:
+    type: boolean
+    default: false
+    description: True lets the program choose smooth handle lengths; the handle lengths you give are then
+      ignored.
+  length_mode:
+    type: integer
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    default: 0
+    description: '0 leaves the handles alone. To make the curve a set length (target_length): 1 changes
+      the start handle, 2 the end handle, 3 both.'
+  target_length:
+    type: string
+    x-formula: true
+    maxLength: 500
+    description: 'The length the curve should have when length_mode is not 0. A number or a formula in
+      the pattern''s unit (cm in the basic set). A formula may use measurements, variables and other lengths,
+      for example #hem_flare/2 + 1.'
+required:
+- start
+- end
+- start_angle
+- end_angle
+- start_handle
+- end_handle
+examples:
+- instruction: An armhole curve from C to D
+  call:
+    start: C
+    end: D
+    start_angle: '250'
+    end_angle: '100'
+    start_handle: '4'
+    end_handle: '3.5'
+engine:
+  builder: simple
+  tag: spline
+  type: simpleInteractive
+  set:
+    point1: '{start}'
+    point4: '{end}'
+    angle1: '{start_angle}'
+    angle2: '{end_angle}'
+    length1: '{start_handle}'
+    length2: '{end_handle}'
+    autoSmooth:
+      param: auto_smooth
+      map:
+        'true': 'true'
+        'false': null
+    lengthMode:
+      param: length_mode
+      omit_if: '0'
+    length: '{target_length}'

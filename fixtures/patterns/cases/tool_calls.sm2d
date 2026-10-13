@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pattern>
+    <!--Pattern created with Seamly2D v2026.10.5.154 (https://seamly.io).-->
+    <version>0.7.5</version>
+    <unit>cm</unit>
+    <description/>
+    <notes/>
+    <patternLabel/>
+    <measurements/>
+    <variables/>
+    <draftBlock name="Pattern piece 1">
+        <calculation>
+            <point id="1" name="A" type="single" x="10" y="10"/>
+            <point angle="0" basePoint="1" id="2" length="20" name="B" type="endLine"/>
+            <point angle="270" basePoint="1" id="3" length="15" name="C" type="endLine"/>
+            <point firstPoint="2" id="4" name="D" secondPoint="3" type="intersectXY"/>
+            <line firstPoint="1" id="5" secondPoint="2"/>
+            <line firstPoint="2" id="6" secondPoint="4"/>
+            <line firstPoint="4" id="7" secondPoint="3"/>
+            <line firstPoint="3" id="8" secondPoint="1"/>
+            <point firstPoint="1" id="9" length="6" name="E" secondPoint="2" type="alongLine"/>
+            <point firstPoint="1" id="10" length="4" name="F" secondPoint="2" type="normal"/>
+            <point firstPoint="2" id="11" length="6" name="G" secondPoint="1" thirdPoint="3" type="bisector"/>
+            <point angle="270" basePoint="9" id="12" name="H" p1Line="3" p2Line="4" type="lineIntersectAxis"/>
+            <point id="13" name="I" p1Line1="1" p1Line2="2" p2Line1="4" p2Line2="3" type="lineIntersect"/>
+            <point basePoint="9" id="14" name="J" p1Line="3" p2Line="4" type="height"/>
+            <point center="1" firstPoint="2" id="15" name="K" radius="22" secondPoint="4" type="pointOfContact"/>
+            <point c1Center="1" c1Radius="20" c2Center="4" c2Radius="18" id="16" name="L" type="pointOfIntersectionCircles"/>
+            <point cCenter="9" cRadius="3" id="17" name="M" tangent="4" type="pointFromCircleAndTangent"/>
+            <point id="18" length="22" name="N" p1Line="1" p2Line="2" pShoulder="3" type="shoulder"/>
+            <point axisP1="1" axisP2="4" firstPoint="2" id="19" name="O" secondPoint="3" type="triangle"/>
+            <point baseLineP1="1" baseLineP2="2" dartP1="9" dartP2="10" dartP3="11" id="20" name1="P" name2="Q" point1="21" point2="22" type="trueDarts"/>
+            <spline angle1="300" angle2="100" id="23" length1="6" length2="5" point1="1" point4="4" type="simpleInteractive"/>
+            <spline id="24" point1="3" point2="12" point3="14" point4="2" type="cubicBezier"/>
+            <spline id="25" type="pathInteractive">
+                <pathPoint angle2="340" length2="4" pSpline="1"/>
+                <pathPoint angle1="160" angle2="340" length1="3" length2="3" pSpline="9"/>
+                <pathPoint angle1="150" length1="4" pSpline="2"/>
+            </spline>
+            <spline id="26" type="cubicBezierPath">
+                <pathPoint pSpline="3"/>
+                <pathPoint pSpline="12"/>
+                <pathPoint pSpline="14"/>
+                <pathPoint pSpline="4"/>
+                <pathPoint pSpline="16"/>
+                <pathPoint pSpline="15"/>
+                <pathPoint pSpline="2"/>
+            </spline>
+            <arc angle1="0" angle2="90" center="1" id="27" radius="12" type="simple"/>
+            <arc angle1="90" angle2="180" center="2" id="28" radius="12" type="simple"/>
+            <arc angle1="180" center="4" id="29" length="7" radius="5" type="arcWithLength"/>
+            <elArc angle1="0" angle2="270" center="13" id="30" radius1="4" radius2="2" rotationAngle="20" type="simple"/>
+            <point id="31" length="5" name="R" spline="23" type="cutSpline"/>
+            <point id="32" length="6" name="S" splinePath="25" type="cutSplinePath"/>
+            <point arc="27" id="33" length="4" name="T" type="cutArc"/>
+            <point angle="90" basePoint="9" curve="23" id="34" name="U" type="curveIntersectAxis"/>
+            <point curve1="23" curve2="24" id="35" name="V" type="pointOfIntersectionCurves"/>
+            <point firstArc="27" id="36" name="W" secondArc="28" type="pointOfIntersectionArcs"/>
+            <point arc="27" id="37" name="X" tangent="2" type="pointFromArcAndTangent"/>
+            <operation id="38" p1Line="1" p2Line="3" suffix="_m" type="flippingByLine">
+                <source>
+                    <item alias="" color="black" idObject="2" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="4" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="23" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="39" mx="0.132292" my="0.264583" showPointName="true"/>
+                    <item idObject="40" mx="0.132292" my="0.264583" showPointName="true"/>
+                    <item idObject="41"/>
+                </destination>
+            </operation>
+            <operation axisType="2" center="1" id="42" suffix="_a" type="flippingByAxis">
+                <source>
+                    <item alias="" color="black" idObject="4" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="9" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="43" mx="0.132292" my="0.264583" showPointName="true"/>
+                    <item idObject="44" mx="0.132292" my="0.264583" showPointName="true"/>
+                </destination>
+            </operation>
+            <operation angle="30" center="1" id="45" suffix="_r" type="rotation">
+                <source>
+                    <item alias="" color="black" idObject="2" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="27" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="46" mx="0.132292" my="0.264583" showPointName="true"/>
+                    <item idObject="47"/>
+                </destination>
+            </operation>
+            <operation angle="45" id="48" length="3" rotationAngle="10" suffix="_v" type="moving">
+                <source>
+                    <item alias="" color="black" idObject="9" lineType="solidLine"/>
+                    <item alias="" color="black" idObject="29" lineType="solidLine"/>
+                </source>
+                <destination>
+                    <item idObject="49" mx="0.132292" my="0.264583" showPointName="true"/>
+                    <item idObject="50"/>
+                </destination>
+            </operation>
+        </calculation>
+        <modeling/>
+        <pieces/>
+        <groups/>
+    </draftBlock>
+</pattern>
