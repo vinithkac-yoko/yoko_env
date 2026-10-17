@@ -69,6 +69,13 @@ class Landmarks:
     def names(self) -> tuple[str, ...]:
         return tuple(n for n, _ in self.entries)
 
+    def with_entry(self, name: str, object_id: int, note: str = "") -> Landmarks:
+        """These landmarks plus one a recipe made (or the same name pointed at a new object)."""
+        if not NAME_RE.match(name):
+            raise ValueError(f"bad landmark name {name!r}: use <piece>.<landmark>")
+        kept = tuple((n, r) for n, r in self.entries if n != name)
+        return Landmarks(self.version, (*kept, (name, LandmarkRef(object_id=object_id, note=note))))
+
     def resolve(self, ev: Evaluation) -> tuple[dict[str, int], list[Issue]]:
         """Landmark name -> object id, and an issue for every landmark that does not resolve."""
         by_label = {g.label: g.id for g in ev.points.values() if g.label}

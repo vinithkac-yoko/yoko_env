@@ -200,6 +200,7 @@ class Provenance:
     kind: str  # created | edited
     meta: ActionMeta
     changes: tuple[FieldChange, ...] = ()
+    order: int = 0  # the session's action counter when this was recorded; later is larger
 
 
 @dataclass(frozen=True, slots=True)
@@ -337,6 +338,7 @@ class PatternSession:
         evaluator.run(pattern, self._values)
         self._state = _State(pattern, evaluator)
         self._undo: list[_State] = []
+        self._clock = 0  # counts every applied action, forks included; never goes back
         self._hash: tuple[int, str] | None = None
         self._pieces: tuple[int, dict[int, PieceGeom]] | None = None
         self.parent_hash: str | None = None  # hash of the pattern this one was derived from
@@ -433,6 +435,7 @@ class PatternSession:
                     "author": p.meta.author,
                     "episode": p.meta.episode,
                     "on_plan": p.meta.on_plan,
+                    "order": p.order,
                     "changes": [{"field": c.field, "old": c.old, "new": c.new} for c in p.changes],
                 }
                 for p in self._state.provenance[oid]
@@ -463,6 +466,7 @@ class PatternSession:
             self._state.issues,
         )
         child._undo = []
+        child._clock = self._clock
         child._hash = self._hash
         child._pieces = self._pieces
         child.parent_hash = self.parent_hash
@@ -491,6 +495,10 @@ class PatternSession:
             changed=tuple(sorted(set(changed) - set(created))),
             deleted=tuple(deleted),
         )
+
+    @property
+    def can_undo(self) -> bool:
+        return bool(self._undo)
 
     def undo(self) -> Result:
         if not self._undo:
@@ -545,11 +553,16 @@ class PatternSession:
         old = self._state
         provenance = dict(old.provenance)
         diff = diff_patterns(old.pattern, new_pattern)
+        self._clock += 1
+        order = self._clock
         for oid in created:
-            provenance[oid] = (Provenance("created", meta),)
+            provenance[oid] = (Provenance("created", meta, (), order),)
         for oid, changes in diff.edited:
             if oid not in created:
-                provenance[oid] = (*provenance.get(oid, ()), Provenance("edited", meta, changes))
+                provenance[oid] = (
+                    *provenance.get(oid, ()),
+                    Provenance("edited", meta, changes, order),
+                )
         for oid in deleted:
             provenance.pop(oid, None)
         self._undo.append(old)

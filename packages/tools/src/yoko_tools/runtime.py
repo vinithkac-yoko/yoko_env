@@ -15,6 +15,7 @@ is resolved here, so the engine only ever sees ids.
 from __future__ import annotations
 
 import difflib
+import json
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Any, cast
@@ -82,6 +83,25 @@ class Toolbox:
         self.library = library
         self.loaded: dict[str, PatternSession] = {}  # library patterns opened with load_pattern
 
+    def fork(self) -> Toolbox:
+        """The same tools on a copy of the pattern: a call on it changes nothing here."""
+        twin = Toolbox(
+            self.session.fork(),
+            self.specs,
+            landmarks=self.landmarks,
+            handlers=self.handlers,
+            library=self.library,
+        )
+        twin.loaded = self.loaded
+        return twin
+
+    def add_landmark(self, name: str, object_id: int, note: str = "") -> None:
+        """Give an object a landmark name (a recipe's new landmark)."""
+        from yoko_engine.landmarks import Landmarks
+
+        base = self.landmarks if self.landmarks is not None else Landmarks(1, ())
+        self.landmarks = base.with_entry(name, object_id, note)
+
     # -- names -> ids ---------------------------------------------------------------------------
     def resolve(self, name: str, kind: str, field: str) -> Target:
         """The object a name stands for, which must be of the given kind (`point`, `curve` or
@@ -147,6 +167,37 @@ class Toolbox:
         if close:
             return "did you mean " + ", ".join(close) + "?"
         return "list the objects with find_objects to see the names"
+
+    def canonical(self, name: str, args: Mapping[str, Any]) -> str:
+        """Text that is the same for calls that do the same thing: names replaced by ids, formulas
+        without spaces, numbers in one format, and the labels the new objects are given left out.
+        Two calls with the same text build the same construction."""
+        spec = self.specs.get(name)
+        clean: Mapping[str, Any] = dict(args)
+        if spec is not None:
+            try:
+                clean = spec.validate(args)
+                clean = self._resolved(spec, clean)
+            except (SpecError, ToolError):
+                pass  # compared as written
+            skip = _cosmetic(spec)
+            clean = {k: v for k, v in clean.items() if k not in skip}
+        return json.dumps([name, _normal(clean)], sort_keys=True, separators=(",", ":"))
+
+    def tool_for(self, obj: Obj) -> str | None:
+        """The tool that draws objects like this one (its edit and delete tools are named after
+        it), if it is a simple primitive."""
+        for spec in self.specs.values():
+            e = spec.engine
+            if (
+                spec.tier == "primitive"
+                and e is not None
+                and e.get("builder") == "simple"
+                and e["tag"] == obj.tag
+                and e.get("type") == obj.get("type")
+            ):
+                return spec.name
+        return None
 
     def maker(self, oid: int) -> Obj | None:
         """The object of the pattern that made a point or curve (an operation makes several)."""
@@ -421,6 +472,35 @@ class Toolbox:
             "error": dict(error),
             "diff": {},
         }
+
+
+def _cosmetic(spec: ToolSpec) -> set[str]:
+    """Parameters that only name or tag what a call makes."""
+    out: set[str] = set()
+    if spec.engine is None:
+        return out
+    for attr, rule in cast(Mapping[str, Any], spec.engine.get("set", {})).items():
+        if attr not in ("name", "name1", "name2", "suffix"):
+            continue
+        if isinstance(rule, dict):
+            out.add(cast(str, cast(Mapping[str, Any], rule)["param"]))
+        else:
+            out.update(template_params(cast(str, rule)))
+    return out
+
+
+def _normal(node: Any) -> Any:
+    if isinstance(node, bool):
+        return node
+    if isinstance(node, int | float):
+        return fmt_number(float(node))
+    if isinstance(node, str):
+        return "".join(node.split())
+    if isinstance(node, Mapping):
+        return {k: _normal(v) for k, v in cast("Mapping[str, Any]", node).items()}
+    if isinstance(node, list | tuple):
+        return [_normal(v) for v in cast("list[Any]", node)]
+    return node
 
 
 def _error_dict(err: ActionError) -> dict[str, Any]:
