@@ -8,22 +8,30 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 After the armhole changes, change the sleeve cap so its length equals the armhole length plus an amount of ease. Applies to set-in sleeves.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `sleeve.cap curve (front and back)` | the curve to change **(?)** |
-| `bodice_front.armhole, bodice_back.armhole` | the armhole curves to measure |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `cap_front` | section | yes | the front half of the sleeve cap curve to change **(?)** |
+| `cap_back` | section | yes | the back half of the cap curve |
+| `armhole_front` | section | yes | the front armhole curve to measure |
+| `armhole_back` | section | yes | the back armhole curve to measure |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `ease` | extra length of the cap over the armhole | cm | | | |
+
+**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `ease_split` | `whole`, `front_back` | **(?)** | `whole`: one ease for the whole cap; `front_back`: separate ease for each half **(?)** |
 
 ## 4. Preconditions
 

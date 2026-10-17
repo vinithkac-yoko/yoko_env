@@ -219,15 +219,35 @@ def render_outline_png(
     marks: list[tuple[str, tuple[float, float]]],
     *,
     width_px: int = 900,
+    inner_marks: list[tuple[str, tuple[float, float]]] | None = None,
+    inner_lines: list[tuple[str, tuple[float, float], tuple[float, float]]] | None = None,
 ) -> bytes:
     """A piece outline (points in pixels, Seamly2D's scale) with numbered marks, as PNG bytes.
 
     Used for the landmark sheet: the pattern maker sees where each numbered row sits on the piece.
+    `inner_marks` and `inner_lines` are things that are not on the outline (a dart's apex, a guide
+    line): drawn in blue, so they are not mistaken for outline rows.
     """
     mm = [_mm(p) for p in outline]
     mark_mm = [(text, _mm(p)) for text, p in marks]
-    xs = [p[0] for p in mm]
-    ys = [p[1] for p in mm]
+    inner_mm = [(text, _mm(p)) for text, p in (inner_marks or [])]
+    # a guide line is drawn only as far as the piece reaches (it may run across the whole block)
+    box = (
+        min(p[0] for p in mm) - 10.0,
+        min(p[1] for p in mm) - 10.0,
+        max(p[0] for p in mm) + 10.0,
+        max(p[1] for p in mm) + 10.0,
+    )
+    line_mm: list[tuple[str, tuple[float, float], tuple[float, float]]] = []
+    for text, a, b in inner_lines or []:
+        clipped = _clip(_mm(a), _mm(b), box)
+        if clipped is not None:
+            line_mm.append((text, *clipped))
+    xs = [p[0] for p in mm] + [p[0] for _, p in inner_mm]
+    ys = [p[1] for p in mm] + [p[1] for _, p in inner_mm]
+    for _, a, b in line_mm:
+        xs += [a[0], b[0]]
+        ys += [a[1], b[1]]
     margin = 14.0
     min_x, min_y = min(xs) - margin, min(ys) - margin
     w, h = max(xs) + margin - min_x, max(ys) + margin - min_y
@@ -239,16 +259,75 @@ def render_outline_png(
     def px(p: tuple[float, float]) -> tuple[float, float]:
         return (p[0] - min_x) * scale, (p[1] - min_y) * scale
 
+    blue = (30, 90, 170)
+    font = ImageFont.load_default(size=max(10, round(4.2 * scale)))
+    for text, a, b in line_mm:
+        _dashed(draw, px(a), px(b), blue, 2 * _SUPERSAMPLE, 9 * _SUPERSAMPLE)
+        x, y = px(((a[0] + b[0]) / 2, (a[1] + b[1]) / 2))
+        r = 3.6 * scale
+        draw.rectangle([x - r, y - r * 0.7, x + r, y + r * 0.7], fill=(255, 255, 255), outline=blue)
+        draw.text((x, y), text, fill=blue, font=font, anchor="mm")
     draw.line([px(p) for p in [*mm, mm[0]]], fill=(31, 41, 51), width=2 * _SUPERSAMPLE)
-    font = ImageFont.load_default(size=max(10, round(3.4 * scale)))
     for text, p in mark_mm:
         x, y = px(p)
-        r = 2.1 * scale
+        r = 2.8 * scale
         draw.ellipse(
             [x - r, y - r, x + r, y + r], fill=(255, 255, 255), outline=(178, 34, 34), width=2
         )
         draw.text((x, y), text, fill=(178, 34, 34), font=font, anchor="mm")
+    for text, p in inner_mm:
+        x, y = px(p)
+        r = 4.0 * scale
+        draw.regular_polygon((x, y, r), 4, rotation=45, fill=(255, 255, 255), outline=blue)
+        draw.text((x, y), text, fill=blue, font=font, anchor="mm")
     img = img.resize((big_w // _SUPERSAMPLE, big_h // _SUPERSAMPLE), Image.Resampling.LANCZOS)
     buf = BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
+
+
+def _clip(
+    a: tuple[float, float], b: tuple[float, float], box: tuple[float, float, float, float]
+) -> tuple[tuple[float, float], tuple[float, float]] | None:
+    """The part of the segment a-b inside the box (Liang-Barsky), or None if it misses it."""
+    x0, y0, x1, y1 = box
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    t0, t1 = 0.0, 1.0
+    for p, q in ((-dx, a[0] - x0), (dx, x1 - a[0]), (-dy, a[1] - y0), (dy, y1 - a[1])):
+        if p == 0:
+            if q < 0:
+                return None
+            continue
+        t = q / p
+        if p < 0:
+            t0 = max(t0, t)
+        else:
+            t1 = min(t1, t)
+        if t0 > t1:
+            return None
+    return (a[0] + t0 * dx, a[1] + t0 * dy), (a[0] + t1 * dx, a[1] + t1 * dy)
+
+
+def _dashed(
+    draw: ImageDraw.ImageDraw,
+    a: tuple[float, float],
+    b: tuple[float, float],
+    fill: tuple[int, int, int],
+    width: int,
+    dash: float,
+) -> None:
+    """A dashed line from a to b."""
+    length = ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2) ** 0.5
+    if length == 0:
+        return
+    n = max(1, int(length // dash))
+    for i in range(0, n, 2):
+        t0, t1 = i / n, min((i + 1) / n, 1.0)
+        draw.line(
+            [
+                (a[0] + (b[0] - a[0]) * t0, a[1] + (b[1] - a[1]) * t0),
+                (a[0] + (b[0] - a[0]) * t1, a[1] + (b[1] - a[1]) * t1),
+            ],
+            fill=fill,
+            width=width,
+        )

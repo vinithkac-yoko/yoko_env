@@ -8,21 +8,28 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 After a change, make seams meet smoothly and, where two pieces are sewn together, make the sewn edges the same length. Applies to side seams, shoulder seams, armholes, necklines, hems.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `<piece>.seam edge points and curves` | the edges to true **(?)** |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `edge_a` | section | yes | the edge that stays **(?)** |
+| `edge_b` | section | yes | the edge that is changed to match it **(?)** |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `tolerance` | how close the two lengths must be | mm | | | |
+
+**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `method` | `length`, `smooth`, `both` | **(?)** | `length`: the two edges get the same length; `smooth`: no corner at the join; `both`. Which of these 'true' means is a question for the pattern makers |
 
 ## 4. Preconditions
 

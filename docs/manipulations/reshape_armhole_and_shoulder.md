@@ -8,24 +8,30 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 Change the armhole and the shoulder seam: drop or raise the underarm, deepen or narrow the armhole, extend the shoulder outward past the natural shoulder point (drop shoulder). Applies to bodice front and back.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `bodice_front.shoulder_tip, bodice_back.shoulder_tip` | the end of the shoulder **(?)** |
-| `bodice_front.underarm, bodice_back.underarm` | the lowest point of the armhole **(?)** |
-| `<piece>.armhole` | the armhole curve |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `shoulder_tip` | point | yes | the end of the shoulder **(?)** |
+| `underarm` | point | yes | the lowest point of the armhole **(?)** |
+| `armhole` | section | yes | the armhole curve |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `shoulder_extension` | how far the shoulder tip moves outward | cm | | | |
 | `underarm_drop` | how far the underarm moves down | cm | | | |
+
+**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `extension_along` | `shoulder_line`, `straight_out` | **(?)** | how the shoulder extension is measured |
 
 ## 4. Preconditions
 

@@ -1,0 +1,61 @@
+# Proposed names for things that are NOT on a piece's outline: dart apexes, the bust point, guide
+# lines (waist, hip, bust, knee), the centre-front and centre-back lines. NOTHING HERE IS VERIFIED.
+# They have no row on the outline tabs, so the sheet lists them in a second table under each
+# piece's outline table, with their own numbers (i1, i2, ...) drawn in blue on the picture.
+#
+# kind: point | line.  A point is a Seamly2D label; a line is the straight line between two labels
+# (Seamly2D draws it as the main line of a point tool, so it has no label of its own).
+# group: entries with the same group are one Seamly2D line (or point) that two pieces name
+#   differently; the sheet shows both names on both rows.
+# confidence as in proposed_names.yaml.
+version: 1
+status: proposed
+pieces:
+  "A - Skirt Back":
+    - {kind: line, from: A1, to: A2, name: skirt_back.waist_line, group: skirt_waist, confidence: medium, reason: "the level line along the waist from centre back (A1) to centre front (A2); A9 (the back's waist width) and A15 (the front's) are measured along it"}
+    - {kind: line, from: A5, to: A6, name: skirt_back.hip_line, group: skirt_hip, confidence: medium, reason: "the level line at the hip: A5 is height_waist_side_to_hip below the waist on the centre-back line, A7 (hip_circ/4 plus ease) lies on it"}
+    - {kind: line, from: A1, to: A3, name: skirt_back.CB_line, confidence: medium, reason: "the vertical edge on the left: A, A1, A3 and A5 all have the same x"}
+    - {kind: point, label: A13, name: skirt_back.waist_dart1_apex, confidence: medium, reason: "Seamly2D draws dash-dot lines from A13 to the dart legs A13a and A13b; A13 is 14*#CM below the waist (#CM scales fixed lengths to body height)"}
+    - {kind: point, label: A14, name: skirt_back.waist_dart2_apex, confidence: medium, reason: "dash-dot lines from A14 to the dart legs A14a and A14b; 13*#CM below the waist"}
+  "A - Skirt Front":
+    - {kind: line, from: A1, to: A2, name: skirt_front.waist_line, group: skirt_waist, confidence: medium, reason: "the same level line as the back's waist line (the front's waist width A15 is measured from A2)"}
+    - {kind: line, from: A5, to: A6, name: skirt_front.hip_line, group: skirt_hip, confidence: medium, reason: "the same level line as the back's hip line"}
+    - {kind: line, from: A2, to: A4, name: skirt_front.CF_line, confidence: medium, reason: "the vertical edge on the right: A2, A4 and A6 all have the same x"}
+    - {kind: point, label: A18, name: skirt_front.waist_dart1_apex, confidence: medium, reason: "dash-dot lines from A18 to the dart legs A17a and A17b; 12*#CM below the waist"}
+  "B - Trousers Front":
+    - {kind: line, from: B7, to: B11, name: trouser_front.waist_line, confidence: low, reason: "the level line at the waist: B7, B10 and B11 are at the same height (B11 is waist_circ/4 plus ease from it)"}
+    - {kind: line, from: B6, to: B8, name: trouser_front.hip_line, confidence: medium, reason: "the level line at the hip: B2 is height_waist_side_to_hip below the waist, and B6 and B8 are at the same height"}
+    - {kind: line, from: B15, to: B13, name: trouser_front.knee_line, confidence: medium, reason: "the level line at the knee: B4 is half way from the crotch level to the hem minus 5 cm, and B13 and B15 are at the same height; width uses #TrouserKneeWidth"}
+    - {kind: line, from: B5, to: B7, name: trouser_front.CF_line, confidence: low, reason: "the vertical edge on the left: B5, B6 and B7 have the same x. Not the vertical through B, B1, B2, B3, B4, which looks like the crease line"}
+    - {kind: point, label: Ba, name: trouser_front.waist_dart1_apex, confidence: medium, reason: "dash-dot lines from Ba to the dart legs Bba and Bca; 10*#CM below the waist"}
+  "B - Trousers Back":
+    - {kind: line, from: B17, to: B25, name: trouser_back.hip_line, confidence: medium, reason: "the level line at the hip: B17 and B25 are at the same height as the front's hip line (height_waist_side_to_hip below the waist)"}
+    - {kind: line, from: B29, to: B27, name: trouser_back.knee_line, confidence: medium, reason: "the level line at the knee: B27 and B29 are at the same height as the front's knee line"}
+    - {kind: line, from: B16, to: B19, name: trouser_back.CB_line, confidence: low, reason: "the straight line through B16, B17, B18 and B19; the slanted centre-back seam B19 to B21 continues from it"}
+    - {kind: point, label: B30a, name: trouser_back.waist_dart1_apex, confidence: medium, reason: "dash-dot lines from B30a to the dart legs B30d and B30e; 12*#CM below the waist"}
+    - {kind: point, label: B31a, name: trouser_back.waist_dart2_apex, confidence: medium, reason: "dash-dot lines from B31a to the dart legs B31d and B31e; 10*#CM below the waist"}
+  "C - Bodice Back":
+    - {kind: line, from: C2, to: C3, name: bodice_back.bust_line, group: bodice_bust, confidence: medium, reason: "the level line at the armscye depth plus 0.5 cm, as wide as bust_circ/2 plus 5 cm; the back armhole width C14 and the front's C22 are measured along it"}
+    - {kind: line, from: C5, to: C6, name: bodice_back.waist_line, group: bodice_waist, confidence: medium, reason: "the level line at the waist: C5 is neck_back_to_waist_b below the neck; the waist darts' legs lie on it"}
+    - {kind: line, from: C7, to: C8, name: bodice_back.hip_line, group: bodice_hip, confidence: medium, reason: "the level line at the bottom edge, height_waist_side_to_hip below the waist"}
+    - {kind: line, from: C1, to: C7, name: bodice_back.CB_line, confidence: medium, reason: "the vertical edge on the left: C, C1, C2, C5, C7 and C10 have the same x"}
+    - {kind: point, label: C13, name: bodice_back.shoulder_dart1_apex, confidence: medium, reason: "dash-dot lines from C13 to the dart legs C12e and C12f; 5*#CM below the middle of the shoulder, 1*#CM to the side"}
+    - {kind: point, label: C18a, name: bodice_back.waist_dart1_leg_a, confidence: low, reason: "left end of the dart at the waist line; a fish dart with its legs inside the piece"}
+    - {kind: point, label: C18b, name: bodice_back.waist_dart1_leg_b, confidence: low, reason: "right end of the same dart at the waist line"}
+    - {kind: point, label: C17, name: bodice_back.waist_dart1_apex_upper, confidence: low, reason: "dash-dot lines from C17 to the legs C18a and C18b; the upper tip, on the bust line"}
+    - {kind: point, label: C19, name: bodice_back.waist_dart1_apex_lower, confidence: low, reason: "dash-dot lines from C19 to the legs C18a and C18b; the lower tip, at the bottom edge"}
+  "C - Bodice Front":
+    - {kind: line, from: C2, to: C3, name: bodice_front.bust_line, group: bodice_bust, confidence: medium, reason: "the same level line as the back's bust line"}
+    - {kind: line, from: C5, to: C6, name: bodice_front.waist_line, group: bodice_waist, confidence: medium, reason: "the same level line as the back's waist line"}
+    - {kind: line, from: C7, to: C8, name: bodice_front.hip_line, group: bodice_hip, confidence: medium, reason: "the same level line as the back's bottom edge"}
+    - {kind: line, from: C21, to: C8, name: bodice_front.CF_line, confidence: medium, reason: "the vertical edge on the right: C3, C4, C6, C8 and C21 have the same x"}
+    - {kind: point, label: C23, name: bodice_front.BP, confidence: low, reason: "NOT DRAWN AS SUCH. The basic set has no bust point. C23 is half way along the bust line between the centre front and the armhole width, and the front's shoulder dart apex C26 is 2.5 cm below it on a vertical line, which is where a bust point would sit. Please say where it really is"}
+    - {kind: point, label: C26, name: bodice_front.shoulder_dart1_apex, confidence: low, reason: "one dash-dot line runs from C26 to the dart leg C27a (the second leg is a copy, so there is no second line); 2.5 cm below C23"}
+    - {kind: point, label: C24a, name: bodice_front.waist_dart1_leg_a, confidence: low, reason: "left end of the dart at the waist line; a fish dart with its legs inside the piece"}
+    - {kind: point, label: C24b, name: bodice_front.waist_dart1_leg_b, confidence: low, reason: "right end of the same dart at the waist line"}
+    - {kind: point, label: C26a, name: bodice_front.waist_dart1_apex_upper, confidence: low, reason: "dash-dot lines from C26a to the legs C24a and C24b; the upper tip (the lower tip C25 is on the bottom edge, outline row 12)"}
+  "D - 1 Piece Sleeve": []
+not_drawn:
+  - "A bust point (BP). The basic set has no object for it; C23 is the nearest candidate (see bodice_front.BP above)."
+  - "A guide line for the trousers back's waist: the back's waist runs on a slant (B21 is 2 cm above the waist line), and no level line is drawn for it."
+  - "A knee line for skirts, bodices and sleeves: the skirt's hem is at 'knee' length (height_waist_side_to_knee) but it is the hem, not a separate line."

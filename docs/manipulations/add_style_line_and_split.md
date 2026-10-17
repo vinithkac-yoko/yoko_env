@@ -8,22 +8,29 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 Draw a new line or curve across a piece (a yoke, princess line, panel, gore or tier line) and split the piece into two pieces along it. Applies to bodices, skirts, sleeves.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `<piece>.line_start` | where the style line meets the outline **(?)** |
-| `<piece>.line_end` | where it leaves the outline **(?)** |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `line_start` | point | yes | where the style line meets the outline **(?)** |
+| `line_end` | point | yes | where it leaves the outline **(?)** |
+| `piece` | any | yes | the piece that is split |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `depth` | how far the line is from an edge, if it is placed by distance | cm | | | |
+
+**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `line` | `straight`, `curved` | **(?)** | the shape of the style line between its ends |
 
 ## 4. Preconditions
 

@@ -14,25 +14,39 @@ Written by: <pattern maker, or "Claude, from the tools; not drafting practice" f
 What the manipulation does to a pattern, in plain words, and which blocks or pieces it is used on
 (for example "bodice front and back", "any piece with a hem").
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-The named points, lines and curves the manipulation needs to exist, using the landmark names
-(`<piece>.<landmark>`, see `docs/landmarks/`). Say what each is used for.
+A plan step says *where* as well as *how much*. Each place the recipe needs is a **role**, and the
+plan names it in the step's `refs`: role name -> a landmark (`<piece>.<landmark>`, see
+`docs/landmarks/`) or a section of a piece, `piece.section(landmark_a, landmark_b)`, which stands for
+the outline between two landmarks (add or leave out single objects with `+ x` and `- y`). The plan is
+refused if a required role is missing or names a landmark that does not exist.
 
-| Landmark | Used for |
-| --- | --- |
-| `bodice_front.CF_neck` | |
+| Role | Kind (point, curve, section, any) | Required? | Used for | If not required: the rule that fills it in by default |
+| --- | --- | --- | --- | --- |
+| `edge` | section | yes | | |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Every amount the planner decides. Each becomes a pattern variable `#s<step>_<name>` and the steps
-below use the variable, never a number.
+**Parameters.** Every amount the planner decides. Each becomes a pattern variable
+`#s<step>_<name>` and the steps below use the variable, never a number. An amount is a number or a
+formula over measurements, so that it adapts from size to size (for example `bust_circ/20`); it is
+never scaled by `#CM`. The plan is checked at every size of the measurement table and at a person's
+own measurement file, so the least and most hold at every size.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `hem_flare` | | cm | | | |
 
 Units: `cm`, `mm`, `inch`, `deg`, `count` (a whole number), `ratio`.
+
+**Options.** A choice the recipe branches on, from a list the recipe defines (for example
+`spread: parallel | hinged`). The plan's step names the choice in `options`. A choice is not a
+second recipe: say in section 5 which steps each choice uses.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `spread` | `parallel`, `hinged` | | |
 
 ## 4. Preconditions
 
@@ -43,7 +57,8 @@ What must be true before the manipulation starts (for example "the piece has a c
 
 Numbered. Each step is one tool call, with what it refers to and the formulas it uses. Say whether it
 **adds** an object or **edits** an existing one (editing the formula of a point the style copied is
-normal drafting). Use landmark names for references and `#s<step>_<name>` for amounts.
+normal drafting). Use the roles for references and `#s<step>_<name>` for amounts. If an option
+changes the steps, say which option each step belongs to.
 
 | # | Add or edit | Tool | References and formulas | Result (a new landmark, if any) |
 | --- | --- | --- | --- | --- |

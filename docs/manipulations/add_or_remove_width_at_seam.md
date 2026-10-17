@@ -8,23 +8,29 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 Move a seam out or in by an amount that grows (or shrinks) from nothing at one point along the seam to the full amount at another, for example taking in a side seam from the underarm to the hem. Applies to side seams, sleeve seams, trouser seams.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `<piece>.seam_start` | where the change begins, with no change **(?)** |
-| `<piece>.seam_end` | where the change is full **(?)** |
-| `<piece>.seam points` | the points between, which move by a share of the amount |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `seam` | section | yes | the seam edge that moves; its points between start and end move by a share of the amount |
+| `seam_start` | point | yes | where the change begins, with no change **(?)** |
+| `seam_end` | point | yes | where the change is full **(?)** |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `amount` | full change at the far end of the taper | cm | | | |
+
+**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `taper` | `straight`, `curved` | **(?)** | `straight`: the share is proportional to distance along the seam; `curved`: it follows a curve **(?)** |
 
 ## 4. Preconditions
 

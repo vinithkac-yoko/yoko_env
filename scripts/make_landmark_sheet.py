@@ -21,6 +21,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from landmark_internal import internal_rows, not_drawn
 from landmark_rows import piece_rows
 from yoko_io.render import render_outline_png
 
@@ -43,6 +44,7 @@ COLUMNS = [
     ("x (mm)", 9),
     ("y (mm)", 9),
     ("Proposed name", 30),
+    ("Also named (same object)", 34),
     ("Confidence", 11),
     ("Why we think so", 46),
     ("Verdict", 14),
@@ -54,13 +56,37 @@ GLOSSARY = [
     ("CB", "centre back"),
     ("CF", "centre front"),
     ("SNP", "side neck point: where the neckline meets the shoulder seam"),
-    ("BP", "bust point (not on these pieces; reserved for bust-dart work)"),
+    ("BP", "bust point (the basic set does not draw one; see the bodice front's internal table)"),
     ("underarm", "the lowest point of the armhole, where it meets the side seam"),
     ("shoulder_tip", "the outer end of the shoulder seam, where the armhole begins"),
     ("side_waist / side_hip", "the point on the side seam at the waist line / hip line"),
     ("inseam", "the inside leg seam of a trouser"),
     ("cap_top", "the highest point of the sleeve cap"),
-    ("dartN_leg_a / _leg_b / _fold / _tip", "the points that make up a dart; N numbers them"),
+    (
+        "leg_a / leg_b",
+        "the two ends of a dart where its legs meet the seam or the waist line; a is the one nearer the centre line",
+    ),
+    (
+        "apex",
+        "the tip of a dart, inside the piece, not on the outline. A fish dart has two: apex_upper and apex_lower",
+    ),
+    (
+        "cap",
+        "the little bump a dart leaves in the outline of the basic piece (Seamly2D draws it as three points: leg_a, cap, leg_b)",
+    ),
+    (
+        "waist_dart1, shoulder_dart1 ...",
+        "a dart is named for where it is and numbered from the centre line outwards: waist_dart1_leg_a, waist_dart1_apex, waist_dart1_cap",
+    ),
+    (
+        "front / back",
+        "the sleeve points on the front half of the cap and the back half; the sleeve's own centre line is cap_top to wrist_center",
+    ),
+    (
+        "bust_line / waist_line / hip_line / knee_line",
+        "the level guide lines the pieces are drafted from",
+    ),
+    ("CB_line / CF_line", "the vertical centre-back and centre-front lines"),
 ]
 
 
@@ -88,8 +114,11 @@ def readme(ws) -> None:
         ),
         (
             "What is in it",
-            "One tab per piece (7 pieces). Each tab has a picture of the piece with numbered circles, and "
-            "a table with one row per number. A row is a corner point or a curve of the piece's outline.",
+            "One tab per piece (7 pieces). Each tab has a picture of the piece and two tables. The first has "
+            "one row per red numbered circle: a corner point or a curve of the piece's outline. The second, "
+            "'Not on the outline', has one row per blue mark i1, i2 ...: a dart's apex, the bust point, a "
+            "guide line (waist, hip, bust, knee) or a centre-front or centre-back line. Blue squares are "
+            "points; blue dashed lines are lines.",
             None,
         ),
         (
@@ -122,6 +151,30 @@ def readme(ws) -> None:
             None,
         ),
         (
+            "Also named",
+            "When one Seamly2D object carries two names (a point shared by two pieces, such as the "
+            "underarm, or one long curve cut into several rows, such as the sleeve cap, or one guide "
+            "line used by two pieces), every row that shares it says so in 'Also named'. Both names are "
+            "kept: please check that each is right for its piece.",
+            None,
+        ),
+        (
+            "Darts",
+            "Every dart is named the same way: leg_a, leg_b, apex and cap. leg_a and leg_b are its two "
+            "ends where the legs meet the seam or waist line; apex is its tip inside the piece; cap is the "
+            "bump it leaves in the outline of the basic piece. Darts are called waist_dart1, waist_dart2 ... "
+            "or shoulder_dart1, counted from the centre line outwards. A fish dart has two tips: "
+            "apex_upper and apex_lower.",
+            None,
+        ),
+        (
+            "Front and back",
+            "The sleeve's points are named front or back. We worked out which half is which from the "
+            "armhole lengths the formulas use; please confirm.",
+            None,
+        ),
+        ("Asked for, but not drawn", None, "notdrawn"),
+        (
             "Positions",
             "x and y are millimetres on the drawing at the base size (UK 6, height 164 cm). y grows "
             "downward, as on screen. They are for orientation only.",
@@ -135,6 +188,13 @@ def readme(ws) -> None:
             ws.cell(row=r, column=2, value=head)
             style(ws.cell(row=r, column=2), bold=True, size=16, wrap=False)
             ws.row_dimensions[r].height = 28
+        elif kind == "notdrawn":
+            ws.cell(row=r, column=2, value=head)
+            style(ws.cell(row=r, column=2), bold=True)
+            lines = not_drawn()
+            ws.cell(row=r, column=3, value="\n".join(f"- {x}" for x in lines))
+            style(ws.cell(row=r, column=3))
+            ws.row_dimensions[r].height = max(30, 15 * (sum(len(x) // 90 + 1 for x in lines) + 1))
         elif kind == "example":
             ws.cell(row=r, column=2, value=head)
             style(ws.cell(row=r, column=2), bold=True)
@@ -152,6 +212,7 @@ def readme(ws) -> None:
                 "329.1",
                 "74.2",
                 "bodice_front.shoulder_tip",
+                "",
                 "medium",
                 "end of the shoulder; radius is shoulder_length",
                 "Confirm",
@@ -160,7 +221,7 @@ def readme(ws) -> None:
             ]
             for c, v in enumerate(example, start=1):
                 cell = ws.cell(row=r, column=c + 1, value=v)
-                style(cell, fill=INPUT_FILL if c >= 11 else None)
+                style(cell, fill=INPUT_FILL if c >= 12 else None)
             ws.cell(row=r + 1, column=2, value="(This row is only an illustration of the format.)")
             style(ws.cell(row=r + 1, column=2), color="52606D", wrap=False)
             r += 1
@@ -201,34 +262,73 @@ def glossary(ws, names: dict[str, list[tuple[str, str]]]) -> None:
         r += 1
 
 
-def piece_tab(ws, pr, proposals: dict[int, dict]) -> int:
+def also_text(entries: list[tuple[str, str, str]], piece: str, number: str) -> str:
+    """The other names of the same Seamly2D object, one per line, for the 'Also named' column."""
+    lines = [
+        f"{'' if p == piece else p + ' '}No. {n}: {name or '(no proposal yet)'}"
+        for p, n, name in entries
+        if (p, n) != (piece, number)
+    ]
+    return "\n".join(lines)
+
+
+def table_row(ws, r: int, values: list, dv: DataValidation) -> None:
+    for c, v in enumerate(values, start=1):
+        cell = ws.cell(row=r, column=c, value=v)
+        style(cell, fill=INPUT_FILL if c >= 12 else (GUESS_FILL if c in (8, 9, 10, 11) else None))
+        cell.border = BORDER
+    dv.add(ws.cell(row=r, column=12))
+
+
+def table_head(ws, r: int) -> None:
+    for c, (h, _w) in enumerate(COLUMNS, start=1):
+        cell = ws.cell(row=r, column=c, value=h)
+        style(cell, bold=True, color="FFFFFF", fill=HEAD_FILL)
+        cell.border = BORDER
+
+
+def piece_tab(
+    ws,
+    pr,
+    proposals: dict[int, dict],
+    internal: list,
+    shared: dict[int, list[tuple[str, str, str]]],
+    groups: dict[str, list[tuple[str, str, str]]],
+) -> int:
     ws.sheet_view.showGridLines = False
     for c, (_h, w) in enumerate(COLUMNS, start=1):
         ws.column_dimensions[get_column_letter(c)].width = w
     ws["A1"] = pr.name
     style(ws["A1"], bold=True, size=14, wrap=False)
     ws["A2"] = (
-        "Numbered circles on the picture match the 'No.' column. Fill the yellow columns "
-        "(Verdict, Correct name, Comment)."
+        "Red numbered circles on the picture match the 'No.' column of the first table. Blue marks "
+        "(i1, i2 ...) are the second table: things that are not on the outline. Fill the yellow "
+        "columns (Verdict, Correct name, Comment)."
     )
     style(ws["A2"], color="52606D", wrap=False)
+    inner_marks = [(r.number, r.points_px[0]) for r in internal if r.kind == "point"]
+    inner_lines = [(r.number, r.points_px[0], r.points_px[1]) for r in internal if r.kind == "line"]
     png = render_outline_png(
-        list(pr.outline_px), [(str(n), pt) for n, pt in pr.marks_px], width_px=900
+        list(pr.outline_px),
+        [(str(n), pt) for n, pt in pr.marks_px],
+        width_px=900,
+        inner_marks=inner_marks,
+        inner_lines=inner_lines,
     )
     img = XlImage(BytesIO(png))
     scale = min(1.0, 620 / img.height, 900 / img.width)
     img.width, img.height = int(img.width * scale), int(img.height * scale)
     ws.add_image(img, "A4")
     header_row = 4 + int(img.height / 20) + 3
-    for c, (h, _w) in enumerate(COLUMNS, start=1):
-        cell = ws.cell(row=header_row, column=c, value=h)
-        style(cell, bold=True, color="FFFFFF", fill=HEAD_FILL)
-        cell.border = BORDER
+    ws.cell(row=header_row - 1, column=1, value="On the outline")
+    style(ws.cell(row=header_row - 1, column=1), bold=True, size=12, wrap=False)
+    table_head(ws, header_row)
     dv = DataValidation(type="list", formula1='"Confirm,Correct,Reject"', allow_blank=True)
     ws.add_data_validation(dv)
     for i, row in enumerate(pr.rows, start=1):
         r = header_row + i
         prop = proposals.get(row.number)
+        also = also_text(shared.get(row.object_id, []), pr.name, str(row.number))
         values = [
             row.number,
             row.kind,
@@ -238,17 +338,45 @@ def piece_tab(ws, pr, proposals: dict[int, dict]) -> int:
             row.x_mm,
             row.y_mm,
             prop["name"] if prop else "",
+            also,
             prop["confidence"] if prop else "",
             prop["reason"] if prop else "no proposal: please name it if it matters",
             None,
             None,
             None,
         ]
-        for c, v in enumerate(values, start=1):
-            cell = ws.cell(row=r, column=c, value=v)
-            style(cell, fill=INPUT_FILL if c >= 11 else (GUESS_FILL if c in (8, 9, 10) else None))
-            cell.border = BORDER
-        dv.add(ws.cell(row=r, column=11))
+        table_row(ws, r, values, dv)
+        if also:
+            ws.row_dimensions[r].height = 15 * (also.count("\n") + 1) + 10
+    r = header_row + len(pr.rows) + 3
+    ws.cell(row=r - 1, column=1, value="Not on the outline (blue marks on the picture)")
+    style(ws.cell(row=r - 1, column=1), bold=True, size=12, wrap=False)
+    if not internal:
+        ws.cell(row=r, column=1, value="Nothing proposed for this piece.")
+        style(ws.cell(row=r, column=1), color="52606D", wrap=False)
+        return header_row
+    table_head(ws, r)
+    for i, row in enumerate(internal, start=1):
+        also = also_text(groups.get(row.group, []), pr.name, row.number) if row.group else ""
+        values = [
+            row.number,
+            row.kind,
+            row.label,
+            row.how,
+            row.measurements,
+            row.x_mm,
+            row.y_mm,
+            row.name,
+            also,
+            row.confidence,
+            row.reason,
+            None,
+            None,
+            None,
+        ]
+        table_row(ws, r + i, values, dv)
+        if also:
+            ws.row_dimensions[r + i].height = 15 * (also.count("\n") + 1) + 10
     return header_row
 
 
@@ -306,11 +434,25 @@ def seam_pairs(ws, piece_names: list[str]) -> None:
 
 def main() -> None:
     proposed = yaml.safe_load(PROPOSED.read_text())["pieces"]
+    internal = internal_rows()
+    pieces = piece_rows()
+    # every name a Seamly2D object has, over all pieces: object id -> (piece, No., name)
+    shared: dict[int, list[tuple[str, str, str]]] = {}
+    for pr in pieces:
+        entries = proposed.get(pr.name, {})
+        for row in pr.rows:
+            name = entries.get(row.number, {}).get("name", "")
+            shared.setdefault(row.object_id, []).append((pr.name, str(row.number), name))
+    groups: dict[str, list[tuple[str, str, str]]] = {}
+    for piece, rows in internal.items():
+        for ir in rows:
+            if ir.group:
+                groups.setdefault(ir.group, []).append((piece, ir.number, ir.name))
     wb = Workbook()
     readme(wb.active)
     wb.active.title = "Read me"
     names: dict[str, list[tuple[str, str]]] = {}
-    for pr in piece_rows():
+    for pr in pieces:
         entries = proposed.get(pr.name, {})
         for number, e in entries.items():
             row = next((r for r in pr.rows if r.number == number), None)
@@ -319,9 +461,10 @@ def main() -> None:
                     f"{pr.name} row {number}: proposal is for {e['label']}, "
                     f"the piece has {row.label if row else 'nothing'} there"
                 )
-        names[pr.name] = [(e["name"], e["confidence"]) for _, e in sorted(entries.items())]
+        extra = [(r.name, r.confidence) for r in internal.get(pr.name, [])]
+        names[pr.name] = [(e["name"], e["confidence"]) for _, e in sorted(entries.items())] + extra
         ws = wb.create_sheet(pr.name[:31])
-        piece_tab(ws, pr, entries)
+        piece_tab(ws, pr, entries, internal.get(pr.name, []), shared, groups)
     gl = wb.create_sheet("Glossary", 1)
     glossary(gl, names)
     seam_pairs(wb.create_sheet("Seam pairs", 2), list(names))

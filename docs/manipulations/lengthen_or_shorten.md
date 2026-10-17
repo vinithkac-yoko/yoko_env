@@ -8,22 +8,24 @@ Everything below that is a drafting rule is marked **(?)**: it is a question for
 
 Make a piece longer or shorter by moving everything on one side of a horizontal line (a hem, a waist, a point along the length) by an amount. The usual way is to change the formula of the points that sit below the line. Applies to skirts, trousers, bodices, sleeves.
 
-## 2. Required landmarks
+## 2. Roles: where the step happens
 
-Names are proposals from the landmark sheet and are not verified yet.
+The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`). Landmark names are proposals from the landmark sheet and are not verified yet.
 
-| Landmark | Used for |
-| --- | --- |
-| `<piece>.length_line` | the line the length is added or taken at **(?)**: at the hem, or higher up? |
-| `<piece>.hem points` | the points that move |
+| Role | Kind | Required? | Used for |
+| --- | --- | --- | --- |
+| `length_line` | any | yes | the line the length is added or taken at **(?)**: at the hem, or higher up? |
+| `hem_points` | section | yes | the points that move |
 
-## 3. Parameters
+## 3. Parameters and options
 
-Each becomes a variable `#s<step>_<name>` that the steps use.
+**Parameters.** Each becomes a variable `#s<step>_<name>` that the steps use. An amount is a formula over measurements (it adapts across sizes), never scaled by `#CM`; it must hold at every size of the table.
 
 | Name | Meaning | Unit | Least | Most | Default |
 | --- | --- | --- | --- | --- | --- |
 | `amount` | how much longer (positive) or shorter (negative) | cm | | | |
+
+**Options.** None yet **(?)**.
 
 ## 4. Preconditions
 
@@ -33,7 +35,7 @@ The piece is built from points whose positions depend on a hem or length formula
 
 | # | Add or edit | Tool | References and formulas | Result |
 | --- | --- | --- | --- | --- |
-| 1 | edit | ``edit_point_at_distance_angle`` | target = each point below the line; length = its old length + `#s_amount` (read the old formula with `get_object`) | moved points |
+| 1 | edit | ``edit_point_at_distance_angle`` | target = each point of the `hem_points` section (the points below the `length_line`); length = its old length + `#s_amount` (read the old formula with `get_object`) | moved points |
 | 2 | edit | ``edit_curve_spline`` | handle lengths of curves that cross the line, if the shape should be kept **(?)** | adjusted curves |
 
 ## 6. Landmarks it creates
