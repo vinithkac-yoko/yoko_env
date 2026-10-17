@@ -68,7 +68,7 @@ Status words: **evaluates, exact** = the engine computes it like Seamly2D. **cre
 | --- | --- | --- | --- | --- |
 | Piece from a closed path of objects | tag `piece` | `piece_from_path` | 7 in the basic set, 61 in the 23 test patterns Seamly2D opens | evaluates, exact (outline); **creates** (`AddPiece`, `SetPiece`, `DeletePiece`); Seamly2D opens a piece we write and computes the same outline (`added_piece` case) |
 | Internal path | tag `iPaths` | `piece_internal_path` | present | preserved, not computed (Phase 3 depth decided with Kasi: outline geometry and round trip) |
-| Union (merge two pieces along an edge) | `union` | `piece_union` | 1 | evaluates, exact (the united piece's outline equals Seamly2D's); not created by an action yet |
+| Union (merge two pieces along an edge) | `union` | `piece_union` | 1 | evaluates, exact (the united piece's outline equals Seamly2D's); created by the `UnionPieces` action (tool `union_pieces`), checked by the oracle (case `union`) |
 | Modeling nodes (`modeling`, `modelingSpline`, `modelingPath`) | tag `modeling` | internal to piece tools | 223 in the basic set | evaluates (copies of draft objects); created with a piece, dropped with it when nothing else uses them |
 
 Seam allowance, grainline, notches, labels and `patternInfo` are out of scope and **kept unchanged on round trip**. A piece we create has only an id, a name and its nodes; Seamly2D fills in the rest when it saves.

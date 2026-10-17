@@ -20,6 +20,8 @@ from yoko_engine.pieces_edit import (
     NodeSpec,
     add_block,
     add_piece,
+    add_union,
+    corner_index,
     delete_block,
     delete_piece,
     pieces_using,
@@ -109,6 +111,18 @@ class DeletePiece:
 
 
 @dataclass(frozen=True, slots=True)
+class UnionPieces:
+    """Join two pieces of one block along an edge of each into one piece (`UnionTool`). An edge is
+    given by the object id of the point it starts at; it runs to the next point of the outline."""
+
+    first: int  # piece id
+    first_corner: int  # object id of the point the first piece's edge starts at
+    second: int
+    second_corner: int
+    name: str = "Union piece"
+
+
+@dataclass(frozen=True, slots=True)
 class AddBlock:
     name: str
 
@@ -135,6 +149,7 @@ Action = (
     | AddPiece
     | SetPiece
     | DeletePiece
+    | UnionPieces
     | AddBlock
     | RenameBlock
     | DeleteBlock
@@ -510,7 +525,7 @@ class PatternSession:
         evaluator = self._state.evaluator.copy()
         before_issues = self._state.error_keys
         evaluator.update(new_pattern, self._values, edited)
-        if isinstance(action, AddPiece | SetPiece):
+        if isinstance(action, AddPiece | SetPiece | UnionPieces):
             problem = _piece_problem(action, new_pattern, evaluator.ev, created)
             if problem is not None:
                 return Result(False, error=problem)
@@ -571,7 +586,13 @@ class PatternSession:
     def _build_structure(
         self,
         pattern: Pattern,
-        action: AddPiece | SetPiece | DeletePiece | AddBlock | RenameBlock | DeleteBlock,
+        action: AddPiece
+        | SetPiece
+        | DeletePiece
+        | UnionPieces
+        | AddBlock
+        | RenameBlock
+        | DeleteBlock,
     ) -> tuple[Pattern, set[int], list[int], list[int]]:
         """Pieces and draft blocks. They hold no formulas, so nothing is re-evaluated."""
         if isinstance(action, AddPiece):
@@ -595,6 +616,19 @@ class PatternSession:
             )
         if isinstance(action, DeletePiece):
             return delete_piece(pattern, action.id), set(), [], [action.id]
+        if isinstance(action, UnionPieces):
+            if action.first == action.second:
+                raise EditError("same_piece", "a piece cannot be united with itself")
+            new, pid = add_union(
+                pattern,
+                self.evaluation,
+                action.first,
+                corner_index(pattern, action.first, action.first_corner),
+                action.second,
+                corner_index(pattern, action.second, action.second_corner),
+                action.name,
+            )
+            return new, set(), [pid], [action.first, action.second]
         if isinstance(action, AddBlock):
             return add_block(pattern, action.name), set(), [], []
         if isinstance(action, RenameBlock):
@@ -751,7 +785,7 @@ def _without_group_item(section: RawNode, object_id: int) -> RawNode:
 
 
 def _piece_problem(
-    action: AddPiece | SetPiece, pattern: Pattern, ev: Evaluation, created: list[int]
+    action: AddPiece | SetPiece | UnionPieces, pattern: Pattern, ev: Evaluation, created: list[int]
 ) -> ActionError | None:
     """A piece whose outline cannot be computed (a node that does not evaluate, fewer than three
     corners) is refused."""

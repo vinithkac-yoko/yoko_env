@@ -34,6 +34,8 @@ from yoko_engine.session import (
     SetAttrs,
 )
 
+from yoko_tools.numbers import fmt_number
+from yoko_tools.plan import section_parts
 from yoko_tools.spec import SpecError, ToolSpec, template_params
 
 Handler = Callable[["Toolbox", Mapping[str, Any], ActionMeta], dict[str, Any]]
@@ -59,12 +61,6 @@ class Target:
     id: int
     kind: str  # "point" | "curve" | "object"
     name: str
-
-
-def fmt_number(value: float) -> str:
-    """A number as Seamly2D writes it: no exponent, no trailing zeros."""
-    text = f"{value:.10f}".rstrip("0").rstrip(".")
-    return "0" if text in ("", "-0") else text
 
 
 class Toolbox:
@@ -227,10 +223,15 @@ class Toolbox:
                     for i, e in enumerate(cast("list[dict[str, Any]]", value))
                 ]
             elif isinstance(value, list):
-                out[key] = [
-                    str(self.resolve(cast(str, v), kind, f"{key}[{i}]").id)
-                    for i, v in enumerate(cast(list[Any], value))
-                ]
+                from yoko_tools.sections import section_ids
+
+                ids: list[str] = []
+                for i, v in enumerate(cast("list[Any]", value)):
+                    if kind == "object" and section_parts(cast(str, v)) is not None:
+                        ids += [str(x) for x in section_ids(self, cast(str, v), f"{key}[{i}]")]
+                    else:
+                        ids.append(str(self.resolve(cast(str, v), kind, f"{key}[{i}]").id))
+                out[key] = list(dict.fromkeys(ids))  # a section may repeat an object
             else:
                 out[key] = str(self.resolve(cast(str, value), kind, key).id)
         return out

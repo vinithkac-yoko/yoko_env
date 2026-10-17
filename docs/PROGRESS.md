@@ -92,7 +92,7 @@ Everything below is checked against the pinned Seamly2D, bit for bit, unless it 
 
 - **Every tool in the release now evaluates.** The all-tools pattern runs with no issue, and across Seamly2D's 23 openable test patterns the engine gets no point, variable or piece outline wrong (the ratchet only went up; no unknown kinds are left). Per-tool status: `docs/COVERAGE.md`.
 - **Pieces.** Outlines (`VPiecePath::PathPoints`, `CorrectEquidistantPoints`, `CheckLoops`; a Qt polygon-overlap stand-in verified on 27 real calls). The basic set's 7 pieces and 61 pieces in the test patterns are exact.
-- **Union of pieces** (`UnionTool`): the second piece is moved onto the first along the chosen edges; the united piece "Waist Back" in `steampunk_trousers` equals Seamly2D's outline. Only the main outline is united; seam allowance paths, internal paths and anchors are kept, not computed. No action creates a union yet.
+- **Union of pieces** (`UnionTool`): the second piece is moved onto the first along the chosen edges; the united piece "Waist Back" in `steampunk_trousers` equals Seamly2D's outline. Only the main outline is united; seam allowance paths, internal paths and anchors are kept, not computed. The `UnionPieces` action (Phase 4+) now creates one: Seamly2D opens what we write and computes the same outline.
 - **Elliptical arcs.** Seamly2D measures them with Qt's `QPainterPath::arcTo` and path flattening, so those routines are ported (from the Qt 6.4.2 source) and 20 arcs with different angles and rotations equal Seamly2D's length and angles exactly. Two Qt behaviours found by differential testing: `QPainterPath::lineTo` ignores a point equal to the last one (this changed the last bit of a full ellipse; `path_length` now does the same for every curve), and the first subpath of the arc path starts at `GetP1`.
 - **`autoSmooth` and `lengthMode`** (format 0.7.4) for splines and cubic Beziers: Hobby handle lengths, the Gauss-Legendre length and the two bisection solvers. 156 curves covering every combination of the options equal Seamly2D's exactly.
 - **Case patterns for differential tests.** `fixtures/patterns/cases/*.sm2d` are small patterns written for one tool in many configurations; `scripts/oracle_cases.sh` has the pinned Seamly2D compute them (`fixtures/oracle/cases/`), and CI regenerates them and fails on any difference (`elliptical_arcs`, `spline_length_modes`, `added_piece`). New tools and edits can get a case in minutes.
@@ -104,7 +104,7 @@ Not done, and why:
 
 - **Cutting an elliptical arc** at an axis (`curveIntersectAxis` on an `elArc`): the pinned Seamly2D hangs in most configurations I tried (its `FindF2` search never ends), so there is nothing reliable to check a port against. The engine says `not_implemented`. Rotate, mirror and move of elliptical arcs are done and exact.
 - **Seam length mismatches between matched edges** (spec, Validation): which edges match is a pattern-making rule, so this needs the pattern makers.
-- Union and internal paths cannot be created by an action yet; internal paths are kept, not computed (the depth decided with Kasi).
+- Internal paths cannot be created by an action; they are kept, not computed (the depth decided with Kasi). Unions can: see the Phase 4+ log.
 - The landmark sheet's LibreOffice render could not be checked in this container (LibreOffice cannot open any file here); the workbook reads back correctly with openpyxl and has no formulas.
 
 ## Phase 4 plan (tool layer), written before coding, 2026-10-13
@@ -138,6 +138,14 @@ Order: (A) spec, loader, executor and the primitive tools; (B) edit/delete, stru
 Not done, on purpose: the recipes themselves, the teacher, valid actions and the status card (Phases 5 and 6); `done` and the environment API (Phase 6); groups, internal paths and unions have no tool (kept, not computed); the tool descriptions and the drafter prompt are `v1` and will need your edits.
 
 Checkpoint (spec): adapter round-trip tests pass, and Kasi reviews the procedures.
+
+## Phase 4+ log (changes after Kasi's Phase 4 answers)
+
+- **Plan steps carry `refs` and `options`.** `refs` maps a role of the recipe to a landmark name and is checked against the recipe's required landmarks (a step must say where, not only how much); `options` picks a value from the list the recipe defines (for example `spread: parallel | hinged`). Recipes branch on options; there is no two-recipe split for choices.
+- **Amounts are formulas over measurements.** `#CM` scaling is refused. `validate_plan_at_sizes` evaluates a plan at every size of the multisize table (and at a user's own measurement file) and reports the sizes where a formula fails or a value leaves its range.
+- **Individual measurement files.** A pattern evaluates against `individual_measurements_file(...)` instead of its multisize table (`rebind_measurements`, `missing_measurements`, `check_measurements` in `yoko_engine.binding`).
+- **Section references** for rotate, move and mirror: `<piece>.section(landmark_a, landmark_b)`, optionally `+ object` / `- object`, resolves to the outline objects between the two landmarks (inclusive, outline order). Piece by name, `#id` or short name (`C - Bodice Front` = `bodice_front`).
+- **Union creation** is an action (`UnionPieces`, tool `union_pieces`). Seamly2D opens what we write and computes the same united outline (case `union`, CI regenerates and diffs). Elliptical-arc cutting stays `not_implemented`: Seamly2D itself hangs on it.
 
 ## Environment variables by phase
 

@@ -73,6 +73,7 @@ Every tool that makes a point, line, arc or curve also has an `edit_<tool>` (cha
 | `rename_block` | Give a drafting block another name. | a block's name is wrong or unclear |
 | `set_piece` | Rename a piece, give it a different outline, or both. Everything else about the piece stays. | a piece needs another name or its outline must follow different points or curves |
 | `undo` | Take back the last change. | the last call was a mistake and nothing was built on it yet |
+| `union_pieces` | Join two pieces into one along an edge of each. The second piece is moved so that its edge lies on the first piece's edge; the two pieces are replaced by the united piece. An edge is given by the point it starts at, and runs to the next point round the piece's outline. | two neighbouring pieces should become one flat piece, for example a front and a side panel, or a half pattern and its mirror |
 
 ## Looking (these never change the pattern)
 
@@ -95,4 +96,4 @@ Every tool that makes a point, line, arc or curve also has an `edit_<tool>` (cha
 | `load_pattern` | Open a library pattern to look at or to copy pieces from. It does not replace the pattern you are working on. | you want to see a library pattern or copy a piece from it |
 | `search_library` | Search the pattern library for patterns like a described one: by words, tags and garment type. | you are choosing a starting pattern or looking for a similar style |
 
-54 tools are written; with the derived edit and delete tools there are 108.
+55 tools are written; with the derived edit and delete tools there are 109.

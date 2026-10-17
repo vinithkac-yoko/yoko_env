@@ -25,7 +25,7 @@ from yoko_engine.formula import is_valid_name
 from yoko_engine.model import MeasurementSet, Pattern
 from yoko_engine.session import PatternSession, SetVariable
 
-from yoko_tools.runtime import fmt_number
+from yoko_tools.numbers import fmt_number
 
 SCHEMA_PATH = Path(__file__).resolve().parents[4] / "config/plan/schema.json"
 LENGTH_UNITS = {"cm": 10.0, "mm": 1.0, "inch": 25.4}  # millimetres in one unit

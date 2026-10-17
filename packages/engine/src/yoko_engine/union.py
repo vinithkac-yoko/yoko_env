@@ -228,6 +228,42 @@ def _copy(
     return Child(curve=CurveGeom(src.id, src.name, geom, src.labels, drawn=False))
 
 
+def sequence(data: UnionData) -> list[tuple[UNode, bool]]:
+    """The nodes of the united outline in order, each with whether it comes from the second piece
+    (and so is moved): the first piece's nodes, with the second piece's inserted after the node the
+    pieces are joined at."""
+    first, _ = node_on_edge(data.path1, data.index1)
+    re1 = remove_edge(data.path1, data.index1)
+    re2 = remove_edge(data.path2, data.index2)
+    count1, count2 = len(re1), len(re2)
+    out: list[tuple[UNode, bool]] = []
+    done2 = 0
+    i = 0
+    pivot_index = _index_of(data.path1, first.id)
+    while True:
+        out.append((re1[i], False))
+        i += 1
+        if i > pivot_index and done2 < count2 - 1:
+            j = 0
+            if done2 == 0:
+                _, node2 = node_on_edge(data.path2, data.index2)
+                k = _index_of(re2, node2.id)
+                if k == -1:
+                    raise UnionError("the second piece's edge is not in its outline")
+                j = 0 if k == count2 - 1 else k + 1
+            while True:
+                if j >= count2:
+                    j = 0
+                out.append((re2[j], True))
+                done2 += 1
+                j += 1
+                if done2 >= count2 - 1:
+                    break
+        if i >= count1:
+            break
+    return out
+
+
 def unite(
     data: UnionData,
     points: Mapping[int, tuple[str, Pt]],
@@ -248,44 +284,12 @@ def unite(
     shifted3 = Pt(point3.x + dx, point3.y + dy)
     shifted4 = Pt(point4.x + dx, point4.y + dy)
     angle = Line(shifted4, shifted3).angle_to(Line(point1, point2))
-    pivot_id = first.id
-    move = Move(dx, dy, points[pivot_id][1], angle).apply
+    move = Move(dx, dy, points[first.id][1], angle).apply
 
-    re1 = remove_edge(data.path1, data.index1)
-    re2 = remove_edge(data.path2, data.index2)
-    count1, count2 = len(re1), len(re2)
-    if len(data.children) != count1 + count2 - 1:
-        raise UnionError(
-            f"the union lists {len(data.children)} objects, expected {count1 + count2 - 1}"
-        )
-    children = list(data.children)
+    seq = sequence(data)
+    if len(data.children) != len(seq):
+        raise UnionError(f"the union lists {len(data.children)} objects, expected {len(seq)}")
     out: dict[int, Child] = {}
-
-    def take(node: UNode, mover: Mover) -> None:
-        out[children.pop(0)] = _copy(node, points, curves, mover)
-
-    done2 = 0
-    i = 0
-    pivot_index = _index_of(data.path1, pivot_id)
-    while True:
-        take(re1[i], _identity)
-        i += 1
-        if i > pivot_index and done2 < count2 - 1:
-            j = 0
-            if done2 == 0:
-                _, node2 = node_on_edge(data.path2, data.index2)
-                k = _index_of(re2, node2.id)
-                if k == -1:
-                    raise UnionError("the second piece's edge is not in its outline")
-                j = 0 if k == count2 - 1 else k + 1
-            while True:
-                if j >= count2:
-                    j = 0
-                take(re2[j], move)
-                done2 += 1
-                j += 1
-                if done2 >= count2 - 1:
-                    break
-        if i >= count1:
-            break
+    for child_id, (node, moved) in zip(data.children, seq, strict=True):
+        out[child_id] = _copy(node, points, curves, move if moved else _identity)
     return out

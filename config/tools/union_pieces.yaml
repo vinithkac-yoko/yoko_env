@@ -1,0 +1,44 @@
+name: union_pieces
+version: 1
+tier: structure
+handler: union_pieces
+description: 'Join two pieces into one along an edge of each. The second piece is moved so that its edge
+  lies on the first piece''s edge; the two pieces are replaced by the united piece. An edge is given by
+  the point it starts at, and runs to the next point round the piece''s outline.
+
+  Use it when two neighbouring pieces should become one flat piece, for example a front and a side panel,
+  or a half pattern and its mirror. Do not use it when you only want a copy of a piece moved next to another:
+  use move.'
+parameters:
+  first_piece:
+    type: string
+    description: 'The piece that stays where it is: its name, for example C - Bodice Front, or #<id>.'
+  first_corner:
+    type: string
+    x-ref: point
+    description: The point where the first piece's edge starts. Give its label or a landmark name.
+  second_piece:
+    type: string
+    description: The piece that is moved onto the first.
+  second_corner:
+    type: string
+    x-ref: point
+    description: The point where the second piece's edge starts. Its edge runs the other way round the
+      outline from the first piece's edge, as neighbouring pieces' edges do.
+  name:
+    type: string
+    maxLength: 80
+    description: Name of the united piece. Without it the piece is called Union piece.
+required:
+- first_piece
+- first_corner
+- second_piece
+- second_corner
+examples:
+- instruction: Join the skirt back to the skirt front along their side seams
+  call:
+    first_piece: A - Skirt Back
+    first_corner: A13
+    second_piece: A - Skirt Front
+    second_corner: B13
+    name: Skirt

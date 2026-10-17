@@ -374,3 +374,140 @@ def delete_block(pattern: Pattern, name: str) -> Pattern:
         blocks = tuple(x for x in pattern.blocks if x is not b)
         return replace(pattern, blocks=blocks, layout=layout)
     raise EditError("unknown_block", f"there is no draft block named {name!r}")
+
+
+# -- uniting two pieces --------------------------------------------------------------------------
+def corner_index(pattern: Pattern, piece_id: int, object_id: int) -> int:
+    """The edge that starts at a point of a piece: its number among the piece's point nodes. An edge
+    runs from its point to the next point node (round the outline, so the last one wraps)."""
+    from yoko_engine.pieces import NODE_POINT
+    from yoko_engine.pieces import piece_nodes as typed_nodes
+
+    bi, si, pi = _find_piece(pattern, piece_id)
+    piece = pattern.blocks[bi].sections[si].children[pi]
+    modeling = next(
+        (s for s in pattern.blocks[bi].sections if s.tag == "modeling"), RawNode("modeling")
+    )
+    source = {_int(m.get("id")): _int(m.get("idObject")) for m in modeling.children}
+    corners = [source.get(n.id) for n in typed_nodes(piece) if n.type == NODE_POINT]
+    if object_id not in corners:
+        raise EditError("not_a_corner", f"object {object_id} is not a point of piece {piece_id}")
+    return corners.index(object_id)
+
+
+def add_union(
+    pattern: Pattern,
+    ev: Evaluation,
+    piece1_id: int,
+    index1: int,
+    piece2_id: int,
+    index2: int,
+    name: str = "Union piece",
+) -> tuple[Pattern, int]:
+    """`UnionTool::createUnion`: join two pieces of one block along one edge of each.
+
+    The second piece is moved so that its edge lies on the first piece's edge (its edge runs the
+    other way round the outline, as neighbouring pieces' edges do). The two pieces are replaced by
+    one, and the moved objects are kept as Seamly2D keeps them: a `union` tool in `<modeling>`
+    that lists both pieces' nodes and the ids of the objects it made, each with a modeling copy
+    that the new piece uses. Returns the pattern and the new piece's id."""
+    from yoko_engine.pieces import modeling_objects
+    from yoko_engine.pieces import piece_nodes as typed_nodes
+    from yoko_engine.union import UnionData, UnionError, UNode, sequence, unite
+
+    if piece1_id == piece2_id:
+        raise EditError("same_piece", "a piece cannot be united with itself")
+    if not name.strip():
+        raise EditError("empty_name", "a piece needs a name")
+    b1, s1, p1 = _find_piece(pattern, piece1_id)
+    b2, s2, p2 = _find_piece(pattern, piece2_id)
+    if b1 != b2:
+        raise EditError("mixed_blocks", "the pieces must be in the same draft block")
+    block = pattern.blocks[b1]
+    pieces_section = block.sections[s1]
+    piece1, piece2 = pieces_section.children[p1], block.sections[s2].children[p2]
+    path1 = tuple(UNode(n.id, n.type, n.reverse) for n in typed_nodes(piece1))
+    path2 = tuple(UNode(n.id, n.type, n.reverse) for n in typed_nodes(piece2))
+    modeling = modeling_objects(block.sections, ev)
+    tool_id = max(used_ids(pattern), default=0) + 1
+    probe = UnionData(tool_id, index1, index2, path1, path2, ())
+    try:
+        seq = sequence(probe)
+        child_ids = tuple(tool_id + 1 + 2 * k for k in range(len(seq)))
+        data = UnionData(tool_id, index1, index2, path1, path2, child_ids)
+        unite(data, modeling.points, modeling.curves)
+    except (UnionError, EditError, IndexError) as err:
+        raise EditError("cannot_unite", str(err)) from None
+
+    mi = _section_index(block, "modeling")
+    old_copies = {_int(m.get("id")): m for m in block.sections[mi].children}
+
+    def node_attrs(n: UNode) -> tuple[tuple[str, str], ...]:
+        out: tuple[tuple[str, str], ...] = ()
+        if n.type != "NodePoint":
+            out += (("reverse", "1" if n.reverse else "0"),)
+        return (("idObject", str(n.id)), *out, ("type", n.type))
+
+    tool = RawNode(
+        "tools",
+        (
+            ("id", str(tool_id)),
+            ("indexD1", str(index1)),
+            ("indexD2", str(index2)),
+            ("inUse", "true"),
+            ("type", "union"),
+        ),
+        children=(
+            RawNode(
+                "unionPiece",
+                children=(
+                    RawNode("nodes", children=tuple(RawNode("node", node_attrs(n)) for n in path1)),
+                ),
+            ),
+            RawNode(
+                "unionPiece",
+                children=(
+                    RawNode("nodes", children=tuple(RawNode("node", node_attrs(n)) for n in path2)),
+                ),
+            ),
+            RawNode(
+                "children",
+                children=(
+                    RawNode(
+                        "nodes", children=tuple(RawNode("child", text=str(c)) for c in child_ids)
+                    ),
+                ),
+            ),
+        ),
+    )
+    new_nodes: list[RawNode] = []
+    piece_nodes_out: list[RawNode] = []
+    for k, (node, _) in enumerate(seq):
+        child_id, node_id = child_ids[k], child_ids[k] + 1
+        tag, type_ = _MODELING[node.type]
+        attrs: list[tuple[str, str]] = [
+            ("id", str(node_id)),
+            ("idObject", str(child_id)),
+            ("idTool", str(tool_id)),
+            ("inUse", "true"),
+        ]
+        source = old_copies.get(node.id)
+        if node.type == "NodePoint":
+            attrs += [
+                ("mx", (source.get("mx") if source else None) or "0"),
+                ("my", (source.get("my") if source else None) or "0"),
+            ]
+        attrs.append(("type", type_))
+        new_nodes.append(RawNode(tag, tuple(attrs)))
+        piece_nodes_out.append(RawNode("node", node_attrs(UNode(node_id, node.type, node.reverse))))
+    new_id = tool_id + 1 + 2 * len(seq)
+    united = RawNode(
+        "piece",
+        (("id", str(new_id)), ("name", name), ("version", "2")),
+        children=(RawNode("nodes", children=tuple(piece_nodes_out)),),
+    )
+    sections = list(block.sections)
+    sections[mi] = replace(sections[mi], children=(*sections[mi].children, tool, *new_nodes))
+    kept = tuple(c for c in pieces_section.children if c is not piece1 and c is not piece2)
+    sections[s1] = replace(pieces_section, children=(*kept, united))
+    return _replace_block(pattern, b1, replace(block, sections=tuple(sections))), new_id

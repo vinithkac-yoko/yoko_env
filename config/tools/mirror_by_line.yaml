@@ -20,7 +20,11 @@ parameters:
     type: array
     minItems: 1
     maxItems: 100
-    description: The points, lines-curves and arcs to copy (labels or curve names).
+    description: 'The points, curves and arcs to copy: labels or curve names, or a section of a piece,
+      written piece.section(landmark_a, landmark_b), which means everything along the piece''s outline
+      from landmark_a to landmark_b (going round the outline in its own direction; section(b, a) is the
+      other part). After a section, ''+ name'' adds one object and ''- name'' leaves one out, for example
+      C - Bodice Front.section(bodice_front.SNP, bodice_front.underarm) - X1.'
     items:
       type: string
       x-ref: object

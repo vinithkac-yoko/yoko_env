@@ -215,3 +215,66 @@ def test_a_deleted_object_leaves_its_groups(table: object) -> None:
     assert str(target) not in {
         c.get("object") for g in after.children for c in g.children if c.tag == "item"
     }
+
+
+# ---- uniting pieces ---------------------------------------------------------------------------
+
+
+def test_seamly2d_computes_the_united_pieces_we_make_exactly() -> None:
+    oracle = json.loads((FIXTURES / "oracle/cases/union.seamly2d.json").read_text())
+    pattern = read_pattern(FIXTURES / "patterns/cases/union.sm2d")
+    ev = evaluate(pattern, read_measurements(TABLE).values())
+    pieces = evaluate_pieces(pattern, ev)
+    names = sorted(p["name"] for p in oracle["pieces"])
+    assert (
+        "A - Skirt Back + A - Skirt Front" in names
+        and "B - Trousers Front + B - Trousers Back" in names
+    )
+    assert len(oracle["pieces"]) == 5  # seven pieces, four of them replaced by two united ones
+    for want in oracle["pieces"]:
+        mine = pieces[want["id"]]
+        assert mine.problems == (), mine
+        assert [(p.x, p.y) for p in mine.outline] == [tuple(xy) for xy in want["outline"]], want[
+            "name"
+        ]
+
+
+def _corners(s: PatternSession, name: str) -> tuple[int, list[int]]:
+    from yoko_engine.pieces import NODE_POINT, piece_nodes
+    from yoko_engine.pieces_edit import pieces_of
+
+    for _, piece, modeling in pieces_of(s.pattern):
+        if piece.get("name") == name:
+            src = {m.get("id"): int(m.get("idObject") or 0) for m in modeling.children}
+            pts = [src[str(n.id)] for n in piece_nodes(piece) if n.type == NODE_POINT]
+            return int(piece.get("id") or 0), pts
+    raise AssertionError(name)
+
+
+def test_uniting_replaces_two_pieces_with_one_and_can_be_undone(table: object) -> None:
+    from yoko_engine.session import UnionPieces
+
+    s = session(table)
+    before = s.state_hash()
+    (p1, a), (p2, b) = _corners(s, "A - Skirt Back"), _corners(s, "A - Skirt Front")
+    r = s.apply(UnionPieces(p1, a[2], p2, b[5], "Skirt"))
+    assert r.ok, r.error
+    assert sorted(r.deleted) == sorted([p1, p2]) and len(r.created) == 1
+    names = [p.name for p in s.pieces().values()]
+    assert "Skirt" in names and "A - Skirt Back" not in names and len(names) == 6
+    assert not s.piece_issues() or all(i.severity == "warning" for i in s.piece_issues())
+    assert s.undo().ok and s.state_hash() == before
+
+
+def test_a_union_that_cannot_be_made_is_refused(table: object) -> None:
+    from yoko_engine.session import UnionPieces
+
+    s = session(table)
+    (p1, a), (p2, b) = _corners(s, "A - Skirt Back"), _corners(s, "A - Skirt Front")
+    same = s.apply(UnionPieces(p1, a[0], p1, a[1]))
+    assert same.error and same.error.code == "same_piece"
+    stranger = s.apply(UnionPieces(p1, b[0], p2, b[1]))  # a point of the other piece
+    assert stranger.error and stranger.error.code == "not_a_corner"
+    other_block = s.apply(UnionPieces(p1, a[0], 999999, b[1]))
+    assert other_block.error and other_block.error.code in ("unknown_piece", "not_a_corner")
+    assert s.state_hash() == session(table).state_hash()

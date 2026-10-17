@@ -24,6 +24,7 @@ from yoko_engine.session import (
     RenameBlock,
     SetPiece,
     SetVariable,
+    UnionPieces,
 )
 from yoko_engine.units import from_pixel, px_to_mm
 from yoko_io.render import render_png, render_svg
@@ -108,6 +109,18 @@ def set_piece(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[s
 
 def delete_piece(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, Any]:
     return box.apply(DeletePiece(_piece_id(box.session, cast(str, args["piece"]))), meta)
+
+
+def union_pieces(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, Any]:
+    first = _piece_id(box.session, cast(str, args["first_piece"]), "first_piece")
+    second = _piece_id(box.session, cast(str, args["second_piece"]), "second_piece")
+    c1 = box.resolve(cast(str, args["first_corner"]), "point", "first_corner").id
+    c2 = box.resolve(cast(str, args["second_corner"]), "point", "second_corner").id
+    action = UnionPieces(first, c1, second, c2, cast(str, args.get("name", "Union piece")))
+    out = box.apply(action, meta)
+    if out["ok"] and out["created"] == [] and out.get("deleted"):
+        out["data"] = {"replaced": out["deleted"]}
+    return out
 
 
 def add_block(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, Any]:
@@ -387,6 +400,7 @@ HANDLERS: dict[str, Handler] = {
     "add_piece": add_piece,
     "set_piece": set_piece,
     "delete_piece": delete_piece,
+    "union_pieces": union_pieces,
     "add_block": add_block,
     "rename_block": rename_block,
     "delete_block": delete_block,
