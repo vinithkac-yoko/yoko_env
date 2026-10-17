@@ -398,3 +398,30 @@ def test_sidecar_records_provenance_and_the_parent_hash(session: PatternSession)
     assert entry["on_plan"] is False
     assert entry["changes"] == [{"field": "length", "old": "5*#CM", "new": "6*#CM"}]
     assert session.fork().parent_hash == session.parent_hash
+
+
+def test_concentric_circles_have_no_common_point_instead_of_a_division_by_zero() -> None:
+    """Found by random actions: a circle-circle point whose circles share a centre. Seamly2D's C++
+    divides by zero (NaN) and answers "no common point"; so do we."""
+    from yoko_engine.geometry import Pt
+    from yoko_engine.geometry.circle_line import intersection_circles
+
+    centre = Pt(100.0, 100.0)
+    assert intersection_circles(centre, 30.0, centre, 50.0)[0] == 0
+    assert intersection_circles(centre, 30.0, centre, 30.0)[0] == 3
+
+
+def test_a_construction_that_raises_arithmetic_becomes_an_issue_not_a_crash(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from yoko_engine.handlers import HANDLERS
+
+    def boom(ctx: object, o: object) -> None:
+        raise ZeroDivisionError("float division by zero")
+
+    monkeypatch.setitem(HANDLERS, "endLine", boom)
+    pattern = read_pattern(
+        Path(__file__).resolve().parents[1] / "fixtures/patterns/cases/union.sm2d"
+    )
+    ev = evaluate(pattern, {})
+    assert any(i.code == "geometry_failed" for i in ev.issues)

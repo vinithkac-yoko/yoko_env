@@ -24,7 +24,7 @@ import jsonschema
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, create_model
 
-TIERS = ("primitive", "read", "library", "structure", "variable", "edit", "delete")
+TIERS = ("primitive", "read", "library", "structure", "variable", "plan", "edit", "delete")
 BUILDERS = ("simple", "spline_path", "bezier_path", "operation", "true_darts")
 
 _FILE_SCHEMA: dict[str, Any] = {

@@ -1,0 +1,13 @@
+name: done
+version: 1
+tier: plan
+handler: done
+description: 'Say the work is finished. The pattern is checked as it stands.
+
+  Use it when every step of the plan is done and nothing is left over. Do not use it while the status
+  card still shows an active step, or while you have made something you meant to take back.'
+parameters: {}
+required: []
+examples:
+- instruction: Everything in the plan is done
+  call: {}

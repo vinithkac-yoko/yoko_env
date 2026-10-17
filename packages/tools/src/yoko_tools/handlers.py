@@ -139,6 +139,12 @@ def undo(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, A
     return box.report(box.session.undo())
 
 
+# -- working through a plan --------------------------------------------------------------------
+def done(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, Any]:
+    """Say the work is finished: the environment ends the episode; the pattern is unchanged."""
+    return box.ok({"done": True})
+
+
 # -- read tools --------------------------------------------------------------------------------
 def get_state(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[str, Any]:
     scope = cast(str, args.get("scope", "summary"))
@@ -220,7 +226,7 @@ def get_object(box: Toolbox, args: Mapping[str, Any], meta: ActionMeta) -> dict[
     row["built_from"] = [_describe(box, i).get("name") for i in sorted(s.dependencies(target.id))]
     row["used_by"] = [_describe(box, i).get("name") for i in sorted(s.dependents(target.id))]
     row["history"] = [
-        {"what": p.kind, "step": p.meta.step, "author": p.meta.author}
+        {"what": p.kind, "step": p.meta.step}  # who did it is privileged: teacher data would leak
         for p in s.provenance(maker.id if maker else target.id)
     ]
     edit = f"edit_{row['tool']}" if row.get("tool") else None
@@ -405,6 +411,7 @@ HANDLERS: dict[str, Handler] = {
     "rename_block": rename_block,
     "delete_block": delete_block,
     "undo": undo,
+    "done": done,
     "get_state": get_state,
     "get_object": get_object,
     "find_objects": find_objects,

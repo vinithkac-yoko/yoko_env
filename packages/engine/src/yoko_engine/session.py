@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass, replace
 
 from yoko_engine.evaluator import Evaluation, Evaluator, Issue
@@ -259,6 +259,25 @@ def _attr_changes(old: Obj, new: Obj) -> tuple[FieldChange, ...]:
 
 
 # -- hashing ---------------------------------------------------------------------------------------
+# Objects and XML nodes are immutable, and a new state shares almost all of them with the one before
+# it, so the text each one hashes as is made once per object. Hashing a pattern of 425 objects then
+# costs a join, not a serialisation (the serialisation was most of the time of a step).
+_TEXT: dict[int, tuple[object, str]] = {}
+_TEXT_LIMIT = 400_000
+
+
+def _text_of(node: Obj | RawNode) -> str:
+    hit = _TEXT.get(id(node))
+    if hit is not None and hit[0] is node:
+        return hit[1]
+    state = _object_state(node) if isinstance(node, Obj) else _raw(node)
+    text = json.dumps(state, separators=(",", ":"), allow_nan=False)
+    if len(_TEXT) >= _TEXT_LIMIT:
+        _TEXT.clear()
+    _TEXT[id(node)] = (node, text)
+    return text
+
+
 def _raw(n: RawNode) -> list[object]:
     return [n.tag, [list(a) for a in n.attrs], n.text, [_raw(c) for c in n.children]]
 
@@ -271,25 +290,24 @@ def _variable_state(v: Variable) -> list[object]:
     return [v.name, v.formula, v.description, [list(e) for e in v.extra]]
 
 
-def pattern_state(pattern: Pattern) -> dict[str, object]:
-    return {
+def state_hash(pattern: Pattern, measurements: Mapping[str, float]) -> str:
+    """Stable hash of a pattern and the measurement values it is evaluated with."""
+    head = {
         "unit": pattern.unit,
         "version": pattern.version,
         "measurements": pattern.measurements_file,
         "variables": [_variable_state(v) for v in pattern.variables],
-        "blocks": [
-            [b.name, [_object_state(o) for o in b.objects], [_raw(s) for s in b.sections]]
-            for b in pattern.blocks
-        ],
-        "header": [_raw(h) for h in pattern.header],
+        "values": sorted(measurements.items()),
     }
-
-
-def state_hash(pattern: Pattern, measurements: Mapping[str, float]) -> str:
-    """Stable hash of a pattern and the measurement values it is evaluated with."""
-    payload = {"pattern": pattern_state(pattern), "values": sorted(measurements.items())}
-    text = json.dumps(payload, sort_keys=True, separators=(",", ":"), allow_nan=False)
-    return hashlib.sha256(text.encode()).hexdigest()
+    digest = hashlib.sha256(
+        json.dumps(head, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
+    )
+    for block in pattern.blocks:
+        digest.update(json.dumps(block.name).encode())
+        digest.update("\n".join(_text_of(o) for o in block.objects).encode())
+        digest.update("\n".join(_text_of(sec) for sec in block.sections).encode())
+    digest.update("\n".join(_text_of(h) for h in pattern.header).encode())
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -297,6 +315,17 @@ class Snapshot:
     pattern: Pattern
     measurements: tuple[tuple[str, float], ...]
     hash: str
+
+
+class _PieceCache:
+    """The pieces computed so far for one pattern; `complete` once all of them are."""
+
+    __slots__ = ("complete", "geoms", "key")
+
+    def __init__(self, key: int, geoms: dict[int, PieceGeom]) -> None:
+        self.key = key
+        self.geoms = geoms
+        self.complete = False
 
 
 class _State:
@@ -340,7 +369,7 @@ class PatternSession:
         self._undo: list[_State] = []
         self._clock = 0  # counts every applied action, forks included; never goes back
         self._hash: tuple[int, str] | None = None
-        self._pieces: tuple[int, dict[int, PieceGeom]] | None = None
+        self._pieces: _PieceCache | None = None
         self.parent_hash: str | None = None  # hash of the pattern this one was derived from
 
     # -- reading ----------------------------------------------------------------------------
@@ -355,20 +384,34 @@ class PatternSession:
     def issues(self) -> list[Issue]:
         return list(self._state.issues)
 
-    def pieces(self) -> dict[int, PieceGeom]:
-        """The outline of every piece of the current state (computed on demand: about 30 ms a
-        piece, so not on every action)."""
+    def pieces(self, only: Collection[int] | None = None) -> dict[int, PieceGeom]:
+        """The outline of every piece of the current state, or of the pieces in `only` (computed
+        on demand: about 30 ms a piece, so not on every action)."""
         key = id(self.pattern)
-        if self._pieces is None or self._pieces[0] != key:
-            self._pieces = (key, dict(evaluate_pieces(self.pattern, self.evaluation)))
-        return self._pieces[1]
+        if self._pieces is None or self._pieces.key != key:
+            self._pieces = _PieceCache(key, {})
+        cache = self._pieces
+        if only is None:
+            if not cache.complete:
+                cache.geoms.update(evaluate_pieces(self.pattern, self.evaluation))
+                cache.complete = True
+            return cache.geoms
+        missing = [i for i in only if i not in cache.geoms]
+        if missing and not cache.complete:
+            cache.geoms.update(evaluate_pieces(self.pattern, self.evaluation, missing))
+        return {i: cache.geoms[i] for i in only if i in cache.geoms}
 
-    def piece_issues(self) -> list[Issue]:
+    @property
+    def clock(self) -> int:
+        """How many actions this session (and the ones it was forked from) has applied."""
+        return self._clock
+
+    def piece_issues(self, only: Collection[int] | None = None) -> list[Issue]:
         """Problems with the pieces: something a piece uses does not exist or does not evaluate (an
         error), an outline with no area (an error), a path that crossed itself
         and had its loops cut out (a warning)."""
         out: list[Issue] = []
-        for pid, piece in sorted(self.pieces().items()):
+        for pid, piece in sorted(self.pieces(only).items()):
             if piece.problems:
                 out.append(Issue("piece_invalid", "; ".join(piece.problems), pid))
             elif not has_area(piece.outline):
@@ -499,6 +542,10 @@ class PatternSession:
     @property
     def can_undo(self) -> bool:
         return bool(self._undo)
+
+    def forget_history(self) -> None:
+        """Make the current state the oldest one undo can reach (an episode's starting point)."""
+        self._undo.clear()
 
     def undo(self) -> Result:
         if not self._undo:

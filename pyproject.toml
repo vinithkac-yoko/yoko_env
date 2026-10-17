@@ -59,6 +59,7 @@ addopts = "-ra --import-mode=importlib"
 include = ["packages", "tests"]
 exclude = ["**/node_modules", "studio", "fixtures"]
 pythonVersion = "3.12"
+extraPaths = ["tests"]
 typeCheckingMode = "standard"
 # Strict where the spec demands it (engine, tools, env).
 strict = ["packages/engine", "packages/tools", "packages/env"]

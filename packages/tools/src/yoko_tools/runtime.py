@@ -82,6 +82,7 @@ class Toolbox:
         self.handlers: dict[str, Handler] = {**HANDLERS, **(handlers or {})}
         self.library = library
         self.loaded: dict[str, PatternSession] = {}  # library patterns opened with load_pattern
+        self._tool_by_kind: dict[tuple[str, str | None], str] | None = None
 
     def fork(self) -> Toolbox:
         """The same tools on a copy of the pattern: a call on it changes nothing here."""
@@ -150,6 +151,10 @@ class Toolbox:
             )  # fmt: skip
         return found
 
+    def name_of(self, oid: int) -> str:
+        """What to call an object in a tool call: a point's label, a curve's name, else `#<id>`."""
+        return self._target(oid).name
+
     def _target(self, oid: int) -> Target:
         ev = self.session.evaluation
         if oid in ev.points:
@@ -187,17 +192,13 @@ class Toolbox:
     def tool_for(self, obj: Obj) -> str | None:
         """The tool that draws objects like this one (its edit and delete tools are named after
         it), if it is a simple primitive."""
-        for spec in self.specs.values():
-            e = spec.engine
-            if (
-                spec.tier == "primitive"
-                and e is not None
-                and e.get("builder") == "simple"
-                and e["tag"] == obj.tag
-                and e.get("type") == obj.get("type")
-            ):
-                return spec.name
-        return None
+        if self._tool_by_kind is None:
+            self._tool_by_kind = {}
+            for spec in self.specs.values():
+                e = spec.engine
+                if spec.tier == "primitive" and e is not None and e.get("builder") == "simple":
+                    self._tool_by_kind.setdefault((e["tag"], e.get("type")), spec.name)
+        return self._tool_by_kind.get((obj.tag, obj.get("type")))
 
     def maker(self, oid: int) -> Obj | None:
         """The object of the pattern that made a point or curve (an operation makes several)."""

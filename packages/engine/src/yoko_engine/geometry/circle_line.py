@@ -102,6 +102,15 @@ def find_circle_line_point(radius: float, center: Pt, first: Pt, second: Pt) -> 
     return p1 if flag1 else p2
 
 
+def _divide(numerator: float, denominator: float) -> float:
+    """IEEE division, as C++ does it: x / 0 is infinity, 0 / 0 is NaN."""
+    if denominator != 0.0:
+        return numerator / denominator
+    if numerator == 0.0 or math.isnan(numerator):
+        return math.nan
+    return math.copysign(math.inf, numerator)
+
+
 def intersection_circles(c1: Pt, r1: float, c2: Pt, r2: float) -> tuple[int, Pt, Pt]:
     """VGObject::IntersectionCircles. Returns (code, p1, p2): 0 no common point, 1 one (in p1),
     2 two, 3 the circles are the same."""
@@ -115,8 +124,10 @@ def intersection_circles(c1: Pt, r1: float, c2: Pt, r2: float) -> tuple[int, Pt,
     a = -2.0 * (c2.x - c1.x)
     b = -2.0 * (c2.y - c1.y)
     c = (c2.x - c1.x) * (c2.x - c1.x) + (c2.y - c1.y) * (c2.y - c1.y) + r1 * r1 - r2 * r2
-    x0 = -a * c / (a * a + b * b)
-    y0 = -b * c / (a * a + b * b)
+    # concentric circles make a = b = 0: C++ divides by zero (NaN) and goes on to answer "no common
+    # point", because c * c > 0; a division by zero must not stop us from getting there
+    x0 = _divide(-a * c, a * a + b * b)
+    y0 = _divide(-b * c, a * a + b * b)
     if c * c > r1 * r1 * (a * a + b * b):
         return 0, zero, zero
     if fuzzy_compare_possible_nulls(c * c, r1 * r1 * (a * a + b * b)):

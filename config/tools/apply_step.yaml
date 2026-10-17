@@ -1,0 +1,22 @@
+name: apply_step
+version: 1
+tier: plan
+handler: apply_step
+description: 'Carry out a whole step of the plan at once: every part of it that is not done yet, in the
+  right order. If any part cannot be made, nothing is changed.
+
+  Use it when the plan''s step is clear and you want it done in one go. Do not use it when you want to
+  draw the step yourself, point by point, or when the step has no recipe (then the plan''s text is all
+  you have).'
+parameters:
+  step:
+    type: integer
+    minimum: 1
+    maximum: 40
+    description: The number of the plan step to carry out. The status card says which step is active.
+required:
+- step
+examples:
+- instruction: Do step 2 of the plan
+  call:
+    step: 2

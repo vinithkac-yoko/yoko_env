@@ -30,7 +30,7 @@ from typing import Any, Literal, cast
 
 from yoko_engine.evalcore import Evaluation
 from yoko_engine.model import MeasurementSet, Obj, Pattern
-from yoko_engine.pieces_edit import pieces_of
+from yoko_engine.pieces_edit import pieces_of, pieces_using
 from yoko_engine.session import ActionMeta, PatternSession, Provenance
 from yoko_engine.units import px_to_mm
 
@@ -491,7 +491,11 @@ class Teacher:
         for left in analysis.leftovers:
             if left.kind == "created":
                 call = self._delete_call(box, left)
-                if call is not None and not dependents(left.object_id):
+                if (
+                    call is not None
+                    and not dependents(left.object_id)
+                    and not pieces_using(box.session.pattern, left.object_id)
+                ):
                     out.append(call)
             else:
                 call = self._restore_call(box, left)
@@ -509,7 +513,8 @@ class Teacher:
                     continue
                 if target in edited:
                     out.append(status.call)
-        return [c for c in out if self._works(box, c)]
+        # a delete of an object nothing uses is certain to work; the other calls are tried first
+        return [c for c in out if c.tool.startswith("delete_") or self._works(box, c)]
 
     @staticmethod
     def _works(box: Toolbox, call: Call) -> bool:

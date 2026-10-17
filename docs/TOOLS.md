@@ -75,6 +75,13 @@ Every tool that makes a point, line, arc or curve also has an `edit_<tool>` (cha
 | `undo` | Take back the last change. | the last call was a mistake and nothing was built on it yet |
 | `union_pieces` | Join two pieces into one along an edge of each. The second piece is moved so that its edge lies on the first piece's edge; the two pieces are replaced by the united piece. An edge is given by the point it starts at, and runs to the next point round the piece's outline. | two neighbouring pieces should become one flat piece, for example a front and a side panel, or a half pattern and its mirror |
 
+## Working through a plan
+
+| Tool | What it does | When to use it |
+| --- | --- | --- |
+| `apply_step` | Carry out a whole step of the plan at once: every part of it that is not done yet, in the right order. If any part cannot be made, nothing is changed. | the plan's step is clear and you want it done in one go |
+| `done` | Say the work is finished. The pattern is checked as it stands. | every step of the plan is done and nothing is left over |
+
 ## Looking (these never change the pattern)
 
 | Tool | What it does | When to use it |
@@ -96,4 +103,4 @@ Every tool that makes a point, line, arc or curve also has an `edit_<tool>` (cha
 | `load_pattern` | Open a library pattern to look at or to copy pieces from. It does not replace the pattern you are working on. | you want to see a library pattern or copy a piece from it |
 | `search_library` | Search the pattern library for patterns like a described one: by words, tags and garment type. | you are choosing a starting pattern or looking for a similar style |
 
-55 tools are written; with the derived edit and delete tools there are 109.
+57 tools are written; with the derived edit and delete tools there are 111.

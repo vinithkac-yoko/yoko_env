@@ -26,6 +26,7 @@ GROUPS = [
     ),
     ("Variables", lambda s: s.tier == "variable"),
     ("Pieces and blocks", lambda s: s.tier == "structure"),
+    ("Working through a plan", lambda s: s.tier == "plan"),
     ("Looking (these never change the pattern)", lambda s: s.tier == "read"),
     ("Library", lambda s: s.tier == "library"),
 ]

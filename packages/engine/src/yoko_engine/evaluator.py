@@ -194,6 +194,18 @@ class Evaluator:
                 handler(ctx, o)
             except ObjectError as err:
                 rec.issues.append(err.issue)
+            except (ArithmeticError, ValueError) as err:
+                # a construction with no solution at these numbers (a division by zero, a root of a
+                # negative number) is a problem with the pattern, not a crash
+                rec.issues.append(
+                    Issue(
+                        "geometry_failed",
+                        f"{o.kind} {o.id} cannot be built here: {err}",
+                        o.id,
+                        None,
+                        "change the values it is built from",
+                    )
+                )
         self.records[o.id] = rec
         self.ev.deps[o.id] = frozenset(rec.uses_ids)
         # what changed, for the objects built from this one
