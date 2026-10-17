@@ -10,6 +10,7 @@ XML is parsed with defusedxml: files can come from outside (studio imports).
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping
 from dataclasses import replace
 from pathlib import Path
 from typing import Final
@@ -467,3 +468,43 @@ def blank_pattern(
             block=block,
         ).encode()
     )
+
+
+def individual_measurements_file(values: Mapping[str, float], unit: str = "cm") -> bytes:
+    """A person's measurement file (format 0.3.4) holding the given numbers, the way Seamly2D
+    saves one. Sorted by name; nothing personal is filled in."""
+    rows = "\n".join(
+        f'        <m description="" full_name="" name="{name}" value="{_number(value)}"/>'
+        for name, value in sorted(values.items())
+    )
+    text = f"""<?xml version="1.0" encoding="UTF-8"?>
+<smis>
+    <!--Measurements created with Seamly2D v{PINNED_SEAMLY2D} (https://seamly.io/).-->
+    <version>{INDIVIDUAL_VERSIONS[-1]}</version>
+    <read-only>false</read-only>
+    <notes/>
+    <unit>{unit}</unit>
+    <pm_system>998</pm_system>
+    <personal>
+        <family-name/>
+        <given-name/>
+        <birth-date>1900-01-01</birth-date>
+        <gender>female</gender>
+        <email/>
+    </personal>
+    <body-measurements>
+{rows}
+    </body-measurements>
+</smis>
+"""
+    return text.encode()
+
+
+def _number(value: float) -> str:
+    text = f"{value:.10f}".rstrip("0").rstrip(".")
+    return "0" if text in ("", "-0") else text
+
+
+def rebind_measurements(pattern: Pattern, filename: str) -> Pattern:
+    """The same pattern, bound to another measurement file (for example a person's own)."""
+    return replace(pattern, measurements_file=filename)
