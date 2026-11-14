@@ -20,3 +20,4 @@ One short record per major choice. Status: `accepted` (settled by the spec or ad
 | 0014 | The tool layer | accepted |
 | 0015 | The recipe framework and the teacher | accepted |
 | 0016 | The environment API and the teacher-data records | accepted |
+| 0017 | Manual drafting in the studio comes before the recipes | accepted |

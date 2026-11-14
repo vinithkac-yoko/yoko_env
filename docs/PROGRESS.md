@@ -155,12 +155,22 @@ Checkpoint (spec): adapter round-trip tests pass, and Kasi reviews the procedure
 - **Landmark sheet** (not sent): outline rows plus a second table per piece for things not on the outline (dart apexes, bust point, waist/hip/bust/knee guide lines, CF/CB lines); darts named `leg_a`, `leg_b`, `apex`, `cap`; sleeve points front and back; "Also named" shows both names where one object has two. Proposals are checked against the pattern when the sheet is built.
 - **Procedures**: template and drafts now have roles (`refs`) and options; `slash_and_spread` has `count`, `total_spread` and option `spread: parallel | hinged`; `remove_dart` (option `intake_to: ease | gathers | seam`) is new; the dart draft is now `add_or_move_dart`. `docs/manipulations/ranges.xlsx` is the one-page ranges sheet (blank). No recipe order chosen.
 
+## Phase order change (ADR 0017): manual drafting in the studio before the recipes
+
+Kasi's answers to the Phase 4+ questions (2026-11):
+
+- **Next is the studio's Manual drafting screen** (BUILD_SPEC section 12, item 3), pulled forward from Phase 10. Recipes are the unit of work: per recipe, Kasi's procedure in words plus 3 worked examples drafted in the studio by Kasi and the pattern makers. Every click is a recorded action in the model's action space (`source = human_studio`), with its author. Plan: `docs/studio-v0-plan.md` (sent for review; no studio code yet). Then the finishing plan (seam allowance, notches, grainline, labels; seam allowance widths as settings per order).
+- **Done in code** (commit "Phase 4 answers"): a step's check is stored once when it completes; invariants re-checked at `done` (formula errors at every size, touched pieces closed, seam pairs; `invariant_sizes = "teacher"` checks the base and the teacher's two sizes instead, for data runs); a person's file is checked with two nudged copies graded like the pattern's table; plan family = sorted multiset of recipes with their options; human items split whole, held-out items always test; `apply_step` off by default; Claude Code's own options moved to an "unconfirmed" list at the end of each draft; ranges.xlsx fixes.
+- **Throughput with invariants at done** (4 cores, example recipe): invariants at all 15 sizes, about 86 steps/s projected on 8 cores (below the 100 target, because short episodes pay for 15 evaluations each); at the teacher's three sizes, about 277.
+- **Waiting for Kasi:** the recipe procedures (11 recipes, one Markdown file each: the 9 drafts plus `reshape_neckline` and `hem_shaping`), merged into `docs/manipulations/` as they arrive; the bust point and sleeve front (when the dart and sleeve recipes come; C23 stays a proposal).
+
 ## Environment variables by phase
 
 | Phase | Variables |
 | --- | --- |
 | 0 | `STUDIO_TOKEN` |
 | 1 to 5 | none new |
+| Studio v0 (ADR 0017) | `DATABASE_URL`, `SESSION_SECRET` (stage A); `BUCKET_*` (stage E); optionally `ORACLE_URL` |
 | 6 | `DATABASE_URL` (session snapshots), `BUCKET_*` |
 | 7 | `ANTHROPIC_API_KEY` |
 | 7 (later) | `OPENAI_COMPAT_BASE_URL`, `OPENAI_COMPAT_API_KEY` |
