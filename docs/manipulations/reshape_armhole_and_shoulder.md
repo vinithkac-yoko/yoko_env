@@ -27,11 +27,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | `shoulder_extension` | how far the shoulder tip moves outward | cm | | | |
 | `underarm_drop` | how far the underarm moves down | cm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `extension_along` | `shoulder_line`, `straight_out` | **(?)** | how the shoulder extension is measured |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -77,3 +73,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 1. Which points move and which stay when the shoulder is extended? Does the neckline stay?
 2. Does the armhole depth change with the underarm drop, or only the point?
 3. Is the extension measured along the shoulder line, or straight out?
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `extension_along` | `shoulder_line`, `straight_out` | **(?)** | how the shoulder extension is measured |

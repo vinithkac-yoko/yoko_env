@@ -28,11 +28,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | `intake` | width of the dart at the edge | cm | | | |
 | `tip_distance` | how far the tip stays from the fullest point | cm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `action` | `add`, `move` | `move` **(?)** | `add`: draw a new dart; `move`: turn the old dart's intake into a dart at `new_position` |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -78,3 +74,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 2. Is the intake given as a width or as an angle? The engine can do either.
 3. (Removing a dart is now `remove_dart`; see that draft.)
 4. Does true_darts match what you mean by truing a dart?
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `action` | `add`, `move` | `move` **(?)** | `add`: draw a new dart; `move`: turn the old dart's intake into a dart at `new_position` |

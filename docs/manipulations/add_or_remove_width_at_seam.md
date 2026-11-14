@@ -26,11 +26,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | --- | --- | --- | --- | --- | --- |
 | `amount` | full change at the far end of the taper | cm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `taper` | `straight`, `curved` | **(?)** | `straight`: the share is proportional to distance along the seam; `curved`: it follows a curve **(?)** |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -74,3 +70,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 1. Is the taper straight (proportional to distance) or does it follow a curve?
 2. Does the amount apply to one seam or is it split between front and back? Is the amount per seam or total?
 3. How do I tell which points are 'on the seam'? Landmarks, or a chain between two points?
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `taper` | `straight`, `curved` | **(?)** | `straight`: the share is proportional to distance along the seam; `curved`: it follows a curve **(?)** |

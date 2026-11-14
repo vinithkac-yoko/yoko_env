@@ -10,7 +10,8 @@ state, including the ones after a mistake. It works in this order:
    object's formula back (or to what the recipe requires).
 2. Otherwise the active step is the first plan step that is not complete. Its acceptable set is
    every op of its recipe graph whose inputs exist and that is not done yet, in any order, plus the
-   composite call for the whole step when composites are on.
+   composite call for the whole step when composites are on (off by default: executor training and
+   data generation teach the primitives; only named runs turn composites on).
 3. When every step is complete, `done`.
 4. When no recipe covers the active step: None, "no label".
 
@@ -170,14 +171,20 @@ class _Sizes:
 
 
 def teacher_sizes(
-    pattern: Pattern, table: MeasurementSet | None, base: Mapping[str, float]
+    pattern: Pattern,
+    table: MeasurementSet | None,
+    base: Mapping[str, float],
+    grading: MeasurementSet | None = None,
 ) -> tuple[dict[str, float], ...]:
     """The other sizes an equivalence is checked at: two more points of the table, far apart (the
-    base size is the session's own). A person's own file has only itself."""
-    from yoko_engine.binding import size_grid
+    base size is the session's own). For a person's own file: the two nudged copies of it, so that a
+    number written in by hand that equals a formula at their size is not taken for the formula."""
+    from yoko_engine.binding import nudged_tables, size_grid
 
-    if table is None or table.kind == "individual":
+    if table is None:
         return ()
+    if table.kind == "individual":
+        return tuple(dict(t.values()) for t in nudged_tables(table, grading))
     out: list[dict[str, float]] = []
     grid = size_grid(pattern, table)
     picks = [grid[len(grid) // 2], grid[-1]] if len(grid) >= 3 else grid[1:]
@@ -280,7 +287,7 @@ class Teacher:
         recipes: RecipeRegistry,
         *,
         others: Sequence[Mapping[str, float]] = (),
-        composites: bool = True,
+        composites: bool = False,
     ) -> None:
         self.recipes = recipes
         self.sizes = _Sizes(others)
@@ -361,7 +368,7 @@ class Teacher:
         complete = all_done and (cast(Completion, check).done or moved_past)
         measured: dict[str, float] = {}
         targets: dict[str, float] = {}
-        if not complete:
+        if not moved_past:  # the active step, or one just completed: what the step check saw
             measured = dict(recipe.measure(ctx))
             for p in recipe.spec.params:
                 v = ctx.value(p)

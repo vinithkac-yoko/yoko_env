@@ -20,7 +20,7 @@ from __future__ import annotations
 import random
 from collections.abc import Callable, Collection, Mapping
 from dataclasses import dataclass, field, replace
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 from yoko_engine.session import ActionMeta, PatternSession
 from yoko_tools.plan import plan_variables
@@ -38,6 +38,7 @@ from yoko_tools.teacher import (
 )
 
 from yoko_env.card import card_text, status_card
+from yoko_env.invariants import check_invariants
 from yoko_env.pieces import touched_pieces
 from yoko_env.task import Task
 from yoko_env.valid import ValidActions, valid_actions
@@ -67,8 +68,13 @@ class EnvConfig:
     specs: Mapping[str, ToolSpec]
     recipes: RecipeRegistry = field(default_factory=RecipeRegistry)
     tools: frozenset[str] | None = None  # the run's tool subset; None = every tool
-    composites: bool = True  # `apply_step` in the acceptable set and the valid actions
+    # `apply_step` in the acceptable set and the valid actions. Off by default: executor training
+    # and data generation learn the primitives; named runs (an ablation, the fast path) turn it on.
+    composites: bool = False
     teacher: bool = True  # label every step (the privileged `expert` and `on_plan`)
+    # where the invariants are re-checked at `done`: every size of the table ("all", the rule), or
+    # only the base size and the teacher's two other sizes ("teacher", cheaper, for data runs)
+    invariant_sizes: Literal["all", "teacher"] = "all"
     max_steps: int = 100
     max_invalid: int = 20
     library: Any = None
@@ -128,6 +134,8 @@ class PatternEnv:
         self.history: list[Call] = []
         self.outcome: str | None = None
         self._start: PatternSession | None = None
+        # a step's own check, measured once when the step completes (step number -> record)
+        self.step_checks: dict[int, dict[str, Any]] = {}
         self._analysis_cache: tuple[tuple[int, str], Analysis] | None = None
         self._max_steps = self.cfg.max_steps
 
@@ -162,10 +170,13 @@ class PatternEnv:
             composites = self.cfg.composites and self._allowed(APPLY_STEP)
             self.teacher = Teacher(
                 self.cfg.recipes,
-                others=teacher_sizes(task.pattern, task.measurements, session.measurements),
+                others=teacher_sizes(
+                    task.pattern, task.measurements, session.measurements, task.grading
+                ),
                 composites=composites,
             )
         self._start = session.fork()
+        self._note_completions()  # a step whose result already holds at the start
         return self._observe(None, first=True)
 
     def _toolbox(self, session: PatternSession, landmarks: Any) -> Toolbox:
@@ -225,7 +236,8 @@ class PatternEnv:
             episode=self.episode,
             on_plan=label.on_plan,
         )
-        if not self._allowed(call.tool) and call.tool != DONE_TOOL:
+        off = call.tool == APPLY_STEP and not self.cfg.composites
+        if off or (not self._allowed(call.tool) and call.tool != DONE_TOOL):
             result = failed("tool_not_available", f"{call.tool} is not available in this run")
         else:
             result = box.call(call.tool, call.args, meta)
@@ -238,6 +250,7 @@ class PatternEnv:
             "step_label": label.step,
             "op": label.op,
             "invalid": self.invalid,
+            "steps_completed": self._note_completions(),
         }
         if done:
             self.outcome = "done"
@@ -253,18 +266,52 @@ class PatternEnv:
         reward = float(self.cfg.reward(self, event)) if self.cfg.reward is not None else 0.0
         return StepResult(self._observe(result), reward, over, info)
 
+    def _note_completions(self) -> list[dict[str, Any]]:
+        """Record each step's check the first time the step is seen complete; forget it if the step
+        becomes incomplete again (an undo), so that its next completion is measured afresh."""
+        analysis = self.analysis()
+        if analysis is None:
+            return []
+        new: list[dict[str, Any]] = []
+        for st in analysis.steps:
+            if st.state != "done":
+                self.step_checks.pop(st.number, None)
+                continue
+            if st.number in self.step_checks:
+                continue
+            record = {
+                "step": st.number,
+                "recipe": st.transformation,
+                "at": self.steps,
+                "check": None
+                if st.check is None
+                else {"done": st.check.done, "detail": st.check.detail},
+                "targets": dict(st.targets),
+                "measured": dict(st.measured),
+            }
+            self.step_checks[st.number] = record
+            new.append(record)
+        return new
+
     def _expert_json(self) -> list[dict[str, Any]] | None:
         found = self.expert()
         return None if found is None else [c.as_json() for c in found]
 
     def _finish(self) -> dict[str, Any]:
-        """At `done`: the pieces the episode touched, and only those, are computed and checked."""
-        box = self.box
-        assert box is not None and self._start is not None
+        """At `done`: the pieces the episode touched, and only those, are computed; the invariants
+        (no formula error, closed pieces, matching seam pairs) are checked at every size."""
+        box, task = self.box, self.task
+        assert box is not None and self._start is not None and task is not None
         touched = touched_pieces(self._start, box.session)
         geoms = box.session.pieces(touched)
         issues = box.session.piece_issues(touched)
         analysis = self.analysis()
+        only = None
+        if self.cfg.invariant_sizes == "teacher" and self.teacher is not None:
+            only = [dict(box.session.measurements), *self.teacher.sizes.others]
+        invariants = check_invariants(
+            box, task.measurements, touched, task.seam_pairs, task.grading, only=only
+        )
         return {
             "pieces": {
                 "touched": sorted(g.name for g in geoms.values()),
@@ -272,7 +319,11 @@ class PatternEnv:
                     {"code": i.code, "message": i.message, "severity": i.severity} for i in issues
                 ],
             },
+            # `done` before the plan is complete is allowed, recorded here, and a failure in evals
             "plan_complete": analysis.complete if analysis is not None else None,
+            "invariants": invariants,
+            "invariants_ok": invariants["ok"],
+            "step_checks": [self.step_checks[k] for k in sorted(self.step_checks)],
             "errors": sum(1 for i in box.session.issues() if i.severity == "error"),
             "state_hash": box.session.state_hash(),
         }
@@ -400,6 +451,7 @@ class PatternEnv:
         child.episode, child.author = self.episode, self.author
         child.steps, child.invalid, child.outcome = self.steps, self.invalid, self.outcome
         child.history = list(self.history)
+        child.step_checks = {k: dict(v) for k, v in self.step_checks.items()}
         child._start = self._start
         child._max_steps = self._max_steps
         child.box = child._toolbox(box.session.fork(), box.landmarks)

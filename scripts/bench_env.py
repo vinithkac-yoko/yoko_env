@@ -58,7 +58,7 @@ def make_plan(n_steps: int, amount: float) -> dict[str, Any]:
     }
 
 
-def init(mode: str, teacher: bool) -> None:
+def init(mode: str, teacher: bool, invariant_sizes: str) -> None:
     library = DirectoryLibrary(ROOT / "library", ROOT / "fixtures")
     _, pattern, table = library.load("aldrich-womens-6th-basic")
     landmarks = Landmarks.from_mapping(
@@ -71,7 +71,15 @@ def init(mode: str, teacher: bool) -> None:
         pattern=pattern,
         table=table,
         landmarks=landmarks,
-        env=PatternEnv(EnvConfig(specs, recipes, teacher=teacher, max_steps=60)),
+        env=PatternEnv(
+            EnvConfig(
+                specs,
+                recipes,
+                teacher=teacher,
+                max_steps=60,
+                invariant_sizes=invariant_sizes,  # type: ignore[arg-type]
+            )
+        ),
         # a teacher-on env to find the actions an env with the teacher off is then timed on
         guide=PatternEnv(EnvConfig(specs, recipes, max_steps=60)),
     )
@@ -111,11 +119,19 @@ def main() -> None:
     ap.add_argument("--episodes", type=int, default=200)
     ap.add_argument("--mode", choices=("data", "env"), default="data")
     ap.add_argument("--no-teacher", action="store_true")
+    ap.add_argument(
+        "--invariant-sizes",
+        choices=("all", "teacher"),
+        default="all",
+        help="where the invariants are re-checked at done: every size, or the teacher's three",
+    )
     args = ap.parse_args()
     ctx = mp.get_context("fork")
     t0 = time.perf_counter()
     with ctx.Pool(
-        args.workers, initializer=init, initargs=(args.mode, not args.no_teacher)
+        args.workers,
+        initializer=init,
+        initargs=(args.mode, not args.no_teacher, args.invariant_sizes),
     ) as pool:
         ready = time.perf_counter()
         results = pool.map(work, range(args.episodes), chunksize=4)
@@ -128,6 +144,7 @@ def main() -> None:
     report = {
         "mode": args.mode,
         "teacher": not args.no_teacher,
+        "invariant_sizes": args.invariant_sizes,
         "workers": args.workers,
         "cpus": os.cpu_count(),
         "episodes": args.episodes,

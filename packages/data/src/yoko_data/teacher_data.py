@@ -66,6 +66,7 @@ def run_episode(
         }
     )
     stopped = "done"
+    final: dict[str, Any] = {}
     while True:
         acceptable = env.expert()
         if acceptable is None or not acceptable:
@@ -95,6 +96,7 @@ def run_episode(
         obs = result.observation
         if result.done:
             stopped = result.info["outcome"] or "done"
+            final = result.info
             break
     analysis = env.analysis()
     out.end = {
@@ -102,6 +104,10 @@ def run_episode(
         "steps": len(out.steps),
         "noisy_steps": sum(1 for s in out.steps if s["noise"]),
         "plan_complete": analysis.complete if analysis is not None else False,
+        # a step's check, measured once when it completed; the invariants, re-checked at done
+        "step_checks": [env.step_checks[k] for k in sorted(env.step_checks)],
+        "invariants_ok": final.get("invariants_ok"),
+        "invariants": final.get("invariants"),
         "state_hash": env.box.session.state_hash() if env.box else None,
     }
     return out

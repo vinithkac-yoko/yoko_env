@@ -24,7 +24,7 @@ import hashlib
 import json
 import os
 import zlib
-from collections.abc import Iterable, Iterator, Mapping, Sequence
+from collections.abc import Collection, Iterable, Iterator, Mapping, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, cast
@@ -61,10 +61,16 @@ def level_for(plan: Mapping[str, Any]) -> int:
 
 
 def plan_family(plan: Mapping[str, Any]) -> str:
-    """Plans with the same recipes in the same order are one family: they must not be split between
-    training and test, whatever their amounts are."""
+    """Plans with the same recipes and the same option values are one family, whatever their order
+    and amounts: they must not be split between training and test. The family is the sorted
+    multiset of `recipe[option=value,...]`, so a reordered plan is the same family."""
     steps = cast("Sequence[Mapping[str, Any]]", plan["steps"])
-    return "+".join(cast(str, s["transformation"]) for s in steps)
+    tokens: list[str] = []
+    for s in steps:
+        options = cast("Mapping[str, str]", s.get("options") or {})
+        chosen = ",".join(f"{k}={v}" for k, v in sorted(options.items()))
+        tokens.append(f"{s['transformation']}[{chosen}]" if chosen else str(s["transformation"]))
+    return "+".join(sorted(tokens))
 
 
 def split_of(key: str, fractions: Mapping[str, float], salt: str = "") -> str:
@@ -79,6 +85,19 @@ def split_of(key: str, fractions: Mapping[str, float], salt: str = "") -> str:
         if point < edge:
             return name
     return list(fractions)[-1]
+
+
+def split_of_item(
+    item: str,
+    fractions: Mapping[str, float],
+    salt: str = "",
+    held_out: Collection[str] = (),
+) -> str:
+    """The split of a human-drafted item (a recipe example or a design made in the studio). An item
+    is split whole, never by step; items in `held_out` are always `test` and never trained on."""
+    if item in held_out:
+        return "test"
+    return split_of(f"item|{item}", fractions, salt)
 
 
 def _line(record: Mapping[str, Any]) -> bytes:

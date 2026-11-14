@@ -386,7 +386,8 @@ def validate_plan_at_sizes(
     owners = _owners(plan)
     points = size_grid(pattern, table, sizes=sizes, heights=heights)
     if person is not None:
-        points += size_grid(pattern, person)
+        grading = table if table.kind != "individual" else None
+        points += size_grid(pattern, person, grading=grading)
     failures: dict[tuple[str, str], tuple[str, list[str]]] = {}
 
     def note(path: str, code: str, message: str, where: str) -> None:

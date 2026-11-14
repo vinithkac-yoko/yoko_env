@@ -10,6 +10,7 @@ from yoko_env.env import (
     StepResult,
     as_call,
 )
+from yoko_env.invariants import SeamPair, check_invariants, section_length_mm
 from yoko_env.pieces import touched_pieces
 from yoko_env.task import Task
 from yoko_env.valid import ValidActions, random_action, valid_actions
@@ -21,13 +22,16 @@ __all__ = [
     "EnvError",
     "Observation",
     "PatternEnv",
+    "SeamPair",
     "StepEvent",
     "StepResult",
     "Task",
     "ValidActions",
     "as_call",
     "card_text",
+    "check_invariants",
     "random_action",
+    "section_length_mm",
     "status_card",
     "touched_pieces",
     "valid_actions",

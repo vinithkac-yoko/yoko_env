@@ -65,15 +65,62 @@ def test_a_file_that_lacks_measurements_says_which() -> None:
     assert "hip_circ" in str(err.value)
 
 
-def test_the_sizes_to_check_are_the_tables_and_a_person_has_one() -> None:
+def test_the_sizes_to_check_are_the_tables_and_a_person_has_three() -> None:
     grid = size_grid(BASE, MULTI)
     assert [p.size for p in grid[::3]] == [34, 36, 38, 40, 42]  # three heights each
     assert {p.height for p in grid} == {158.0, 164.0, 170.0}
     assert size_grid(BASE, MULTI, sizes=[34], heights=[164])[0].label == "size 34, height 164"
     person = individual_table(MULTI.values())
-    assert [p.label for p in size_grid(BASE, person)] == ["your measurements"]
+    points = size_grid(BASE, person)
+    assert [p.label for p in points] == [
+        "your measurements",
+        "your measurements, nudged up",
+        "your measurements, nudged down",
+    ]
+    own, up, down = (p.values for p in points)
+    assert up["bust_circ"] == pytest.approx(own["bust_circ"] + 2)
+    assert down["hip_circ"] == pytest.approx(own["hip_circ"] - 2)
+    assert up["height"] == pytest.approx(own["height"] + 3)
+    assert up["neck_circ"] == own["neck_circ"]  # only the nudged measurements move
     sizes, heights = gradation(BASE)
     assert 36 in sizes and 164 in heights
+
+
+def test_nudged_copies_follow_the_files_unit_and_formulas() -> None:
+    from yoko_engine.binding import MeasurementError, nudged_tables
+    from yoko_engine.model import Measurement, MeasurementSet
+
+    person = MeasurementSet(
+        "mm",
+        0.0,
+        0.0,
+        (
+            Measurement("bust_circ", 900.0),
+            Measurement("height", 1640.0),
+            Measurement("half_bust", 0.0, formula="bust_circ/2"),
+        ),
+        kind="individual",
+    )
+    up, down = nudged_tables(person)
+    assert up.values()["bust_circ"] == pytest.approx(920.0)  # 2 cm in a file in millimetres
+    assert down.values()["height"] == pytest.approx(1610.0)
+    assert up.values()["half_bust"] == pytest.approx(460.0)  # a formula follows its measurement
+    with pytest.raises(MeasurementError, match="only a person"):
+        nudged_tables(MULTI)
+
+
+def test_with_the_table_every_measurement_moves_half_a_size_step() -> None:
+    from yoko_engine.binding import nudged_tables
+
+    person = individual_table(MULTI.values())
+    own = person.values()
+    up, down = (t.values() for t in nudged_tables(person, MULTI))
+    assert up["bust_circ"] - own["bust_circ"] == pytest.approx(2.0)  # half of the 4 cm a size adds
+    assert own["waist_circ"] - down["waist_circ"] == pytest.approx(2.0)
+    assert up["height_waist_side_to_knee"] - own["height_waist_side_to_knee"] == pytest.approx(0.25)
+    assert up["height"] - own["height"] == pytest.approx(3.0)  # the table does not grade height
+    graded = size_grid(BASE, person, grading=MULTI)
+    assert graded[1].values["height_waist_side_to_knee"] == up["height_waist_side_to_knee"]
 
 
 def test_rebinding_changes_only_the_file_name() -> None:

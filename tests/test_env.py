@@ -54,7 +54,9 @@ def test_reset_gives_the_plan_the_card_progress_and_valid_actions() -> None:
     assert active["amounts"] == [{"name": "amount", "unit": "cm", "target": 5.0, "now": 0.0}]
     assert active["landmarks"] == {"hem_left": "skirt.hem_left", "hem_right": "skirt.hem_right"}
     assert "target 5 cm, now 0 cm" in obs.card_text
-    assert "apply_step" in obs.valid_actions.tools and "done" in obs.valid_actions.tools
+    assert "done" in obs.valid_actions.tools
+    assert "apply_step" not in obs.valid_actions.tools  # composites are off by default
+    assert "apply_step" in make_env(composites=True).reset(toy_task(plan(5))).valid_actions.tools
     assert "undo" not in obs.valid_actions.tools  # the plan's variables are not a step to undo
     assert env.state()["objects"] == 4
 
@@ -188,8 +190,16 @@ def test_a_tool_outside_the_runs_subset_is_refused() -> None:
 
 
 # -- the composite ---------------------------------------------------------------------------------
-def test_apply_step_does_the_whole_step_and_marks_every_op_on_plan() -> None:
+def test_apply_step_is_refused_unless_the_run_turns_composites_on() -> None:
     env = make_env()
+    env.reset(toy_task(plan(5)))
+    result = env.step(Call("apply_step", {"step": 1}))
+    assert result.observation.last_result["error"]["code"] == "tool_not_available"  # type: ignore[index]
+    assert all(c.tool != "apply_step" for c in env.expert() or [])
+
+
+def test_apply_step_does_the_whole_step_and_marks_every_op_on_plan() -> None:
+    env = make_env(composites=True)
     env.reset(toy_task(plan(5)))
     result = env.step(Call("apply_step", {"step": 1}))
     assert result.info["on_plan"] is True
@@ -211,7 +221,7 @@ def test_apply_step_does_the_whole_step_and_marks_every_op_on_plan() -> None:
 
 
 def test_apply_step_refuses_a_step_that_is_not_active_and_changes_nothing() -> None:
-    env = make_env()
+    env = make_env(composites=True)
     env.reset(toy_task(plan(5, 3)))
     assert env.box is not None
     before = env.box.session.state_hash()
@@ -221,7 +231,7 @@ def test_apply_step_refuses_a_step_that_is_not_active_and_changes_nothing() -> N
 
 
 def test_apply_step_rolls_back_when_one_op_cannot_be_made() -> None:
-    env = make_env()
+    env = make_env(composites=True)
     task = toy_task(plan(5))
     env.reset(task)
     assert env.box is not None
@@ -235,7 +245,7 @@ def test_apply_step_rolls_back_when_one_op_cannot_be_made() -> None:
 
 
 def test_apply_step_without_a_plan_says_so() -> None:
-    env = make_env()
+    env = make_env(composites=True)
     env.reset(toy_task(None))
     result = env.step(Call("apply_step", {"step": 1}))
     assert result.observation.last_result["error"]["code"] == "no_plan"  # type: ignore[index]
@@ -271,10 +281,13 @@ def test_pieces_are_computed_only_at_done_and_only_the_touched_ones(
     result = env.step(env.expert()[0])  # type: ignore[index]
     assert asked == [] and not result.done  # nothing is computed while working
     done = env.step(Call("done"))
-    assert done.done and len(asked) == 1 and asked[0] is not None and len(asked[0]) == 2
+    # only the touched pieces, at the base size and at every size the invariants are checked at
+    assert done.done and asked and all(a is not None and len(a) == 2 for a in asked)
+    assert len(asked) == 1 + len(done.info["invariants"]["sizes"])
     # the front is drafted from the back's points, so it moves too; the other four pieces do not
     assert done.info["pieces"]["touched"] == ["A - Skirt Back", "A - Skirt Front"]
     assert done.info["pieces"]["problems"] == [] and done.info["plan_complete"] is True
+    assert done.info["invariants_ok"] is True
 
 
 def test_done_with_a_plan_not_finished_still_ends_the_episode_and_says_so() -> None:
@@ -292,10 +305,86 @@ def test_a_persons_own_measurement_file_replaces_the_table() -> None:
     person = individual_table(table.values(), "cm")
     own = Task(task.pattern, person, task.plan, task.landmarks)
     env.reset(own, author="teacher")
-    assert env.teacher is not None and env.teacher.sizes.others == ()
+    # a person's file has one size: the teacher matches at it and at two nudged copies of it
+    assert env.teacher is not None and len(env.teacher.sizes.others) == 2
     assert env.expert() is not None
     follow_teacher(env)
     assert env.outcome == "done"
+
+
+def test_a_steps_check_is_stored_once_when_the_step_completes() -> None:
+    env = make_env()
+    env.reset(toy_task(plan(5, 3, mark="no")), author="teacher")
+    first = env.step(env.expert()[0])  # type: ignore[index]
+    assert first.info["steps_completed"] == []
+    second = env.step(env.expert()[0])  # type: ignore[index]
+    [record] = second.info["steps_completed"]
+    assert (
+        record["step"] == 1
+        and record["at"] == 2
+        and record["check"] == {"done": True, "detail": ""}
+    )
+    assert record["measured"]["amount"] == pytest.approx(5) and record["targets"]["amount"] == 5
+    # step 2 then moves the hem again; step 1's record is the one taken when it completed
+    infos = follow_teacher(env)
+    assert [r["step"] for r in infos[-1]["step_checks"]] == [1, 2]
+    assert infos[-1]["step_checks"][0]["measured"]["amount"] == pytest.approx(5)
+
+
+def test_an_undone_step_is_measured_again_when_it_completes_again() -> None:
+    env = make_env()
+    env.reset(toy_task(plan(5, mark="no")), author="teacher")
+    for _ in range(2):
+        env.step(env.expert()[0])  # type: ignore[index]
+    assert 1 in env.step_checks
+    env.step(Call("undo"))
+    assert 1 not in env.step_checks
+    again = env.step(env.expert()[0])  # type: ignore[index]
+    assert [r["step"] for r in again.info["steps_completed"]] == [1]
+
+
+def test_the_invariants_are_checked_at_done_at_every_size() -> None:
+    env, task = basic_skirt_env()
+    env.reset(task, author="teacher")
+    env.step(env.expert()[0])  # type: ignore[index]
+    done = env.step(Call("done")).info
+    inv = done["invariants"]
+    assert inv["ok"] and inv["formula_error_count"] == 0 and inv["open_pieces"] == []
+    assert len(inv["sizes"]) == 15  # five sizes, three heights
+    assert inv["seam_pairs"] == "none defined yet"
+
+
+def test_a_data_run_may_check_the_invariants_at_the_teachers_three_sizes_only() -> None:
+    env, task = basic_skirt_env(invariant_sizes="teacher")
+    env.reset(task, author="teacher")
+    env.step(env.expert()[0])  # type: ignore[index]
+    inv = env.step(Call("done")).info["invariants"]
+    assert inv["ok"] and len(inv["sizes"]) == 3  # the base size and the teacher's two others
+
+
+def test_a_seam_pair_that_no_longer_matches_fails_the_invariants() -> None:
+    from yoko_env import SeamPair, section_length_mm
+
+    env, task = basic_skirt_env()
+    # the two side seams, from the side waist to the side hem: equal in the basic set? Measured, not
+    # assumed: the pair is given the ease it has at the start, so it matches before the change
+    env.reset(task)
+    assert env.box is not None
+    back = "A - Skirt Back.section(A10, A8a)"
+    front = "A - Skirt Front.section(A8c, A16)"
+    ease = (section_length_mm(env.box, back) - section_length_mm(env.box, front)) / 10
+    pair = SeamPair(back, front, ease_cm=ease)
+    task = Task(task.pattern, task.measurements, task.plan, task.landmarks, seam_pairs=(pair,))
+    env.reset(task)
+    clean = env.step(Call("done")).info["invariants"]
+    assert clean["ok"], clean
+    env.reset(task)
+    env.step(
+        # the back's side hem point 3 cm lower: the back side seam grows, the front's does not
+        Call("edit_point_along_line", {"target": "A8a", "length": "Line_A5_A3 + 3"})
+    )
+    changed = env.step(Call("done")).info["invariants"]
+    assert not changed["ok"] and changed["seam_pairs"][0]["off_mm"] != 0
 
 
 # -- forking and replay ----------------------------------------------------------------------------

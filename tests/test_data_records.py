@@ -191,6 +191,30 @@ def test_a_teacher_episode_needs_a_plan() -> None:
 
 
 # -- seeds, levels, splits -------------------------------------------------------------------------
+def test_a_family_ignores_order_but_not_options() -> None:
+    mixed = plan(5, 3)
+    mixed["steps"][1]["transformation"] = "slash_and_spread"
+    mixed["steps"][1]["options"] = {"spread": "hinged"}
+    reordered = {**mixed, "steps": list(reversed(mixed["steps"]))}
+    assert plan_family(mixed) == plan_family(reordered)
+    other = {
+        **mixed,
+        "steps": [mixed["steps"][0], {**mixed["steps"][1], "options": {"spread": "parallel"}}],
+    }
+    assert plan_family(other) != plan_family(mixed)
+    assert plan_family(mixed) == "lengthen_or_shorten[mark=yes]+slash_and_spread[spread=hinged]"
+
+
+def test_human_items_are_split_whole_and_held_out_items_are_always_test() -> None:
+    from yoko_data import split_of_item
+
+    fractions = {"train": 0.8, "val": 0.1, "test": 0.1}
+    assert split_of_item("ex-17", fractions, "v1") == split_of_item("ex-17", fractions, "v1")
+    assert split_of_item("ex-17", fractions, "v1", held_out={"ex-17"}) == "test"
+    splits = {split_of_item(f"ex-{i}", fractions, "v1") for i in range(200)}
+    assert splits == {"train", "val", "test"}
+
+
 def test_seed_ranges_are_disjoint_and_checked() -> None:
     spans = sorted(SEED_RANGES.values())
     assert all(a[1] < b[0] for a, b in pairwise(spans))
@@ -220,7 +244,8 @@ def test_a_plans_level_comes_from_its_number_of_steps() -> None:
 
 def test_splits_are_by_family_and_stable() -> None:
     a, b = plan(5, 3), plan(7, 1)
-    assert plan_family(a) == plan_family(b) == "lengthen_or_shorten+lengthen_or_shorten"
+    family = "lengthen_or_shorten[mark=yes]+lengthen_or_shorten[mark=yes]"
+    assert plan_family(a) == plan_family(b) == family  # amounts do not matter
     fractions = {"train": 0.8, "val": 0.1, "test": 0.1}
     assert split_of(plan_family(a), fractions, "v1") == split_of(plan_family(b), fractions, "v1")
     counts = {"train": 0, "val": 0, "test": 0}

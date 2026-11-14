@@ -27,11 +27,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | --- | --- | --- | --- | --- | --- |
 | `ease` | extra length of the cap over the armhole | cm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `ease_split` | `whole`, `front_back` | **(?)** | `whole`: one ease for the whole cap; `front_back`: separate ease for each half **(?)** |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -75,3 +71,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 1. Do you re-fit by changing handle lengths (cap shape) or by changing the cap height? The engine can set a curve to a given length by moving handle lengths; is that how you would do it?
 2. Is the ease one number for the whole cap, or split front and back?
 3. Most and least ease, and the default.
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `ease_split` | `whole`, `front_back` | **(?)** | `whole`: one ease for the whole cap; `front_back`: separate ease for each half **(?)** |

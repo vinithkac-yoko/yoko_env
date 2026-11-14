@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from yoko_engine.evaluator import evaluate
 from yoko_engine.model import Measurement, MeasurementSet, Pattern, RawNode
@@ -62,6 +62,55 @@ def check_measurements(pattern: Pattern, table: MeasurementSet) -> dict[str, flo
     return values
 
 
+# How much a person's own measurements are nudged (in cm) for the two extra copies that a plan and
+# the teacher are checked at. A person's file has one size; a number written into a formula that
+# happens to equal a measurement at that size would pass everywhere. Kasi, Phase 4 answers.
+NUDGES_CM: Mapping[str, float] = {
+    "bust_circ": 2.0,
+    "waist_circ": 2.0,
+    "hip_circ": 2.0,
+    "height": 3.0,
+}
+_CM_IN = {"cm": 1.0, "mm": 10.0, "inch": 1 / 2.54}
+
+
+def nudged_tables(
+    table: MeasurementSet,
+    grading: MeasurementSet | None = None,
+    nudges: Mapping[str, float] = NUDGES_CM,
+) -> tuple[MeasurementSet, MeasurementSet]:
+    """Two copies of a person's own file, one nudged up and one down.
+
+    With `grading` (the multisize table the pattern was drafted from), every measurement moves by
+    the same fraction of a size step, the fraction that moves bust_circ by its nudge (half a step in
+    the basic set's table: bust, waist and hip 2 cm, everything else in proportion). A measurement
+    the table does not grade (height, in the basic set's table) takes its own nudge. Without a
+    table, only the measurements in `nudges` move. Measurements given as formulas follow."""
+    if table.kind != "individual":
+        raise MeasurementError("only a person's own measurement file is nudged")
+    factor = _CM_IN.get(table.unit, 1.0)
+    steps: dict[str, float] = {}  # measurement -> how much it moves, in the person's unit
+    if grading is not None and grading.kind != "individual":
+        to_person = factor / _CM_IN.get(grading.unit, 1.0)
+        graded = {m.name: m.size_increase for m in grading.measurements}
+        anchor = graded.get("bust_circ", 0.0)
+        fraction = nudges.get("bust_circ", 0.0) / anchor if anchor else 0.0
+        steps = {n: fraction * inc * to_person for n, inc in graded.items() if inc}
+    for name, cm in nudges.items():
+        if name not in steps:
+            steps[name] = cm * factor
+    out: list[MeasurementSet] = []
+    for sign in (1.0, -1.0):
+        rows = tuple(
+            replace(m, base=m.base + sign * steps[m.name])
+            if m.name in steps and not m.formula
+            else m
+            for m in table.measurements
+        )
+        out.append(replace(table, measurements=rows, document=None))
+    return out[0], out[1]
+
+
 @dataclass(frozen=True, slots=True)
 class SizePoint:
     """One size of a multisize table: a name for messages, and the numbers."""
@@ -104,14 +153,22 @@ def size_grid(
     sizes: Sequence[float] | None = None,
     heights: Sequence[float] | None = None,
     steps: int = 5,
+    grading: MeasurementSet | None = None,
 ) -> list[SizePoint]:
     """The sizes and heights to check a plan at.
 
-    A person's file has one point. A multisize table has `steps` sizes counting up from its base
-    size (the basic set's table, UK 6 to 14, is sizes 34 to 42) and the heights the pattern switches
-    on that are also reachable, or the base height alone."""
+    A person's file has three points: their own measurements and two nudged copies
+    (`nudged_tables`, graded like `grading`, the table the pattern was drafted from, when given).
+    A multisize table has `steps` sizes counting up from its base size (the basic set's table,
+    UK 6 to 14, is sizes 34 to 42) and the heights the pattern switches on that are also
+    reachable, or the base height alone."""
     if table.kind == "individual":
-        return [SizePoint("your measurements", 0.0, 0.0, table.values())]
+        up, down = nudged_tables(table, grading)
+        return [
+            SizePoint("your measurements", 0.0, 0.0, table.values()),
+            SizePoint("your measurements, nudged up", 0.0, 0.0, up.values()),
+            SizePoint("your measurements, nudged down", 0.0, 0.0, down.values()),
+        ]
     size_list = (
         list(sizes)
         if sizes is not None

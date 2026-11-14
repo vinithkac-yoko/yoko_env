@@ -75,10 +75,10 @@ def test_a_registry_gives_plan_validation_its_specs() -> None:
 
 
 # -- the teacher on a clean state ------------------------------------------------------------------
-def test_the_acceptable_set_is_every_ready_op_and_the_composite() -> None:
+def test_the_acceptable_set_is_every_ready_op_and_the_composite_when_composites_are_on() -> None:
     the_plan = plan(5)
     box = toy_box(the_plan)
-    teacher = teacher_for(box)
+    teacher = teacher_for(box, composites=True)
     accepted = teacher.expert(box, the_plan)
     assert accepted is not None
     assert [(c.tool, c.op) for c in accepted] == [
@@ -88,8 +88,12 @@ def test_the_acceptable_set_is_every_ready_op_and_the_composite() -> None:
     ]  # the notch waits for the hem_right edit
     assert accepted[0].args == {"target": "skirt.hem_left", "length": "20 + #s1_amount"}
     assert accepted[2].args == {"step": 1}
-    without = Teacher(RECIPES, composites=False).expert(box, the_plan)
-    assert without is not None and len(without) == 2
+    # off by default: executor training and data generation learn the primitives
+    without = Teacher(RECIPES).expert(box, the_plan)
+    assert without is not None and [c.tool for c in without] == [
+        "edit_point_at_distance_angle",
+        "edit_point_at_distance_angle",
+    ]
 
 
 def test_following_the_teacher_reaches_done_and_does_what_the_plan_says() -> None:
@@ -481,3 +485,41 @@ def test_the_teacher_works_on_the_real_basic_set_at_the_table_sizes() -> None:
     edit = {"target": "A3", "length": f"{base_length + 5}"}
     assert third.call("edit_point_at_distance_angle", edit, STEP1)["ok"]
     assert teacher.analyse(third, the_plan).step(1).ops[0].status == "ready"
+
+
+def test_a_number_typed_in_that_equals_the_formula_for_one_person_is_not_on_plan() -> None:
+    """A person's file has one size. Its two nudged copies (graded like the table) catch a number
+    written in by hand that equals the recipe's formula only for that person."""
+    from yoko_engine.binding import individual_table
+    from yoko_io.library import DirectoryLibrary
+
+    library = DirectoryLibrary(ROOT / "library", ROOT / "fixtures")
+    _, pattern, table = library.load("aldrich-womens-6th-basic")
+    person = individual_table(table.values(), "cm")
+    the_plan = plan(5)
+    the_plan["steps"][0]["refs"] = {"hem": "skirt_back.hem_left"}
+    landmarks = Landmarks.from_mapping(
+        {"version": 1, "landmarks": {"skirt_back.hem_left": {"label": "A3"}}}
+    )
+
+    def box_with(length: str) -> Toolbox:
+        session = PatternSession(pattern, person)
+        box = Toolbox(session, SPECS, landmarks=landmarks)
+        for action in plan_variables(the_plan):
+            assert session.apply(action, ActionMeta(author="plan")).ok
+        assert box.call("edit_point_at_distance_angle", {"target": "A3", "length": length}, STEP1)[
+            "ok"
+        ]
+        return box
+
+    knee = person.values()["height_waist_side_to_knee"]
+    teacher = Teacher(
+        RecipeRegistry([HemOnly()]), others=teacher_sizes(pattern, person, {}, grading=table)
+    )
+    formula = box_with("height_waist_side_to_knee + 5")
+    typed = box_with(f"{knee + 5}")
+    assert teacher.analyse(formula, the_plan).step(1).ops[0].by == "geometry"
+    assert teacher.analyse(typed, the_plan).step(1).ops[0].status == "ready"
+    # without the table only bust, waist, hip and height move: the typed number would pass
+    blind = Teacher(RecipeRegistry([HemOnly()]), others=teacher_sizes(pattern, person, {}))
+    assert blind.analyse(typed, the_plan).step(1).ops[0].status == "done"

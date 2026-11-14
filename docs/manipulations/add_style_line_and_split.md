@@ -26,11 +26,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | --- | --- | --- | --- | --- | --- |
 | `depth` | how far the line is from an edge, if it is placed by distance | cm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `line` | `straight`, `curved` | **(?)** | the shape of the style line between its ends |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -76,3 +72,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 1. How do I describe where the line goes so that it is not guessed: by landmarks and distances?
 2. Does each new piece keep the old piece's name with a suffix? Which one does the grain follow?
 3. Do new edges get seam allowance, notches or grain lines from the program, or are they added by hand?
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `line` | `straight`, `curved` | **(?)** | the shape of the style line between its ends |

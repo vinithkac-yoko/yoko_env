@@ -103,3 +103,9 @@ checker should find. These become the golden tests: the recipe must reproduce th
 ## 12. Questions and notes
 
 Anything unclear, anything the next reader should know.
+
+## Proposed by Claude Code, unconfirmed
+
+Anything Claude Code adds to a procedure that the pattern makers did not write (an option, a role, a
+default rule, a step): listed here, not in the sections above, so it never reads as a drafting rule.
+What the pattern makers write is the drafting rule. Nothing here is used until it is confirmed.

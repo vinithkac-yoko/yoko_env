@@ -25,8 +25,14 @@ THIN = Side(style="thin", color="BFC5CC")
 BORDER = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
 
+def plain(text: str) -> str:
+    """Markdown cell text as plain words: no **(?)** markers, no bold, no backticks."""
+    text = text.replace("**(?)**", "").replace("**", "").replace("`", "")
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def cells(line: str) -> list[str]:
-    return [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+    return [plain(c) for c in line.strip().strip("|").split("|")]
 
 
 def read_draft(path: Path) -> tuple[str, list[list[str]], list[list[str]]]:
@@ -63,11 +69,13 @@ def main() -> None:
     ws = wb.active
     ws.title = "Ranges"
     ws.sheet_view.showGridLines = False
-    widths = [26, 18, 46, 8, 12, 12, 12, 36]
+    widths = [34, 18, 46, 8, 12, 12, 12, 36]  # Recipe wide enough for reshape_armhole_and_shoulder
     for i, w in enumerate(widths):
         ws.column_dimensions[chr(65 + i)].width = w
+    ws.merge_cells("A1:H1")
     ws["A1"] = "Recipe parameters: least, most and default"
     style(ws["A1"], bold=True, size=14)
+    ws.row_dimensions[1].height = 24
     ws.merge_cells("A2:H2")
     ws["A2"] = (
         "Fill the yellow cells. Least, most and default are numbers, or formulas over measurements when "
@@ -114,7 +122,7 @@ def main() -> None:
     for name, _, options in drafts:
         for o in options:
             r += 1
-            vals = [name, o[0], o[1].replace("`", ""), None, None, None, None, None]
+            vals = [name, o[0], o[1], None, None, None, None, None]
             for c, v in enumerate(vals, start=1):
                 cell = ws.cell(row=r, column=c, value=v)
                 style(cell, fill=INPUT if c >= 7 else None)

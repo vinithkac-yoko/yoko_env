@@ -25,11 +25,7 @@ The plan's step names each role in `refs` (a landmark or `piece.section(a, b)`).
 | --- | --- | --- | --- | --- | --- |
 | `tolerance` | how close the two lengths must be | mm | | | |
 
-**Options.** A choice from a list, named in the plan's `options`. The recipe branches on it.
-
-| Name | Choices | Default | What each choice does |
-| --- | --- | --- | --- |
-| `method` | `length`, `smooth`, `both` | **(?)** | `length`: the two edges get the same length; `smooth`: no corner at the join; `both`. Which of these 'true' means is a question for the pattern makers |
+**Options.** None confirmed yet. Claude Code proposed some; they are listed at the end, unconfirmed.
 
 ## 4. Preconditions
 
@@ -73,3 +69,13 @@ None yet. I need two or three drafted in Seamly2D from the basic set, saved as c
 1. What does 'true' mean for each kind of edge: equal length, a right angle at the join, a smooth curve, or all of these?
 2. Which edge changes to match which? (The engine can set a curve to a target length by moving handle lengths: `length_mode`.)
 3. Is a tolerance of 1 mm right?
+
+## Proposed by Claude Code, unconfirmed
+
+Not drafting rules: suggestions for the pattern makers to keep, change or strike. Nothing uses them until they are confirmed.
+
+**Options**
+
+| Name | Choices | Default | What each choice does |
+| --- | --- | --- | --- |
+| `method` | `length`, `smooth`, `both` | **(?)** | `length`: the two edges get the same length; `smooth`: no corner at the join; `both`. Which of these 'true' means is a question for the pattern makers |

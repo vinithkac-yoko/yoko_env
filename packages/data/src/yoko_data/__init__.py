@@ -11,6 +11,7 @@ from yoko_data.records import (
     plan_family,
     read_lines,
     split_of,
+    split_of_item,
 )
 from yoko_data.teacher_data import Episode, draw_noise_rate, run_episode, write_episode
 
@@ -30,5 +31,6 @@ __all__ = [
     "read_lines",
     "run_episode",
     "split_of",
+    "split_of_item",
     "write_episode",
 ]
