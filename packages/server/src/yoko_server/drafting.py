@@ -19,7 +19,9 @@ import yaml
 from yoko_engine.binding import SizePoint, size_grid
 from yoko_engine.landmarks import Landmarks
 from yoko_engine.model import MeasurementSet, Pattern
-from yoko_engine.session import PatternSession
+from yoko_engine.pieces_edit import pieces_of
+from yoko_engine.session import REF_ATTRS, PatternSession
+from yoko_engine.units import px_to_mm
 from yoko_io.render import scene_data
 from yoko_io.seamly import read_measurements
 from yoko_tools.runtime import Toolbox
@@ -206,9 +208,32 @@ def proposed_names() -> dict[str, list[str]]:
     return out
 
 
-def scene(box: Toolbox) -> dict[str, Any]:
+# attributes that only say how Seamly2D shows an object (colour, where its label sits)
+DISPLAY_ATTRS = frozenset(
+    {"lineColor", "lineWeight", "color", "penStyle", "showPointName", "showPointName1",
+     "showPointName2", "mx", "my", "mx1", "my1", "mx2", "my2"}
+)  # fmt: skip
+
+
+def focus_bounds(box: Toolbox, pieces: list[str]) -> dict[str, float] | None:
+    """The rectangle around the item's pieces, so the canvas opens on them (every other object is
+    still drawn: the basic set's blocks overlap in one drafting area)."""
+    if not pieces:
+        return None
+    ids = [int(p.get("id") or 0) for _, p, _ in pieces_of(box.session.pattern)
+           if (p.get("name") or "") in pieces]  # fmt: skip
+    pts = [q for g in box.session.pieces(ids).values() for q in g.outline]
+    if not pts:
+        return None
+    xs = [px_to_mm(q.x) for q in pts]
+    ys = [px_to_mm(q.y) for q in pts]
+    return {"min_x": min(xs), "min_y": min(ys), "max_x": max(xs), "max_y": max(ys)}
+
+
+def scene(box: Toolbox, pieces: list[str] | None = None) -> dict[str, Any]:
     """The drawing for the canvas, with the proposed landmark names of each labelled object."""
     data = scene_data(box.session.pattern, box.session.evaluation)
+    data["focus"] = focus_bounds(box, pieces or [])
     names = proposed_names()
     data["proposed_landmarks"] = {
         str(p["id"]): names[p["label"]] for p in data["points"] if p["label"] in names
@@ -231,11 +256,28 @@ def inspect(box: Toolbox, object_id: int) -> dict[str, Any]:
     if not result["ok"]:
         raise DraftingError(result["error"]["message"])
     data = dict(result["data"])
+    attrs = cast("dict[str, str]", data.get("attributes") or {})
+    shown: dict[str, str] = {}
+    for key, value in attrs.items():
+        if key in DISPLAY_ATTRS:
+            continue
+        if key in REF_ATTRS and value.lstrip("-").isdigit():
+            value = box.name_of(int(value))  # a reference: show the label, not the id
+        shown[key] = value
+    data["attributes"] = shown
     ev = box.session.evaluation
     if object_id in ev.points:
         g = ev.points[object_id]
         data["x_mm"], data["y_mm"] = round(g.x_mm, 3), round(g.y_mm, 3)
     data["proposed_landmarks"] = proposed_names().get(str(data.get("name", "")), [])
+    # the same lists with ids, so the studio can jump to them
+    session = box.session
+    data["built_from_ids"] = [
+        {"id": i, "name": box.name_of(i)} for i in sorted(session.dependencies(object_id))
+    ]
+    data["used_by_ids"] = [
+        {"id": i, "name": box.name_of(i)} for i in sorted(session.dependents(object_id))
+    ]
     return data
 
 

@@ -373,6 +373,9 @@ def test_the_scene_has_every_line_curve_and_point_with_its_object(app_url: str) 
     a7 = small["proposed_landmarks"][str(a7_small["id"])]
     assert "skirt_back.side_hip" in a7 and "skirt_front.side_hip" in a7
     assert c.get(f"/api/items/{iid}/scene", params={"size": "table:99:1"}).status_code == 422
+    # the canvas opens on the item's pieces: the skirt back, not the whole drafting area
+    f, b = small["focus"], small["bounds"]
+    assert f["max_x"] - f["min_x"] < (b["max_x"] - b["min_x"]) / 2
 
 
 def test_the_inspector_shows_formulas_dependencies_and_dependents(app_url: str) -> None:
@@ -383,6 +386,8 @@ def test_the_inspector_shows_formulas_dependencies_and_dependents(app_url: str) 
     obj = c.get(f"/api/items/{iid}/objects/{a7['id']}").json()["object"]
     assert obj["name"] == "A7" and obj["kind"] == "point"
     assert obj["attributes"]["length"] == "(hip_circ/4)+1.5*#CM"
+    assert obj["attributes"]["firstPoint"] == "A5"  # references by label
+    assert "mx" not in obj["attributes"] and "lineColor" not in obj["attributes"]
     assert obj["built_from"] and obj["used_by"]
     assert obj["tool"] == "point_along_line" and obj["edit_with"] == "edit_point_along_line"
     assert "skirt_back.side_hip" in obj["proposed_landmarks"]

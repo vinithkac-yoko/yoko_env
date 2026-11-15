@@ -1,152 +1,71 @@
 import { useEffect, useState } from "react";
-import {
-  type BaseSummary,
-  type BuildInfo,
-  type FixtureFile,
-  fetchBaseSummary,
-  fetchBaseSvg,
-  fetchBuild,
-  fetchFamilyTree,
-  flattenTree,
-  type TreeNode,
-  fetchFixtures,
-  fetchHealth,
-  shortSha,
-} from "./api";
+import { type AuthStatus, authStatus, logout, me, type Person } from "./api";
+import Account from "./pages/Account";
+import Items from "./pages/Items";
+import ItemView from "./pages/ItemView";
+import Login from "./pages/Login";
+import Measurements from "./pages/Measurements";
+import People from "./pages/People";
+import Status from "./pages/Status";
+import { go, useRoute } from "./router";
 
-const TOKEN_KEY = "yoko.studio.token";
-
-function loadToken(): string {
-  try {
-    return localStorage.getItem(TOKEN_KEY) ?? "";
-  } catch {
-    return "";
-  }
-}
-
+/** The studio: sign in, then work items (manual drafting), people, measurements. */
 export default function App() {
-  const [health, setHealth] = useState<string>("checking…");
-  const [build, setBuild] = useState<BuildInfo | null>(null);
-  const [token, setToken] = useState(loadToken);
-  const [files, setFiles] = useState<FixtureFile[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [base, setBase] = useState<BaseSummary | null>(null);
-  const [svgUrl, setSvgUrl] = useState<string | null>(null);
-  const [tree, setTree] = useState<TreeNode[] | null>(null);
+  const route = useRoute();
+  const [status, setStatus] = useState<AuthStatus | null>(null);
+  const [user, setUser] = useState<Person | null | undefined>(undefined);
 
   useEffect(() => {
-    fetchHealth()
-      .then((h) => setHealth(h.status))
-      .catch(() => setHealth("unreachable"));
-    fetchBuild().then(setBuild).catch(() => setBuild(null));
+    authStatus().then(setStatus).catch(() => setStatus(null));
+    me()
+      .then(setUser)
+      .catch(() => setUser(null));
   }, []);
 
-  const loadFixtures = () => {
-    try {
-      localStorage.setItem(TOKEN_KEY, token);
-    } catch {
-      /* storage can be blocked; the token still works for this session */
-    }
-    setError(null);
-    fetchFixtures(token)
-      .then(setFiles)
-      .catch((e: Error) => {
-        setFiles(null);
-        setError(e.message);
-      });
-    fetchBaseSummary(token).then(setBase).catch(() => setBase(null));
-    fetchFamilyTree(token).then(setTree).catch(() => setTree(null));
-    fetchBaseSvg(token)
-      .then((svg) => setSvgUrl(URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }))))
-      .catch(() => setSvgUrl(null));
+  if (route[0] === "status") return <Status />;
+  if (user === undefined || status === null)
+    return <p className="p-6 font-sans text-slate-500">Loading…</p>;
+  if (user === null)
+    return (
+      <Login
+        status={status}
+        onIn={(p) => {
+          setUser(p);
+          go("items");
+        }}
+      />
+    );
+
+  const signOut = async () => {
+    await logout();
+    setStatus(await authStatus()); // the owner may have been made since the page loaded
+    setUser(null);
   };
+  const pages = ["items", "measurements", "account", ...(user.role === "owner" ? ["people"] : [])];
+  const page = pages.includes(route[0] ?? "") ? route[0] : "items";
+  const tab = (path: string, label: string) => (
+    <a href={`#/${path}`} className={page === path ? "font-semibold" : "text-slate-600 hover:text-slate-900"}>
+      {label}
+    </a>
+  );
 
   return (
-    <main className="mx-auto max-w-5xl p-6 font-sans text-slate-900">
-      <h1 className="text-2xl font-semibold">yoko-env studio</h1>
-      <p className="text-slate-600">Phase 1: the engine evaluates and draws the basic pattern set.</p>
-
-      <section className="mt-6 rounded border p-4">
-        <h2 className="font-medium">Status</h2>
-        <dl className="mt-2 grid grid-cols-[10rem_1fr] gap-y-1 text-sm">
-          <dt>Health</dt>
-          <dd data-testid="health">{health}</dd>
-          <dt>Build</dt>
-          <dd className="font-mono">{build ? shortSha(build.git_sha) : "…"}</dd>
-          <dt>Seamly2D pin</dt>
-          <dd className="font-mono">{build?.seamly2d_pin ?? "…"}</dd>
-          <dt>Formats read</dt>
-          <dd className="font-mono">{build ? build.pattern_formats_read.join(" to ") : "…"}</dd>
-          <dt>Fixtures hash</dt>
-          <dd className="font-mono">{build?.fixtures_hash?.slice(0, 12) ?? "…"}</dd>
-        </dl>
-      </section>
-
-      <section className="mt-6 rounded border p-4">
-        <h2 className="font-medium">Library: fixtures</h2>
-        <div className="mt-2 flex gap-2">
-          <input
-            type="password"
-            className="flex-1 rounded border px-2 py-1 text-sm"
-            placeholder="STUDIO_TOKEN"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-          />
-          <button className="rounded bg-slate-900 px-3 py-1 text-sm text-white" onClick={loadFixtures}>
-            Load
-          </button>
-        </div>
-        {error && <p className="mt-2 text-sm text-red-700">{error}</p>}
-        {files && (
-          <ul className="mt-3 space-y-1 text-sm">
-            {files.map((f) => (
-              <li key={f.path} className="flex justify-between gap-4">
-                <span className="font-mono">{f.path}</span>
-                <span className="text-slate-500">
-                  {f.area === "base" ? "locked base" : f.area} · {f.sha256.slice(0, 8)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-
-      {tree && (
-        <section className="mt-6 rounded border p-4" data-testid="family-tree">
-          <h2 className="font-medium">Family tree</h2>
-          <ul className="mt-2 space-y-1 text-sm">
-            {flattenTree(tree).map(({ node, depth }) => (
-              <li key={node.id} style={{ paddingLeft: `${depth * 1.5}rem` }}>
-                <span className="font-medium">{node.name}</span>{" "}
-                <span className="text-slate-500">
-                  {node.area === "base" ? "locked base" : node.garment_type || "style"}
-                  {node.tags.length > 0 && ` · ${node.tags.join(", ")}`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {base && (
-        <section className="mt-6 rounded border p-4" data-testid="base-pattern">
-          <h2 className="font-medium">
-            {base.name} {base.locked && <span className="text-slate-500">(locked)</span>}
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            {base.points} points, {base.curves} curves, {base.variables} variables from{" "}
-            {base.objects} objects · {base.issues} issues · size {base.size}, height {base.height}
-            · <span className="font-mono">{base.state_hash.slice(0, 12)}</span>
-          </p>
-          {svgUrl && (
-            <img
-              src={svgUrl}
-              alt="The basic pattern set, every object Seamly2D draws"
-              className="mt-3 w-full rounded border bg-white"
-            />
-          )}
-        </section>
-      )}
-    </main>
+    <div className="min-h-screen font-sans text-slate-900">
+      <nav className="flex h-12 items-center gap-5 border-b px-4 text-sm">
+        <button onClick={() => go("items")} className="font-semibold">yoko studio</button>
+        {tab("items", "Work items")}
+        {tab("measurements", "Measurements")}
+        {user.role === "owner" && tab("people", "People")}
+        <span className="flex-1" />
+        {tab("status", "Status")}
+        {tab("account", user.name)}
+        <button onClick={signOut} className="text-slate-600 hover:text-slate-900">Sign out</button>
+      </nav>
+      {page === "items" && route[1] ? <ItemView id={Number(route[1])} /> : null}
+      {page === "items" && !route[1] ? <Items /> : null}
+      {page === "measurements" && <Measurements />}
+      {page === "people" && user.role === "owner" && <People />}
+      {page === "account" && <Account />}
+    </div>
   );
 }

@@ -638,7 +638,7 @@ def item_sizes(item_id: int, user: UserDep, s: StoreDep) -> dict[str, Any]:
 def item_scene(item_id: int, user: UserDep, s: StoreDep, size: str | None = None) -> dict[str, Any]:
     row = _load(s, user, item_id)
     box, option = _box(s, row, size)
-    data = drafting.scene(box)
+    data = drafting.scene(box, list(row.pieces))
     data["size"] = {"key": option.key, "label": option.label}
     data["pieces"] = row.pieces
     return data
