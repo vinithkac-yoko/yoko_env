@@ -164,6 +164,14 @@ Kasi's answers to the Phase 4+ questions (2026-11):
 - **Throughput with invariants at done** (4 cores, example recipe): invariants at all 15 sizes, about 86 steps/s projected on 8 cores (below the 100 target, because short episodes pay for 15 evaluations each); at the teacher's three sizes, about 277.
 - **Waiting for Kasi:** the recipe procedures (11 recipes, one Markdown file each: the 9 drafts plus `reshape_neckline` and `hem_shaping`), merged into `docs/manipulations/` as they arrive; the bust point and sleeve front (when the dart and sleeve recipes come; C23 stays a proposal).
 
+## Studio v0, stage A (2026-11-15)
+
+- **Built:** sign-in (the owner account made once with `STUDIO_TOKEN`; email and password; signed cookies; a reset or password change signs the person out everywhere), People (owner), the shared list of people's measurement files, work items (recipe examples and designs; the blind cross-check), the item view (SVG canvas opening on the item's pieces, zoom and pan, click to select; size switcher UK 6 to 14 and people's files; proposed landmark names on request, marked as proposals; the inspector with formulas, references by label, built from and used by). Postgres via SQLAlchemy Core (SQLite in tests); the studio tests run on both in CI.
+- **Tests:** API tests on SQLite and Postgres; vitest for the canvas maths; a Playwright smoke test of the whole flow (setup, new item, inspect a point at UK 6 and UK 14, add a maker, the maker's view stays blind), in CI.
+- **CI:** every test runs inside the app's Docker image (Debian bookworm), so the deployed geometry is checked; the image now carries `library/` and `config/` (the library was missing from it).
+- **Found on the way:** the basic set's table does not grade by height, so its 15 sizes are 5 distinct sets of numbers; the invariants at done now evaluate each once (all sizes: about 206 steps/s projected on 8 cores, was 86).
+- Decisions on the plan: `docs/studio-v0-plan.md`, "Decisions".
+
 ## Environment variables by phase
 
 | Phase | Variables |

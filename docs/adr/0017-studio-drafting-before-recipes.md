@@ -37,3 +37,9 @@ meanwhile comes in as a derivation diff.
   never labels it; evals count it as a failure.
 - `apply_step` is off by default (executor training and data generation learn the primitives); named
   runs turn it on (an ablation, the product's fast path).
+
+**Decisions on the plan (2026-11-15)** are listed in `docs/studio-v0-plan.md` ("Decisions"): logins
+made by the owner; the oracle in GitHub Actions only; the helper line for dragged handles recorded as
+a studio action in a hidden Seamly2D group; step amounts that follow the size written as formulas over
+measurements; the blind cross-check; invariants at done at the teacher's three sizes for data
+generation and at every size elsewhere.

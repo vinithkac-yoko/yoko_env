@@ -78,3 +78,34 @@ For the first checkpoint (stage A):
 From stage E (and for design items' reference images): an S3-compatible bucket, with `BUCKET_ENDPOINT`,
 `BUCKET_NAME`, `BUCKET_REGION`, `BUCKET_ACCESS_KEY_ID`, `BUCKET_SECRET_ACCESS_KEY` on web. If Kasi
 wants the oracle check at once: an `oracle` service and `ORACLE_URL` on web.
+
+## Decisions (Kasi, 2026-11-15)
+
+1. **Logins**: email and password; only Kasi makes accounts; no emails. Kasi resets a maker's
+   password on the People page (done in stage A).
+2. **Oracle**: GitHub Actions only, no Railway service in v0. Exported worked examples are checked
+   there.
+3. **The helper line for dragged handles** is recorded as an action authored by the studio, never by
+   the maker, so the training data never shows makers drawing it. It is never part of a piece outline
+   (a line cannot be an outline node in Seamly2D, so this holds by construction). It goes in a hidden
+   group. Checked in the pinned Seamly2D source (`VAbstractPattern::parseGroups`): an object is shown
+   only if at least one of its groups is visible, so an object only in a hidden group is hidden when
+   the file is opened in Seamly2D. Our files keep groups unchanged on a round trip (the basic set has
+   hidden groups of its own), and deleting an object already removes it from its groups. The group
+   is made, and the line added to it, by studio-authored actions in stage C.
+4. **Amounts**: the finish-step dialog offers to turn numbers typed in the step's formulas into step
+   variables (recorded as edits) and asks, for each, whether it should follow the size. If yes, the
+   maker writes a formula over measurements, shown with its value at every size before saving.
+5. **Blind cross-check**: makers see each other's items read-only, except another maker's version of
+   the same recipe example, until both have finished it (done in stage A). As built: someone who has
+   not drafted that example cannot see others' versions either, so a later version stays blind; the
+   owner sees everything except other versions of an example the owner is drafting.
+6. **Validation** within 1 to 2 seconds of an action is fine.
+7. **People's measurement files** live in a shared list, reusable across items (done in stage A).
+8. **Invariants at done**: data generation checks them at the teacher's three sizes; plan
+   validation, evals and exports at every (distinct) size of the table.
+9. **Desktop browser with a mouse** is enough for v0.
+10. **Finishing plan**: a document, sent while Kasi tests stage C; coded after stage E.
+
+Also: CI runs every test, the Seamly2D comparisons included, inside the app's Docker image (its
+Python and maths library), so the deployed geometry is checked, not assumed.
