@@ -9,3 +9,5 @@ garment_type: basic-set
 tags: [basic, block, women, skirt, trousers, bodice, sleeve]
 pattern: "{fixtures}/patterns/base/Aldrich-Womens-6th-Ed-Basic-Blocks.sm2d"
 measurements: "{fixtures}/measurements/Aldrich-Womens-MultiSize-06-14.smms"
+# How the studio names a size of the table: {size} is the table's own `size` measurement.
+size_label: "UK {size}"

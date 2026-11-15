@@ -350,7 +350,8 @@ def test_the_invariants_are_checked_at_done_at_every_size() -> None:
     done = env.step(Call("done")).info
     inv = done["invariants"]
     assert inv["ok"] and inv["formula_error_count"] == 0 and inv["open_pieces"] == []
-    assert len(inv["sizes"]) == 15  # five sizes, three heights
+    # five sizes; the table does not grade by height, so each size's three heights are one check
+    assert len(inv["sizes"]) == 5 and "height 158" in inv["sizes"][0]
     assert inv["seam_pairs"] == "none defined yet"
 
 

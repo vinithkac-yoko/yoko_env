@@ -36,7 +36,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "serve":
         import uvicorn
 
-        uvicorn.run("yoko_server.app:app", host=args.host, port=args.port)
+        # Railway's proxy ends TLS: trust its forwarded headers, so cookies are marked secure
+        uvicorn.run(
+            "yoko_server.app:app",
+            host=args.host,
+            port=args.port,
+            proxy_headers=True,
+            forwarded_allow_ips="*",
+        )
         return 0
     print(
         f"yoko {args.command}: not implemented yet (Phase {PLANNED[args.command]})", file=sys.stderr

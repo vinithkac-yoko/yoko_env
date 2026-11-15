@@ -65,6 +65,22 @@ def check_points(
     return size_grid(box.session.pattern, table, grading=grading)
 
 
+def distinct(points: Sequence[SizePoint]) -> list[SizePoint]:
+    """Sizes with the same numbers are one check (the basic set's table does not grade by height,
+    so its three heights of a size are the same pattern)."""
+    seen: dict[tuple[tuple[str, float], ...], SizePoint] = {}
+    for p in points:
+        key = tuple(sorted(p.values.items()))
+        if key in seen:
+            first = seen[key]
+            seen[key] = SizePoint(
+                f"{first.label}; {p.label}", first.size, first.height, first.values
+            )
+        else:
+            seen[key] = p
+    return list(seen.values())
+
+
 def check_invariants(
     box: Toolbox,
     table: MeasurementSet,
@@ -75,7 +91,7 @@ def check_invariants(
 ) -> dict[str, Any]:
     """Every invariant at every size (or at the sizes in `only`). `ok` is False if any fails."""
     pattern = box.session.pattern
-    points = check_points(table, box, grading)
+    points = distinct(check_points(table, box, grading))
     if only is not None:
         points = [SizePoint(f"check size {i + 1}", 0.0, 0.0, v) for i, v in enumerate(only)]
     errors: list[dict[str, Any]] = []

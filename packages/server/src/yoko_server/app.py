@@ -1,4 +1,4 @@
-"""FastAPI app. Phase 0: health, build info, fixture inventory, static studio."""
+"""FastAPI app: health, build info, the library, the studio's drafting API, the static studio."""
 
 from __future__ import annotations
 
@@ -14,6 +14,8 @@ from yoko_engine.library import LibraryError
 
 from yoko_server import __version__
 from yoko_server.buildinfo import build_info, fixture_manifest, repo_root
+from yoko_server.db import database_url as database_url_from_env
+from yoko_server.db import make_engine, migrate
 from yoko_server.library import (
     base_summary,
     base_svg,
@@ -21,6 +23,8 @@ from yoko_server.library import (
     library_search,
     library_tree,
 )
+from yoko_server.studio import Store
+from yoko_server.studio import router as studio_router
 
 
 def require_token(authorization: Annotated[str | None, Header()] = None) -> None:
@@ -42,8 +46,24 @@ def studio_dist() -> Path | None:
     return path if (path / "index.html").is_file() else None
 
 
-def create_app() -> FastAPI:
+def _store(database_url: str | None) -> Store:
+    """The database, migrated; or a store that says why there is none (the studio routes then
+    answer 503 with that reason, and the rest of the app still works)."""
+    url = database_url if database_url is not None else database_url_from_env()
+    if not url:
+        return Store(None, "DATABASE_URL is not set")
+    try:
+        engine = make_engine(url)
+        migrate(engine)
+    except Exception as err:
+        return Store(None, f"the database cannot be used: {type(err).__name__}: {err}")
+    return Store(engine)
+
+
+def create_app(database_url: str | None = None) -> FastAPI:
     app = FastAPI(title="yoko-env", version=__version__)
+    app.state.store = _store(database_url)
+    app.include_router(studio_router)
 
     @app.get("/api/health")
     def health() -> dict[str, str]:

@@ -14,6 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from html import escape
 from io import BytesIO
+from typing import Any
 
 from PIL import Image, ImageDraw, ImageFont
 from yoko_engine.evalcore import CurveGeom, Evaluation
@@ -116,6 +117,52 @@ def build_scene(pattern: Pattern, ev: Evaluation, focus_ids: set[int] | None = N
     min_x, max_x = min(xs) - margin, max(xs) + margin
     min_y, max_y = min(ys) - margin, max(ys) + margin
     return Scene(lines, polylines, points, min_x, min_y, max_x - min_x, max_y - min_y)
+
+
+def scene_data(pattern: Pattern, ev: Evaluation) -> dict[str, Any]:
+    """Everything Seamly2D draws, as plain data for the studio's canvas, in millimetres, each line,
+    curve and point with the id of the object it belongs to (so a click selects that object).
+
+    The same drawing rule as `build_scene`: every line a tool draws, every drawn curve, every
+    point; nothing else."""
+    lines: list[dict[str, Any]] = []
+    for o in pattern.objects():
+        if _hidden(o):
+            continue
+        if o.tag == "line":
+            a = ev.points.get(int(o.get("firstPoint", "-1") or -1))
+            b = ev.points.get(int(o.get("secondPoint", "-1") or -1))
+            if a and b:
+                lines.append({"id": o.id, "a": _mm((a.p.x, a.p.y)), "b": _mm((b.p.x, b.p.y))})
+        elif o.tag == "point" and o.kind in _LINE_FROM:
+            end = ev.points.get(o.id)
+            if end is None:
+                continue
+            for attr in _LINE_FROM[o.kind]:
+                start = ev.points.get(int(o.get(attr, "-1") or -1))
+                if start:
+                    lines.append(
+                        {"id": o.id, "a": _mm((start.p.x, start.p.y)), "b": _mm((end.p.x, end.p.y))}
+                    )
+    objs = {o.id: o for o in pattern.objects()}
+    curves: list[dict[str, Any]] = []
+    for cid, curve in ev.curves.items():
+        src = objs.get(cid)
+        if not curve.drawn or (src is not None and _hidden(src)):
+            continue
+        curves.append({"id": cid, "name": curve.name, "points": _curve_polyline(curve)})
+    points = [
+        {"id": g.id, "label": g.label, "x": px_to_mm(g.p.x), "y": px_to_mm(g.p.y)}
+        for g in ev.points.values()
+    ]
+    xs = [p["x"] for p in points] or [0.0, 100.0]
+    ys = [p["y"] for p in points] or [0.0, 100.0]
+    return {
+        "lines": lines,
+        "curves": curves,
+        "points": points,
+        "bounds": {"min_x": min(xs), "min_y": min(ys), "max_x": max(xs), "max_y": max(ys)},
+    }
 
 
 def _height_px(scene: Scene, width_px: int) -> int:
