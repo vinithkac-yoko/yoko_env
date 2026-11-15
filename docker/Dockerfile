@@ -14,6 +14,8 @@ COPY pyproject.toml uv.lock ./
 COPY packages ./packages
 RUN uv sync --frozen --all-packages --no-dev
 COPY fixtures ./fixtures
+COPY library ./library
+COPY config ./config
 COPY docs ./docs
 COPY --from=studio /studio/dist ./studio/dist
 ENV YOKO_FIXTURES_DIR=/app/fixtures YOKO_STUDIO_DIST=/app/studio/dist PATH="/app/.venv/bin:$PATH"

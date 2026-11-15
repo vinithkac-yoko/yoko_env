@@ -44,3 +44,13 @@ jobs:
           for i in $(seq 1 20); do curl -fs localhost:8000/api/health && break || sleep 1; done
           curl -fs localhost:8000/api/build | grep seamly2d_pin
           curl -fs -H "Authorization: Bearer ci" localhost:8000/api/fixtures | grep Aldrich
+      - name: every test, the Seamly2D comparisons included, inside the app image
+        # the deployed image's own Python and maths library (Debian bookworm); a fresh environment
+        # from the same lock file, because the image has no test tools
+        run: |
+          docker run --rm -v "$PWD:/repo:ro" \
+            -e UV_PROJECT_ENVIRONMENT=/tmp/venv -e UV_PYTHON_DOWNLOADS=never \
+            -e UV_PYTHON=/usr/local/bin/python3.12 -e UV_CACHE_DIR=/tmp/uvcache \
+            yoko-env:ci sh -c "cp -r /repo /work && cd /work && rm -rf .venv \
+              && uv sync -q --frozen --all-packages && ldd --version | head -1 && uv run python -V \
+              && uv run pytest -q -p no:cacheprovider"
