@@ -1,4 +1,12 @@
-# Studio v0: manual drafting (plan for review, no code yet)
+# Studio v0: manual drafting (stage A built; the rest parked)
+
+> **Parked in part (ADR 0018, 2026-11-21).** The goal is now drafting real patterns with Claude over
+> MCP (`docs/mcp-plan.md`); no drafting model is trained. Stage A is built and stays: the MCP patterns
+> live in it and the studio shows them. **B1** (the tool forms generated from `config/tools/`, picking
+> objects on the canvas) may come back as step d of the MCP plan. **B2** (the rest of stage B:
+> sections, formula autocomplete and live values, preview and commit, edit in place, delete warnings,
+> undo and redo, the validation panel, piece tools) and **stages C, D and E** are parked: not built, not
+> extended. The text below is kept as written.
 
 Kasi and the pattern makers draft recipe worked examples (later a few designs) in the browser. Every
 click is one action in the model's own action space, recorded with its author (`source =
@@ -53,13 +61,13 @@ human_studio`). ADR 0017 explains why this comes before the recipes.
 
 ## Build order and checkpoints
 
-| Stage | What | Checkpoint on Railway |
-| --- | --- | --- |
-| A | Sign in and people; work items; server-side sessions; read-only canvas with size switcher and inspector | **First checkpoint**: Kasi and a maker each sign in, start an item from the skirt block, look at it at UK 6 and UK 14, click points to see formulas and dependents |
-| B | Tool forms from the schemas, click and landmark picking, sections, formula autocomplete and live values, preview and commit, edit in place, delete warnings, undo and redo, validation panel, piece tools | Draft a few points, a line and a curve with numeric handles; edit a formula; undo; see an error appear at one size |
-| C | Draggable curve handles saved relative to the curve | **Stop**: Kasi sees one dragged curve at UK 6 and UK 14 before anything else |
-| D | Finish step, merge and split, branch from any action, record export | Finish a step of a recipe example; download its records |
-| E | Export `.sm2d` (oracle check), import `.sm2d` as a derivation diff, cross-check view | Export an example and open it in Seamly2D; cross-check two makers' examples |
+| Stage | What | Checkpoint on Railway | Status |
+| --- | --- | --- | --- |
+| A | Sign in and people; work items; server-side sessions; read-only canvas with size switcher and inspector | **First checkpoint**: Kasi and a maker each sign in, start an item from the skirt block, look at it at UK 6 and UK 14, click points to see formulas and dependents | built |
+| B | Tool forms from the schemas, click and landmark picking, sections, formula autocomplete and live values, preview and commit, edit in place, delete warnings, undo and redo, validation panel, piece tools | Draft a few points, a line and a curve with numeric handles; edit a formula; undo; see an error appear at one size | B1 maybe (MCP step d); B2 parked |
+| C | Draggable curve handles saved relative to the curve | **Stop**: Kasi sees one dragged curve at UK 6 and UK 14 before anything else | parked |
+| D | Finish step, merge and split, branch from any action, record export | Finish a step of a recipe example; download its records | parked |
+| E | Export `.sm2d` (oracle check), import `.sm2d` as a derivation diff, cross-check view | Export an example and open it in Seamly2D; cross-check two makers' examples | parked |
 
 After E: the finishing plan (seam allowance with Seamly2D's corner types, notches, grainline, labels;
 seam allowance widths as a settings table per order), sent before coding.

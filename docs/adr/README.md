@@ -10,14 +10,15 @@ One short record per major choice. Status: `accepted` (settled by the spec or ad
 | 0004 | Landmarks: standard names in a sidecar | accepted (vocabulary proposed) |
 | 0005 | Provenance sidecar | accepted |
 | 0006 | Plan amounts become pattern variables | accepted |
-| 0007 | Recipes and the teacher | accepted |
+| 0007 | Recipes and the teacher | accepted, parked (0018) |
 | 0008 | Units: formulas evaluate in the pattern's unit | accepted |
-| 0009 | Held-out rules and seed ranges | proposed |
+| 0009 | Held-out rules and seed ranges | proposed, parked (0018) |
 | 0010 | Branching and deploy workflow | accepted |
 | 0011 | Evaluation kernel scale and object identity | accepted |
 | 0012 | Lossless Seamly2D files, and upgrades checked against Seamly2D | accepted |
 | 0013 | Qt routines ported, case patterns, how pieces and the library are edited | accepted |
 | 0014 | The tool layer | accepted |
-| 0015 | The recipe framework and the teacher | accepted |
-| 0016 | The environment API and the teacher-data records | accepted |
-| 0017 | Manual drafting in the studio comes before the recipes | accepted |
+| 0015 | The recipe framework and the teacher | accepted, parked (0018) |
+| 0016 | The environment API and the teacher-data records | accepted, parked (0018) |
+| 0017 | Manual drafting in the studio comes before the recipes | superseded by 0018 (stage A kept) |
+| 0018 | Drafting real patterns with Claude over MCP; training parked | accepted |

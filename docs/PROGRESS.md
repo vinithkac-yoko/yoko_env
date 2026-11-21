@@ -172,16 +172,24 @@ Kasi's answers to the Phase 4+ questions (2026-11):
 - **Found on the way:** the basic set's table does not grade by height, so its 15 sizes are 5 distinct sets of numbers; the invariants at done now evaluate each once (all sizes: about 206 steps/s projected on 8 cores, was 86).
 - Decisions on the plan: `docs/studio-v0-plan.md`, "Decisions".
 
+## Direction change (ADR 0018): drafting with Claude over MCP (2026-11-21)
+
+- **Goal now:** Kasi drafts real patterns from the basic blocks with Claude in claude.ai, through an MCP server on our engine (custom connector, OAuth against the studio accounts), and watches the pattern change live in the studio. No drafting model is trained.
+- **Kept and extended:** `engine`, `io`, `tools` (the tool layer), `server` (the studio and the new MCP server, on the same `web` service).
+- **Parked** (kept, tests still run, not extended): `env`, `data`, `agent`, `bench`; the teacher, the recipe framework, plan validation and the records. BUILD_SPEC phases 5 to 9 (recipes and teacher, environment, drafter and planner runner, data, bench). Studio v0 stages B2 to E (`docs/studio-v0-plan.md`); B1 (tool forms, picking on the canvas) may return as MCP step d.
+- **Plan:** `docs/mcp-plan.md` (22 tools, OAuth, exports easy and hard, the log, tests). Order: a plan (**waiting for Kasi's OK**), b the MCP core and the live studio (stop: Kasi connects and tries it), c exports, d manual drafting in the studio only if easy. Not now: seam allowance, notches, grainline.
+
 ## Environment variables by phase
 
 | Phase | Variables |
 | --- | --- |
 | 0 | `STUDIO_TOKEN` |
 | 1 to 5 | none new |
-| Studio v0 (ADR 0017) | `DATABASE_URL`, `SESSION_SECRET` (stage A); `BUCKET_*` (stage E); optionally `ORACLE_URL` |
-| 6 | `DATABASE_URL` (session snapshots), `BUCKET_*` |
-| 7 | `ANTHROPIC_API_KEY` |
-| 7 (later) | `OPENAI_COMPAT_BASE_URL`, `OPENAI_COMPAT_API_KEY` |
+| Studio v0 (ADR 0017) | `DATABASE_URL`, `SESSION_SECRET` (stage A); `BUCKET_*` (stage E, parked); optionally `ORACLE_URL` (parked) |
+| 6 (parked, ADR 0018) | `DATABASE_URL` (session snapshots), `BUCKET_*` |
+| 7 (parked, ADR 0018) | `ANTHROPIC_API_KEY` |
+| 7 (later, parked) | `OPENAI_COMPAT_BASE_URL`, `OPENAI_COMPAT_API_KEY` |
+| MCP (ADR 0018) | none new: `DATABASE_URL`, `SESSION_SECRET`, `STUDIO_TOKEN`; the address comes from Railway's `RAILWAY_PUBLIC_DOMAIN` (`PUBLIC_URL` only with a custom domain) |
 
 ## Phase 1 plan (engine core), for review before I code
 
